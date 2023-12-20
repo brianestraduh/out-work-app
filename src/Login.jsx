@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import Success from "./Success.jsx";
+import { useNavigate } from "react-router-dom";
+import Home from "./Home.jsx";
 import { createClient } from "@supabase/supabase-js";
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
@@ -12,7 +13,7 @@ const supabase = createClient(
 
 function Login() {
   const [session, setSession] = useState(null);
-
+  let navigate = useNavigate();
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
@@ -22,6 +23,11 @@ function Login() {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
+      if (event === "SIGNED_IN") {
+        navigate("/home");
+      } else if (event === "SIGNED_OUT") {
+        navigate("/");
+      }
     });
 
     return () => subscription.unsubscribe();
@@ -40,7 +46,7 @@ function Login() {
       </div>
     );
   } else {
-    return <Success />;
+    navigate("/home");
   }
 }
 
