@@ -1,4 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "./store.js";
 import "./App.css";
 
 import Login from "./Login.jsx";
@@ -12,20 +14,22 @@ import Progresssion from "./Progression.jsx";
 function App() {
   return (
     <>
-      <Navbar></Navbar>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/workout" element={<Workout />}></Route>
-          <Route path="/createWorkouts" element={<CreateWorkouts />}></Route>
-          <Route
-            path="/previousWorkouts"
-            element={<PreviousWorkouts />}
-          ></Route>
-          <Route path="/progression" element={<Progresssion />}></Route>
-        </Routes>
-      </Router>
+      <Provider store={store}>
+        <Navbar></Navbar>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/workout" element={<Workout />}></Route>
+            <Route path="/createWorkouts" element={<CreateWorkouts />}></Route>
+            <Route
+              path="/previousWorkouts"
+              element={<PreviousWorkouts />}
+            ></Route>
+            <Route path="/progression" element={<Progresssion />}></Route>
+          </Routes>
+        </Router>
+      </Provider>
     </>
   );
 }

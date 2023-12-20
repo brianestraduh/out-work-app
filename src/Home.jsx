@@ -38,7 +38,8 @@ function Home() {
       navigate("/"); // navigate to login page after signing out
     }
   }
-
+  // Once Redux is implemented Remove Loading as it will be much more seamless not having
+  // to call getUserData everytime this Component mounts rather only on state change
   return loading ? (
     <Loader /> // Show the Loader component while loading
   ) : user && Object.keys(user).length > 0 ? (

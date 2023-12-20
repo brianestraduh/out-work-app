@@ -3,6 +3,8 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  --bg-color: white;
+  --text-color: black;
 }
 
 .logo {
@@ -40,21 +42,13 @@
 .read-the-docs {
   color: #888;
 }
-nav {
-  width: 100vw;
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-  background-color: black;
-  color: white;
-}
 
 body,
 html {
   margin: 0;
   padding: 0;
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
 .loader {

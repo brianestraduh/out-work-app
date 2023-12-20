@@ -28,6 +28,22 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  padding: 0;
+  --bg-color: #fff; /* Light mode background color */
+  --text-color: #000; /* Light mode text color */
+  --neutral-5: #ddd; /* Light mode neutral color */
+  --surface-color: #eee; /* Light mode surface color */
+  --surface-shadow: #ccc; /* Light mode surface shadow color */
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+body.dark {
+  --bg-color: #222; /* Dark mode background color */
+  --text-color: #fff; /* Dark mode text color */
+  --neutral-5: #222; /* Dark mode neutral color */
+  --surface-color: #444; /* Dark mode surface color */
+  --surface-shadow: #222; /* Dark mode surface shadow color */
 }
 
 h1 {
