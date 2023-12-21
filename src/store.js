@@ -14,11 +14,11 @@ const saveToLocalStorage = (state) => {
 const loadFromLocalStorage = () => {
   try {
     const serializedState = localStorage.getItem("darkMode");
-    if (serializedState === null) return undefined;
-    return JSON.parse(serializedState);
+    if (serializedState === null) return { darkMode: false };
+    return { darkMode: JSON.parse(serializedState) };
   } catch (e) {
     console.warn(e);
-    return undefined;
+    return { darkMode: false };
   }
 };
 
