@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store.js";
 import "./App.css";
-
 import Login from "./Login.jsx";
 import Navbar from "./Navbar.jsx";
 import Home from "./Home.jsx";
@@ -15,8 +14,8 @@ function App() {
   return (
     <>
       <Provider store={store}>
-        <Navbar></Navbar>
         <Router>
+          <Navbar></Navbar>
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/home" element={<Home />} />
