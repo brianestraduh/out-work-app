@@ -4,8 +4,8 @@ import sessionReducer from "./redux/session/sessionSlice.js";
 
 const saveToLocalStorage = (state) => {
   try {
-    const serializedState = JSON.stringify(state.darkMode);
-    localStorage.setItem("darkMode", serializedState);
+    const serializedState = JSON.stringify(state);
+    localStorage.setItem("state", serializedState);
   } catch (e) {
     console.warn(e);
   }
@@ -13,12 +13,12 @@ const saveToLocalStorage = (state) => {
 
 const loadFromLocalStorage = () => {
   try {
-    const serializedState = localStorage.getItem("darkMode");
-    if (serializedState === null) return { darkMode: false };
-    return { darkMode: JSON.parse(serializedState) };
+    const serializedState = localStorage.getItem("state");
+    if (serializedState === null) return undefined;
+    return JSON.parse(serializedState);
   } catch (e) {
     console.warn(e);
-    return { darkMode: false };
+    return undefined;
   }
 };
 
