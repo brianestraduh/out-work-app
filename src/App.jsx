@@ -13,14 +13,14 @@ import PreviousWorkouts from "./PreviousWorkouts.jsx";
 import Progresssion from "./Progression.jsx";
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [session, setSession] = useState(null);
   useEffect(() => {
-    const session = supabase.auth.getSession();
-
-    setIsAuthenticated(!!session);
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
 
     supabase.auth.onAuthStateChange((_event, session) => {
-      setIsAuthenticated(!!session);
+      setSession(session);
     });
   }, []);
 
@@ -30,9 +30,9 @@ function App() {
         <Router>
           <Navbar></Navbar>
           <Routes>
-            {isAuthenticated ? (
+            {session ? (
               <>
-                <Route path="/home" element={<Home />} />
+                <Route path="/" element={<Home />} />
                 <Route path="/workout" element={<Workout />}></Route>
                 <Route
                   path="/createWorkouts"

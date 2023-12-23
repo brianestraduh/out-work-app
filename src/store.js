@@ -1,6 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
 import darkModeReducer from "./redux/darkMode/darkModeSlice.js";
-import sessionReducer from "./redux/session/sessionSlice.js";
 
 const saveToLocalStorage = (state) => {
   try {
@@ -26,7 +25,6 @@ const store = configureStore({
   preloadedState: loadFromLocalStorage(),
   reducer: {
     darkMode: darkModeReducer,
-    session: sessionReducer,
   },
 });
 
