@@ -7,6 +7,7 @@ import supabase from "../supaBase.js";
 function Navbar() {
   let navigate = useNavigate();
   const dispatch = useDispatch();
+  const session = useSelector((state) => state.session);
   const isDarkTheme = useSelector((state) => state.darkMode.darkMode);
   useEffect(() => {
     supabase.auth.onAuthStateChange((event) => {
@@ -38,7 +39,7 @@ function Navbar() {
     <nav className="">
       <p>NavBar</p>
       <button onClick={() => dispatch(toggleDarkMode())}>DarkMode</button>
-      <button onClick={signOutUser}>Sign Out</button>
+      {session && <button onClick={signOutUser}>Sign Out</button>}
     </nav>
   );
 }
