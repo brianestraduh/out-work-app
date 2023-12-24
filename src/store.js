@@ -3,8 +3,8 @@ import darkModeReducer from "./redux/darkMode/darkModeSlice.js";
 
 const saveToLocalStorage = (state) => {
   try {
-    const serializedState = JSON.stringify(state);
-    localStorage.setItem("state", serializedState);
+    const serializedState = JSON.stringify(state.darkMode);
+    localStorage.setItem("darkMode", serializedState);
   } catch (e) {
     console.warn(e);
   }
@@ -12,9 +12,9 @@ const saveToLocalStorage = (state) => {
 
 const loadFromLocalStorage = () => {
   try {
-    const serializedState = localStorage.getItem("state");
+    const serializedState = localStorage.getItem("darkMode");
     if (serializedState === null) return undefined;
-    return JSON.parse(serializedState);
+    return { darkMode: JSON.parse(serializedState) };
   } catch (e) {
     console.warn(e);
     return undefined;

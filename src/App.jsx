@@ -1,7 +1,5 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Provider } from "react-redux";
-import store from "./store.js";
 import supabase from "../supaBase.js";
 import "./App.css";
 import Login from "./Login.jsx";
@@ -25,32 +23,21 @@ function App() {
   }, []);
 
   return (
-    <>
-      <Provider store={store}>
-        <Router>
-          <Navbar></Navbar>
-          <Routes>
-            {session ? (
-              <>
-                <Route path="/" element={<Home />} />
-                <Route path="/workout" element={<Workout />}></Route>
-                <Route
-                  path="/createWorkouts"
-                  element={<CreateWorkouts />}
-                ></Route>
-                <Route
-                  path="/previousWorkouts"
-                  element={<PreviousWorkouts />}
-                ></Route>
-                <Route path="/progression" element={<Progresssion />}></Route>
-              </>
-            ) : (
-              <Route path="/" element={<Login />} />
-            )}
-          </Routes>
-        </Router>
-      </Provider>
-    </>
+    <Router>
+      <Navbar />
+      <Routes>
+        {session === null ? (
+          <Route path="/" element={<Login />} />
+        ) : (
+          <Route path="/" element={<Home />} />
+        )}
+        <Route path="/" element={<Home />} />
+        <Route path="/workout" element={<Workout />} />
+        <Route path="/createWorkouts" element={<CreateWorkouts />} />
+        <Route path="/previousWorkouts" element={<PreviousWorkouts />} />
+        <Route path="/progression" element={<Progresssion />} />
+      </Routes>
+    </Router>
   );
 }
 export default App;
