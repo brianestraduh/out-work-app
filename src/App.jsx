@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import supabase from "../supaBase.js";
 import "./App.css";
@@ -9,18 +9,22 @@ import Workout from "./Workout.jsx";
 import CreateWorkouts from "./CreateWorkouts.jsx";
 import PreviousWorkouts from "./PreviousWorkouts.jsx";
 import Progresssion from "./Progression.jsx";
+import { setSession } from "./redux/session/sessionSlice.js";
+import { useSelector, useDispatch } from "react-redux";
 
 function App() {
-  const [session, setSession] = useState(null);
+  const session = useSelector((state) => state.session);
+  const dispatch = useDispatch();
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
+      console.log(session);
+      dispatch(setSession(session));
     });
 
     supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
+      dispatch(setSession(session));
     });
-  }, []);
+  }, [dispatch]);
 
   return (
     <Router>
