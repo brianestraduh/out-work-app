@@ -22,8 +22,3 @@ function Home() {
   );
 }
 export default Home;
-
-//    <>
-//<h1>User is not Logged In</h1>
-//<Link to={"/"}>Sign in</Link>
-//</>

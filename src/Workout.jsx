@@ -3,7 +3,7 @@ function Workout() {
   return (
     <div>
       <h1>Start Workout</h1>
-      <Link to="/home">Back</Link>
+      <Link to="/">Back</Link>
     </div>
   );
 }

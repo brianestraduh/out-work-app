@@ -3,7 +3,7 @@ function Progression() {
   return (
     <div>
       <h1>Progression</h1>
-      <Link to="/home">Back</Link>
+      <Link to="/">Back</Link>
     </div>
   );
 }

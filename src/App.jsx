@@ -35,7 +35,6 @@ function App() {
         ) : (
           <Route path="/" element={<Home />} />
         )}
-        <Route path="/" element={<Home />} />
         <Route path="/workout" element={<Workout />} />
         <Route path="/createWorkouts" element={<CreateWorkouts />} />
         <Route path="/previousWorkouts" element={<PreviousWorkouts />} />

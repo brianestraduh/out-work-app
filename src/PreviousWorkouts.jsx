@@ -3,7 +3,7 @@ function PreviousWorkouts() {
   return (
     <div>
       <h1>Previous Workouts</h1>
-      <Link to="/home">Back</Link>
+      <Link to="/">Back</Link>
     </div>
   );
 }
