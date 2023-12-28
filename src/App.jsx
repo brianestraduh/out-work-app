@@ -5,8 +5,9 @@ import "./App.css";
 import Login from "./Login.jsx";
 import Navbar from "./Navbar.jsx";
 import Home from "./Home.jsx";
+import Account from "./Account.jsx";
 import Workout from "./Workout.jsx";
-import CreateWorkouts from "./CreateWorkouts.jsx";
+import CreateEditWorkouts from "./CreateEditWorkouts.jsx";
 import PreviousWorkouts from "./PreviousWorkouts.jsx";
 import Progresssion from "./Progression.jsx";
 import { setSession } from "./redux/session/sessionSlice.js";
@@ -35,8 +36,9 @@ function App() {
         ) : (
           <Route path="/" element={<Home />} />
         )}
+        <Route path="/account" element={<Account />} />
         <Route path="/workout" element={<Workout />} />
-        <Route path="/createWorkouts" element={<CreateWorkouts />} />
+        <Route path="/createEditWorkouts" element={<CreateEditWorkouts />} />
         <Route path="/previousWorkouts" element={<PreviousWorkouts />} />
         <Route path="/progression" element={<Progresssion />} />
       </Routes>

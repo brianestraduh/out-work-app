@@ -6,10 +6,13 @@ function Home() {
     <div>
       <ul>
         <li>
+          <Link to="/account">Account</Link>
+        </li>
+        <li>
           <Link to="/workout">Start Workout</Link>
         </li>
         <li>
-          <Link to="/createWorkouts">Create or Edit Workouts</Link>
+          <Link to="/createEditWorkouts">Create or Edit Workouts</Link>
         </li>
         <li>
           <Link to="/previousWorkouts">Previous WorkOuts</Link>

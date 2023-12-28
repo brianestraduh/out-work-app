@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-function CreateWorkouts() {
+function CreateEditWorkouts() {
   return (
     <div>
       <h1>Create Workouts</h1>
@@ -7,4 +7,4 @@ function CreateWorkouts() {
     </div>
   );
 }
-export default CreateWorkouts;
+export default CreateEditWorkouts;
