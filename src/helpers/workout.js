@@ -12,4 +12,9 @@ async function addWorkout(supabase, session, name, description) {
 
   if (error) throw error;
 }
-export { addWorkout };
+//delete  Workout
+async function deleteWorkout(supabase, id) {
+  const { error } = await supabase.from("workouts").delete().eq("id", id);
+  if (error) throw error;
+}
+export { addWorkout, deleteWorkout };

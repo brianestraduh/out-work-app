@@ -2,12 +2,13 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import supabase from "../supaBase";
-import { addWorkout } from "./helpers/workout.js";
+import { addWorkout, deleteWorkout } from "./helpers/workout.js";
 function CreateEditWorkouts() {
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState(null);
   const [description, setDescription] = useState(null);
   const [workouts, setWorkouts] = useState([]);
+  const [workoutsUpdated, setWorkoutUpdated] = useState(false);
   const session = useSelector((state) => state.session);
   useEffect(() => {
     let ignore = false;
@@ -21,6 +22,7 @@ function CreateEditWorkouts() {
           console.warn(error);
         } else if (data) {
           setWorkouts(data);
+          console.log(data);
         }
       }
     }
@@ -29,7 +31,7 @@ function CreateEditWorkouts() {
     return () => {
       ignore = true;
     };
-  }, [workouts]);
+  }, [workoutsUpdated]);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -43,6 +45,16 @@ function CreateEditWorkouts() {
     }
 
     setLoading(false);
+    setWorkoutUpdated(!workoutsUpdated);
+  }
+
+  async function handleDelete(id) {
+    try {
+      await deleteWorkout(supabase, id);
+    } catch (error) {
+      alert(error.message);
+    }
+    setWorkoutUpdated(!workoutsUpdated);
   }
   return (
     <div>
@@ -83,7 +95,9 @@ function CreateEditWorkouts() {
             <h3>{workout.name}</h3>
             <p>{workout.description}</p>
             <button type="button">Edit</button>
-            <button type="button">Delete</button>
+            <button type="button" onClick={() => handleDelete(workout.id)}>
+              Delete
+            </button>
           </div>
         ))}
       </div>
