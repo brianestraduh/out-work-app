@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import supabase from "../supaBase";
@@ -13,6 +13,7 @@ function CreateEditWorkouts() {
   const [showModal, setShowModal] = useState(false);
   const [workoutToDelete, setWorkoutToDelete] = useState(null);
   const session = useSelector((state) => state.session);
+  const navigate = useNavigate();
 
   useEffect(() => {
     let ignore = false;
@@ -73,6 +74,10 @@ function CreateEditWorkouts() {
     setWorkoutUpdated(!workoutsUpdated);
   };
 
+  const handleEdit = (id) => {
+    navigate(`/workout/${id}`);
+  };
+
   return (
     <div>
       <div>
@@ -111,7 +116,9 @@ function CreateEditWorkouts() {
           <div key={workout.id}>
             <h3>{workout.name}</h3>
             <p>{workout.description}</p>
-            <button type="button">Edit</button>
+            <button type="button" onClick={() => handleEdit(workout.id)}>
+              Edit
+            </button>
             <button type="button" onClick={() => handleDelete(workout.id)}>
               Delete
             </button>

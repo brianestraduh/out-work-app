@@ -10,6 +10,7 @@ import Workout from "./Workout.jsx";
 import CreateEditWorkouts from "./CreateEditWorkouts.jsx";
 import PreviousWorkouts from "./PreviousWorkouts.jsx";
 import Progresssion from "./Progression.jsx";
+import EditWorkout from "./EditWorkout.jsx";
 import { setSession } from "./redux/session/sessionSlice.js";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -38,6 +39,7 @@ function App() {
         )}
         <Route path="/account" element={<Account />} />
         <Route path="/workout" element={<Workout />} />
+        <Route path="/workout/:id" element={<EditWorkout />} />
         <Route path="/createEditWorkouts" element={<CreateEditWorkouts />} />
         <Route path="/previousWorkouts" element={<PreviousWorkouts />} />
         <Route path="/progression" element={<Progresssion />} />
