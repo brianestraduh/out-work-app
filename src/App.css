@@ -32,6 +32,24 @@ body,
 html {
   margin: 0;
   padding: 0;
-  background-color: var(--bg-color);
   color: var(--text-color);
+}
+
+dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 1em;
+  z-index: 1000;
+  margin: 0;
+  border: none;
+  box-sizing: border-box;
+  max-width: 90vw; /* This will ensure the dialog doesn't overflow the viewport */
+}
+
+dialog::backdrop {
+  background-color: red;
+  opacity: 0.5;
 }
