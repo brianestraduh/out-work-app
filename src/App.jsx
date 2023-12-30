@@ -8,6 +8,7 @@ import Home from "./Home.jsx";
 import Account from "./Account.jsx";
 import Workout from "./Workout.jsx";
 import CreateEditWorkouts from "./CreateEditWorkouts.jsx";
+import AddExcerciseForm from "./AddExcerciseForm.jsx";
 import PreviousWorkouts from "./PreviousWorkouts.jsx";
 import Progresssion from "./Progression.jsx";
 import EditWorkout from "./EditWorkout.jsx";
@@ -41,6 +42,7 @@ function App() {
         <Route path="/workout" element={<Workout />} />
         <Route path="/workout/:id" element={<EditWorkout />} />
         <Route path="/createEditWorkouts" element={<CreateEditWorkouts />} />
+        <Route path="/newExcercise" element={<AddExcerciseForm />} />
         <Route path="/previousWorkouts" element={<PreviousWorkouts />} />
         <Route path="/progression" element={<Progresssion />} />
       </Routes>

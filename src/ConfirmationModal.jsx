@@ -1,4 +1,4 @@
-export default function Modal({ onConfirm, onCancel }) {
+export default function ConfirmationModal({ onConfirm, onCancel }) {
   return (
     <dialog open>
       <h2>Are you sure?</h2>

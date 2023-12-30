@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import supabase from "../supaBase";
 import { addWorkout, deleteWorkout } from "./helpers/workout.js";
-import Modal from "./Modal.jsx";
+import ConfirmationModal from "./ConfirmationModal.jsx";
 function CreateEditWorkouts() {
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState(null);
@@ -125,7 +125,9 @@ function CreateEditWorkouts() {
           </div>
         ))}
       </div>
-      {showModal && <Modal onConfirm={handleConfirm} onCancel={handleCancel} />}
+      {showModal && (
+        <ConfirmationModal onConfirm={handleConfirm} onCancel={handleCancel} />
+      )}
       <Link to="/">Back</Link>
     </div>
   );
