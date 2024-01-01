@@ -5,6 +5,7 @@ import { useEffect, useState, useRef } from "react";
 import supabase from "../supaBase.js";
 export default function EditWorkout() {
   const [exercises, setExercises] = useState([]);
+  const [exerciseOrder, setExerciseOrder] = useState([]);
   const dispatch = useDispatch();
   const { id } = useParams();
   //dragging reference
@@ -32,12 +33,44 @@ export default function EditWorkout() {
 
     fetchExercises();
   }, []);
+  // this function first handles the sorting of exercises based on what was dragged and dropped [39-50]
+  //it then creates an array containing the new index and associated workout id
+  // which is saved to a state variable where it can be used to save the new order in another function
   function handleSort(dragIndex, dropIndex) {
     const newExercises = [...exercises];
     const draggedExercise = newExercises[dragIndex];
+
     newExercises.splice(dragIndex, 1); // Remove the dragged item
     newExercises.splice(dropIndex, 0, draggedExercise); // Insert the dragged item at the new position
+
+    // Update the index property of each exercise
+    newExercises.forEach((exercise, index) => {
+      exercise.index = index;
+    });
+
     setExercises(newExercises);
+    //create an array of objects where
+    const newOrder = newExercises.map((exercise, index) => ({
+      index,
+      name: exercise.id,
+    }));
+    setExerciseOrder(newOrder);
+    console.log(newOrder); // Use newIndex instead of indexes
+  }
+  // this function saves the new order of the exercises associated with this workout.
+  async function handleSaveSort() {
+    console.log(exerciseOrder);
+    for (let exercise of exerciseOrder) {
+      const { error } = await supabase
+        .from("workout_exercises")
+        .update({ index: exercise.index })
+        .eq("exercise_id", exercise.name);
+      console.log("success");
+
+      if (error) {
+        console.error("Error: ", error);
+      }
+    }
   }
   return (
     <div>
@@ -49,35 +82,34 @@ export default function EditWorkout() {
         <button>Add Existing Excercise</button>
       </form>
       <ul>
-        {exercises.map((exercise, index) => {
-          return (
-            <li
-              key={exercise.id}
-              className="drag"
-              draggable
-              onDragStart={() => {
-                dragExcercise.current = index;
-              }}
-              onDragEnter={() => {
-                overTakenExcercise.current = index;
-              }}
-              onDragEnd={() =>
-                handleSort(dragExcercise.current, overTakenExcercise.current)
-              }
-              onDragOver={(e) => e.preventDefault()}
-            >
-              <p>{exercise.name}</p>
-              <p>Sets {exercise.default_sets}</p>
-              <p>Reps {exercise.default_reps}</p>
-            </li>
-          );
-        })}
+        {exercises
+          .sort((a, b) => a.index - b.index)
+          .map((exercise, index) => {
+            return (
+              <li
+                key={exercise.id}
+                className="drag"
+                draggable
+                onDragStart={() => {
+                  dragExcercise.current = index;
+                }}
+                onDragEnter={() => {
+                  overTakenExcercise.current = index;
+                }}
+                onDragEnd={() =>
+                  handleSort(dragExcercise.current, overTakenExcercise.current)
+                }
+                onDragOver={(e) => e.preventDefault()}
+              >
+                <p>{exercise.name}</p>
+                <p>Sets {exercise.default_sets}</p>
+                <p>Reps {exercise.default_reps}</p>
+              </li>
+            );
+          })}
       </ul>
+      <button onClick={handleSaveSort}>Save Order</button>
       <Link to="/createEditWorkouts">Back</Link>
     </div>
   );
 }
-//what do I want to do? When I create an excerise what should happen DONE
-// I want to do 2 things, first add it to the excercise table but I then also want to associate it with
-// the workout I created
-// then I will display it within this EditWorkout Component
