@@ -26,10 +26,27 @@ export default function AddExcerciseForm() {
     };
 
     try {
-      const { error } = await supabase.from("exercises").upsert(newExcercise);
+      const { data, error } = await supabase
+        .from("exercises")
+        .insert(newExcercise)
+        .select();
       if (error) throw error;
 
-      // Navigate away or change state here, after the upsert operation has completed
+      console.log(data); // Log the data
+
+      // Get the id of the newly inserted exercise
+      const exerciseId = data[0].id;
+
+      // Insert a new entry into the workout_exercises table
+      const { error: workoutExerciseError } = await supabase
+        .from("workout_exercises")
+        .insert([
+          { workout_id: workoutId, exercise_id: exerciseId, user_id: user.id },
+        ]);
+
+      if (workoutExerciseError) throw workoutExerciseError;
+
+      // Navigate away or change state here, after the insert operation has completed
     } catch (error) {
       console.error("Error submitting form: ", error);
     }

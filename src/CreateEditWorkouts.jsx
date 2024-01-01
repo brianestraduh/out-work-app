@@ -113,7 +113,7 @@ function CreateEditWorkouts() {
       <div>
         <h2>Edit Workouts</h2>
         {workouts.map((workout) => (
-          <div key={workout.id}>
+          <div key={workout.id} draggable className="drag">
             <h3>{workout.name}</h3>
             <p>{workout.description}</p>
             <button type="button" onClick={() => handleEdit(workout.id)}>

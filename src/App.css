@@ -53,3 +53,22 @@ dialog::backdrop {
   background-color: red;
   opacity: 0.5;
 }
+.drag {
+  color: black;
+  cursor: move; /* Change the cursor to indicate that the item can be moved */
+  padding: 10px;
+  margin: 5px 0; /* Add some margin between list items */
+  background-color: #f0f0f0; /* Light grey background */
+  border: 1px solid #ddd; /* Grey border */
+  border-radius: 4px; /* Rounded corners */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); /* Slight shadow for 3D effect */
+  transition: background-color 0.2s ease; /* Smooth background color transition */
+}
+
+.drag:hover {
+  background-color: #e0e0e0; /* Darken the background color when hovering */
+}
+
+.drag:active {
+  background-color: #d0d0d0; /* Darken the background color even more when clicking */
+}
