@@ -2,13 +2,15 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import supabase from "../supaBase";
 import { Link } from "react-router-dom";
+import ErrorDialog from "./ErrorDialog";
 
 export default function AddExcerciseForm() {
-  const [name, setName] = useState();
-  const [description, setDescription] = useState();
-  const [muscleGroup, setMuscleGroup] = useState();
-  const [defaultSets, setDefaultSets] = useState();
-  const [defaultReps, setDefaultReps] = useState();
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [muscleGroup, setMuscleGroup] = useState("");
+  const [defaultSets, setDefaultSets] = useState("");
+  const [defaultReps, setDefaultReps] = useState("");
+  const [showDialog, setShowDialog] = useState(false);
   const workoutId = useSelector((state) => state.workoutId);
   const session = useSelector((state) => state.session);
 
@@ -30,7 +32,18 @@ export default function AddExcerciseForm() {
         .from("exercises")
         .insert(newExcercise)
         .select();
-      if (error) throw error;
+      setName("");
+      setDescription("");
+      setMuscleGroup("");
+      setDefaultSets("");
+      setDefaultReps("");
+
+      if (error) {
+        if (error.code === "23505") {
+          setShowDialog(true);
+          throw error;
+        }
+      }
 
       console.log(data); // Log the data
 
@@ -51,6 +64,9 @@ export default function AddExcerciseForm() {
       console.error("Error submitting form: ", error);
     }
   }
+  function handleOk() {
+    setShowDialog(false);
+  }
 
   return (
     <div>
@@ -62,6 +78,7 @@ export default function AddExcerciseForm() {
           name="exercise-name"
           id="exercise-name"
           required
+          value={name}
           onChange={(e) => setName(e.target.value)}
         />
 
@@ -71,12 +88,14 @@ export default function AddExcerciseForm() {
           name="exercise-description"
           id="exercise-description"
           required
+          value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
         <select
           name="muscle-group"
           id="muscle-group"
           onChange={(e) => setMuscleGroup(e.target.value)}
+          value={muscleGroup}
           required
         >
           <option value="">Select</option>
@@ -98,6 +117,7 @@ export default function AddExcerciseForm() {
           name="default-sets"
           id="default-sets"
           required
+          value={defaultSets}
           onChange={(e) => setDefaultSets(e.target.value)}
         />
         <label htmlFor="default-reps">Default Reps:</label>
@@ -107,8 +127,10 @@ export default function AddExcerciseForm() {
           name="default-reps"
           id="default-reps"
           required
+          value={defaultReps}
           onChange={(e) => setDefaultReps(e.target.value)}
         />
+        {showDialog && <ErrorDialog onOk={handleOk} />}
         <button type="submit">Create New Excercise</button>
         <Link to={`/workout/${workoutId}`}>Back to Edit Workout</Link>
       </form>

@@ -4,14 +4,16 @@ import { useSelector } from "react-redux";
 import supabase from "../supaBase";
 import { addWorkout, deleteWorkout } from "./helpers/workout.js";
 import ConfirmationModal from "./ConfirmationModal.jsx";
+import ErrorDialog from "./ErrorDialog.jsx";
 function CreateEditWorkouts() {
   const [loading, setLoading] = useState(false);
-  const [name, setName] = useState(null);
-  const [description, setDescription] = useState(null);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
   const [workouts, setWorkouts] = useState([]);
   const [workoutsUpdated, setWorkoutUpdated] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [workoutToDelete, setWorkoutToDelete] = useState(null);
+  const [showDialog, setShowDialog] = useState(false);
   const session = useSelector((state) => state.session);
   const navigate = useNavigate();
 
@@ -45,8 +47,14 @@ function CreateEditWorkouts() {
 
     try {
       await addWorkout(supabase, session, name, description);
+      setName("");
+      setDescription("");
     } catch (error) {
-      alert(error.message);
+      if (error.code === "23505") {
+        setShowDialog(true);
+        setLoading(false);
+        throw error;
+      }
     }
 
     setLoading(false);
@@ -77,6 +85,10 @@ function CreateEditWorkouts() {
   const handleEdit = (id) => {
     navigate(`/workout/${id}`);
   };
+
+  function handleOk() {
+    setShowDialog(false);
+  }
 
   return (
     <div>
@@ -128,6 +140,7 @@ function CreateEditWorkouts() {
       {showModal && (
         <ConfirmationModal onConfirm={handleConfirm} onCancel={handleCancel} />
       )}
+      {showDialog && <ErrorDialog onOk={handleOk} />}
       <Link to="/">Back</Link>
     </div>
   );
