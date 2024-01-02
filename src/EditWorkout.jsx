@@ -26,9 +26,7 @@ export default function EditWorkout() {
         .eq("workout_id", id);
       const exercises = data.map((item) => item.exercises);
       setExercises(exercises);
-      console.log(data, "exercises");
       if (error) console.log("Error: ", error);
-      else console.log("Data: ", data);
     };
 
     fetchExercises();
@@ -76,10 +74,16 @@ export default function EditWorkout() {
     <div>
       <h1> {`Edit Workout ${id}`}</h1>
       <form>
-        <Link to={{ pathname: "/newExcercise", state: { workoutId: id } }}>
-          Add New Excercise
-        </Link>
-        <button>Add Existing Excercise</button>
+        <div>
+          <Link to={{ pathname: "/newExcercise", state: { workoutId: id } }}>
+            Add New Excercise
+          </Link>
+        </div>
+        <div>
+          <Link to={{ pathname: "/exerciseLibrary", state: { workoutId: id } }}>
+            Add Existing Excercise
+          </Link>
+        </div>
       </form>
       <ul>
         {exercises

@@ -12,6 +12,7 @@ import AddExcerciseForm from "./AddExcerciseForm.jsx";
 import PreviousWorkouts from "./PreviousWorkouts.jsx";
 import Progresssion from "./Progression.jsx";
 import EditWorkout from "./EditWorkout.jsx";
+import ExerciseLibrary from "./ExerciseLibrary.jsx";
 import { setSession } from "./redux/session/sessionSlice.js";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -43,6 +44,7 @@ function App() {
         <Route path="/workout/:id" element={<EditWorkout />} />
         <Route path="/createEditWorkouts" element={<CreateEditWorkouts />} />
         <Route path="/newExcercise" element={<AddExcerciseForm />} />
+        <Route path="/exerciseLibrary" element={<ExerciseLibrary />} />
         <Route path="/previousWorkouts" element={<PreviousWorkouts />} />
         <Route path="/progression" element={<Progresssion />} />
       </Routes>
