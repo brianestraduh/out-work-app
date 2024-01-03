@@ -13,6 +13,7 @@ import PreviousWorkouts from "./PreviousWorkouts.jsx";
 import Progresssion from "./Progression.jsx";
 import EditWorkout from "./EditWorkout.jsx";
 import ExerciseLibrary from "./ExerciseLibrary.jsx";
+import WorkoutSession from "./WorkoutSession.jsx";
 import { setSession } from "./redux/session/sessionSlice.js";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -40,7 +41,8 @@ function App() {
           <Route path="/" element={<Home />} />
         )}
         <Route path="/account" element={<Account />} />
-        <Route path="/workout" element={<Workout />} />
+        <Route path="/startWorkout" element={<Workout />} />
+        <Route path="/workoutSession" element={<WorkoutSession />} />
         <Route path="/workout/:id" element={<EditWorkout />} />
         <Route path="/createEditWorkouts" element={<CreateEditWorkouts />} />
         <Route path="/newExcercise" element={<AddExcerciseForm />} />

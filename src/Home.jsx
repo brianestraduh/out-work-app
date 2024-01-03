@@ -9,7 +9,7 @@ function Home() {
           <Link to="/account">Account</Link>
         </li>
         <li>
-          <Link to="/workout">Start Workout</Link>
+          <Link to="/startWorkout">Start Workout</Link>
         </li>
         <li>
           <Link to="/createEditWorkouts">Create or Edit Workouts</Link>

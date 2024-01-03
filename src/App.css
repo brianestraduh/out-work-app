@@ -72,3 +72,17 @@ dialog::backdrop {
 .drag:active {
   background-color: #d0d0d0; /* Darken the background color even more when clicking */
 }
+
+.active {
+  background-color: #007bff; /* Change this to your preferred color */
+  color: white; /* Change this to your preferred color */
+  border-radius: 5px; /* Optional: to make the corners rounded */
+}
+.enabled-link {
+  /* Add your styles for the enabled link here */
+}
+
+.disabled-link {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

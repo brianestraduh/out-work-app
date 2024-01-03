@@ -75,14 +75,10 @@ export default function EditWorkout() {
       <h1> {`Edit Workout ${id}`}</h1>
       <form>
         <div>
-          <Link to={{ pathname: "/newExcercise", state: { workoutId: id } }}>
-            Add New Excercise
-          </Link>
+          <Link to={"/newExcercise"}>Add New Excercise</Link>
         </div>
         <div>
-          <Link to={{ pathname: "/exerciseLibrary", state: { workoutId: id } }}>
-            Add Existing Excercise
-          </Link>
+          <Link to={"/excerciseLibrary"}>Add Existing Excercise</Link>
         </div>
       </form>
       <ul>
