@@ -7,7 +7,7 @@ function Workout() {
   const [workouts, setWorkouts] = useState([]);
   const [activeIndex, setActiveIndex] = useState(null);
   const dispatch = useDispatch();
-  const workoutID = useSelector((state) => state.workoutID);
+  const workoutID = useSelector((state) => state.workoutId);
   useEffect(() => {
     const fetchExercises = async () => {
       const { data, error } = await supabase.from("workouts").select();
@@ -43,8 +43,7 @@ function Workout() {
       })}
       <div>
         {activeIndex !== null ? (
-          <Link to="/workoutSession" className="enabled-link">
-            <Link to={"/workoutSession"} className="enabled-link"></Link>
+          <Link to={"/workoutSession"} className="enabled-link">
             Go to Workout Session
           </Link>
         ) : (
