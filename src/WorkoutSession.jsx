@@ -6,7 +6,11 @@ import SessionDetails from "./sessionDetails";
 export default function WorkoutSession() {
   const workoutId = useSelector((state) => state.workoutId);
   const [exercises, setExercises] = useState([]);
+  const [startTime, setStartTime] = useState();
+
   useEffect(() => {
+    // to be used to calculate workout duration
+    setStartTime(new Date());
     const fetchExercises = async () => {
       const { data, error } = await supabase
         .from("workout_exercises")
@@ -20,13 +24,11 @@ export default function WorkoutSession() {
         .eq("workout_id", workoutId);
       const exercisesList = data.map((item) => item.exercises);
       setExercises(exercisesList);
-      console.log(exercises);
       if (error) console.log("Error: ", error);
     };
 
     fetchExercises();
   }, []);
-
   return (
     <div>
       <h2>{`Workout ${workoutId}`}</h2>
@@ -46,13 +48,10 @@ export default function WorkoutSession() {
             );
           })}
       </ul>
+      <div>
+        <button disabled>Complete workout</button>
+      </div>
       <Link to="/startWorkout">Back</Link>
     </div>
   );
 }
-
-//i'll do this tomorrow
-// I want to create a Reps and Sets Component maybe even 1 nested in the other which
-// will me responsible for rendering the sets/reps UI portion
-// ideally making it so that it's easy 2 render the amount of sets/reps.
-// user will need to complete a exercise and

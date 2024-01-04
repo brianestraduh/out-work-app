@@ -44,10 +44,10 @@ function Workout() {
       <div>
         {activeIndex !== null ? (
           <Link to={"/workoutSession"} className="enabled-link">
-            Go to Workout Session
+            Start Workout
           </Link>
         ) : (
-          <span className="disabled-link">Go to Workout Session</span>
+          <span className="disabled-link">Start Workout</span>
         )}
       </div>
       <Link to="/">Back</Link>
