@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import supabase from "../supaBase";
 import { useEffect, useState } from "react";
-import SessionDetails from "./sessionDetails";
+import Exercise from "./Exercise";
 export default function WorkoutSession() {
   const workoutId = useSelector((state) => state.workoutId);
   const [exercises, setExercises] = useState([]);
@@ -40,7 +40,7 @@ export default function WorkoutSession() {
           .sort((a, b) => a.index - b.index)
           .map((exercise, index) => {
             return (
-              <SessionDetails
+              <Exercise
                 key={exercise.id}
                 exerciseDetails={exercise}
                 index={index + 1}

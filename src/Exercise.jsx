@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Sets from "./Sets";
-export default function SessionDetails({ exerciseDetails, index }) {
+export default function Exercise({ exerciseDetails, index }) {
   const { name, description, default_sets, default_reps } = exerciseDetails;
   const [sets, SetSets] = useState(default_sets);
   const [setsData, setSetsData] = useState([]);
