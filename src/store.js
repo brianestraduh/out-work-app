@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import darkModeReducer from "./redux/darkMode/darkModeSlice.js";
 import sessionReducer from "./redux/session/sessionSlice.js";
 import workoutIdReducer from "./redux/navigation/workoutIdSlice.js";
-
+import exerciseReducer from "./redux/workout/exerciseSlice.js";
 const saveToLocalStorage = (state) => {
   try {
     const serializedState = JSON.stringify(state.darkMode);
@@ -29,6 +29,7 @@ const store = configureStore({
     darkMode: darkModeReducer,
     session: sessionReducer,
     workoutId: workoutIdReducer,
+    exercise: exerciseReducer,
   },
 });
 

@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import Exercise from "./Exercise";
 export default function WorkoutSession() {
   const workoutId = useSelector((state) => state.workoutId);
+  const exerciseStore = useSelector((state) => state.exercise);
+
   const [exercises, setExercises] = useState([]);
   const [startTime, setStartTime] = useState();
 
@@ -29,6 +31,11 @@ export default function WorkoutSession() {
 
     fetchExercises();
   }, []);
+
+  useEffect(() => {
+    console.log(exerciseStore, "exerciseStore");
+  }, [exerciseStore]);
+
   return (
     <div>
       <h2>{`Workout ${workoutId}`}</h2>
