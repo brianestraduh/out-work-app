@@ -1,14 +1,16 @@
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import supabase from "../supaBase";
 import { useEffect, useState } from "react";
 import Exercise from "./Exercise";
+import { clearExercises } from "./redux/workout/exerciseSlice";
 export default function WorkoutSession() {
   const workoutId = useSelector((state) => state.workoutId);
   const exerciseStore = useSelector((state) => state.exercise);
-
+  const dispatch = useDispatch();
   const [exercises, setExercises] = useState([]);
   const [startTime, setStartTime] = useState();
+  const [endTime, setEndTime] = useState();
 
   useEffect(() => {
     // to be used to calculate workout duration
@@ -30,6 +32,11 @@ export default function WorkoutSession() {
     };
 
     fetchExercises();
+    // clear the ExerciseStore when Session dismounts (ends)
+    return () => {
+      dispatch(clearExercises());
+      console.log(exerciseStore, "dismount");
+    };
   }, []);
 
   useEffect(() => {

@@ -15,10 +15,13 @@ const exerciseSlice = createSlice({
         state.push(action.payload);
       }
     },
+    clearExercises: () => {
+      return [];
+    },
   },
 });
 
 const exerciseReducer = exerciseSlice.reducer;
-export const { upsertExercise } = exerciseSlice.actions;
+export const { upsertExercise, clearExercises } = exerciseSlice.actions;
 
 export default exerciseReducer;

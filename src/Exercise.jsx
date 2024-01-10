@@ -7,7 +7,7 @@ export default function Exercise({ exerciseDetails, index }) {
   const [sets, SetSets] = useState(default_sets);
   const [setsData, setSetsData] = useState([]);
   const dispatch = useDispatch();
-
+  const exerciseStore = useSelector((state) => state.exercise);
   useEffect(() => {
     let exerciseData = { id, setsData };
     console.log(exerciseData, "exerciseData");
