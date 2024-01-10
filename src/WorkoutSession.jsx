@@ -1,20 +1,21 @@
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import supabase from "../supaBase";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Exercise from "./Exercise";
 import { clearExercises } from "./redux/workout/exerciseSlice";
 export default function WorkoutSession() {
   const workoutId = useSelector((state) => state.workoutId);
+  const session = useSelector((state) => state.session);
+  const { user } = session;
   const exerciseStore = useSelector((state) => state.exercise);
   const dispatch = useDispatch();
   const [exercises, setExercises] = useState([]);
-  const [startTime, setStartTime] = useState();
-  const [endTime, setEndTime] = useState();
+  const startTimeRef = useRef(null);
 
   useEffect(() => {
     // to be used to calculate workout duration
-    setStartTime(new Date());
+    startTimeRef.current = new Date();
     const fetchExercises = async () => {
       const { data, error } = await supabase
         .from("workout_exercises")
@@ -43,6 +44,38 @@ export default function WorkoutSession() {
     console.log(exerciseStore, "exerciseStore");
   }, [exerciseStore]);
 
+  function workoutDuration(startTime) {
+    const endTime = new Date();
+    const durationMs = endTime - startTime;
+
+    const minutes = Math.floor(durationMs / 60000); // convert to minutes
+
+    return minutes;
+  }
+
+  async function postWorkoutSession() {
+    const duration = workoutDuration(startTimeRef.current);
+    try {
+      const { data, error } = await supabase.from("workout_session").insert([
+        {
+          duration: duration,
+          workout_id: workoutId,
+          user_id: user.id,
+        },
+      ]);
+
+      if (error) {
+        console.error("Error inserting workout session:", error);
+        // Handle the error (e.g., update the state to show an error message)
+      } else {
+        console.log("Workout session inserted successfully:", data);
+      }
+    } catch (error) {
+      console.error("Unexpected error:", error);
+      // Handle the unexpected error (e.g., update the state to show an error message)
+    }
+  }
+
   return (
     <div>
       <h2>{`Workout ${workoutId}`}</h2>
@@ -63,7 +96,7 @@ export default function WorkoutSession() {
           })}
       </ul>
       <div>
-        <button disabled>Complete workout</button>
+        <button onClick={postWorkoutSession}>Complete workout</button>
       </div>
       <Link to="/startWorkout">Back</Link>
     </div>
