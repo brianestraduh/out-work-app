@@ -148,6 +148,7 @@ export default function WorkoutSession() {
           })}
       </ul>
       <div>
+        {/* NEED TO ADD LOGIC TO MAKE SURE USER UNDERSTANDS WORKOUT will be saved*/}
         <button onClick={postWorkoutSession}>Complete workout</button>
       </div>
       <Link to="/startWorkout">Back</Link>

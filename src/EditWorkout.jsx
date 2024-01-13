@@ -78,7 +78,7 @@ export default function EditWorkout() {
           <Link to={"/newExcercise"}>Add New Excercise</Link>
         </div>
         <div>
-          <Link to={"/excerciseLibrary"}>Add Existing Excercise</Link>
+          <Link to={"/exerciseLibrary"}>Add Existing Excercise</Link>
         </div>
       </form>
       <ul>

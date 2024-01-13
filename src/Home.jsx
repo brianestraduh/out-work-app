@@ -15,6 +15,9 @@ function Home() {
           <Link to="/createEditWorkouts">Create or Edit Workouts</Link>
         </li>
         <li>
+          <Link to="/exerciseLibrary">Create or Edit Exercises</Link>
+        </li>
+        <li>
           <Link to="/previousWorkouts">Previous WorkOuts</Link>
         </li>
         <li>

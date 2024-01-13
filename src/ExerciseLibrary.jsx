@@ -112,6 +112,7 @@ export default function ExerciseLibrary() {
               <p>Sets {exercise.default_sets}</p>
               <p>Reps {exercise.default_reps}</p>
               <button onClick={() => handleAdd(exercise.id)}>Add</button>
+              <button>Edit</button>
             </li>
           ))
         ) : (
