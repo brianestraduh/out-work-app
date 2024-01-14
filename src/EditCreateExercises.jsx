@@ -8,10 +8,6 @@ export default function EditCreateExercises() {
   const [filteredExercises, setFilteredExercises] = useState([]);
   const [muscleGroup, setMuscleGroup] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const session = useSelector((state) => state.session);
-  const { user } = session;
-  const workoutId = useSelector((state) => state.workoutId);
-  const [showDialog, setShowDialog] = useState(false);
   // Inital load of exercises from supabase table
   useEffect(() => {
     const fetchExercises = async () => {
@@ -44,9 +40,6 @@ export default function EditCreateExercises() {
     // Set the filtered exercises
     setFilteredExercises(filtered);
   }, [muscleGroup, searchTerm, exercises]);
-  function handleOk() {
-    setShowDialog(false);
-  }
 
   return (
     <div>
@@ -93,14 +86,24 @@ export default function EditCreateExercises() {
               <p>{exercise.muscle_group}</p>
               <p>Sets {exercise.default_sets}</p>
               <p>Reps {exercise.default_reps}</p>
-              <button>Edit</button>
+              {/*I need to create a function that will
+              onClick save the pertient information to the store look at onclick I think
+              I can just pass exercise to the function
+              in this function that I will create I need to useDispatch to pass an array to store
+              I will need to modify exerciseIdSlice to an upsert as currently it is just for a string
+              then once I have done that I will need to add navigate to the new....
+              component will reusue the AddExerciseForm and autofill the values but the user can override
+              the values the important pieces is the exercise id which I will need to upsert the 
+              supabase table. Once thats all done I should be done with this feature */}
+              <button onClick={(exercise) => EditExercise(exercise)}>
+                Edit
+              </button>
             </li>
           ))
         ) : (
           <p>No exercises match your search.</p>
         )}
       </ul>
-      {showDialog && <ErrorDialog onOk={handleOk} />}
     </div>
   );
 }
