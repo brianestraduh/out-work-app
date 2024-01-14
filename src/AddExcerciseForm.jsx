@@ -132,7 +132,13 @@ export default function AddExcerciseForm() {
         />
         {showDialog && <ErrorDialog onOk={handleOk} />}
         <button type="submit">Create New Excercise</button>
-        <Link to={`/workout/${workoutId}`}>Back to Edit Workout</Link>
+        {workoutId ? (
+          <Link to={`/workout/${workoutId}`}>Back to Edit Workout</Link>
+        ) : (
+          <Link to="/editCreateExercises">
+            Back to Create or Edit Exercises
+          </Link>
+        )}
       </form>
     </div>
   );
