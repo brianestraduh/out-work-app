@@ -2,18 +2,18 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const exerciseIdSlice = createSlice({
   name: "exerciseId",
-  initialState: null,
+  initialState: [],
   reducers: {
     addExerciseId: (state, action) => {
-      return action.payload;
+      state.push(action.payload);
     },
     clearExerciseId: () => {
-      return null;
+      return [];
     },
   },
 });
 
 const exerciseIdReducer = exerciseIdSlice.reducer;
-export const { AddtExerciseId, clearExerciseId } = exerciseIdSlice.actions;
+export const { addExerciseId, clearExerciseId } = exerciseIdSlice.actions;
 
 export default exerciseIdReducer;

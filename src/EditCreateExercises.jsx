@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import supabase from "../supaBase.js";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import ErrorDialog from "./ErrorDialog.jsx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { addExerciseId } from "./redux/exercises/exerciseIdSlice.js";
 export default function EditCreateExercises() {
   const [exercises, setExercises] = useState([]);
   const [filteredExercises, setFilteredExercises] = useState([]);
   const [muscleGroup, setMuscleGroup] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   // Inital load of exercises from supabase table
   useEffect(() => {
     const fetchExercises = async () => {
@@ -41,6 +44,11 @@ export default function EditCreateExercises() {
     setFilteredExercises(filtered);
   }, [muscleGroup, searchTerm, exercises]);
 
+  function editExercise(exercise) {
+    console.log(exercise);
+    dispatch(addExerciseId(exercise));
+    navigate("/editExcercise");
+  }
   return (
     <div>
       <h2>Edit and Create Exercises</h2>
@@ -86,18 +94,15 @@ export default function EditCreateExercises() {
               <p>{exercise.muscle_group}</p>
               <p>Sets {exercise.default_sets}</p>
               <p>Reps {exercise.default_reps}</p>
-              {/*I need to create a function that will
-              onClick save the pertient information to the store look at onclick I think
-              I can just pass exercise to the function
-              in this function that I will create I need to useDispatch to pass an array to store
-              I will need to modify exerciseIdSlice to an upsert as currently it is just for a string
-              then once I have done that I will need to add navigate to the new....
-              component will reusue the AddExerciseForm and autofill the values but the user can override
-              the values the important pieces is the exercise id which I will need to upsert the 
-              supabase table. Once thats all done I should be done with this feature */}
-              <button onClick={(exercise) => EditExercise(exercise)}>
-                Edit
-              </button>
+              {/*
+              EditExerciseForm component will reusue the AddExerciseForm and autofill the values in a useEffect
+              then I will need to upsert into the 
+              supabase table. Once thats all done I should be done with this feature
+              
+              After done I should make sure I didn't break anything. 
+              I KNOW add New Exercise from EditCreateExercise DOES NOT work it is violating a workout_id contraint
+              I need to clear the exerciseId slice after I add an exercise as well so the store is clear.*/}
+              <button onClick={() => editExercise(exercise)}>Edit</button>
             </li>
           ))
         ) : (
