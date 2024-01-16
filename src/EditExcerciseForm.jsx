@@ -1,24 +1,26 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import supabase from "../supaBase";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import ErrorDialog from "./ErrorDialog";
 
 export default function EditExcerciseForm() {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [muscleGroup, setMuscleGroup] = useState("");
-  const [defaultSets, setDefaultSets] = useState("");
-  const [defaultReps, setDefaultReps] = useState("");
+  const exerciseData = useSelector((state) => state.exerciseId);
+  const [name, setName] = useState(exerciseData.name);
+  const [description, setDescription] = useState(exerciseData.description);
+  const [muscleGroup, setMuscleGroup] = useState(exerciseData.muscle_group);
+  const [defaultSets, setDefaultSets] = useState(exerciseData.default_sets);
+  const [defaultReps, setDefaultReps] = useState(exerciseData.default_reps);
   const [showDialog, setShowDialog] = useState(false);
   const session = useSelector((state) => state.session);
-  const exerciseData = useSelector((state) => state.exerciseId);
 
-  async function handleAddNew(event) {
+  const navigate = useNavigate();
+
+  async function updateExercise(event) {
     event.preventDefault();
     const { user } = session;
 
-    const newExcercise = {
+    const updatedExcercise = {
       name,
       description,
       created_by: user.id,
@@ -30,13 +32,8 @@ export default function EditExcerciseForm() {
     try {
       const { data, error } = await supabase
         .from("exercises")
-        .insert(newExcercise)
-        .select();
-      setName("");
-      setDescription("");
-      setMuscleGroup("");
-      setDefaultSets("");
-      setDefaultReps("");
+        .update(updatedExcercise)
+        .eq("id", exerciseData.id);
 
       if (error) {
         if (error.code === "23505") {
@@ -45,7 +42,9 @@ export default function EditExcerciseForm() {
         }
       }
 
-      console.log(data); // Log the data
+      console.log(data);
+      console.log("Update successful");
+      navigate("/editCreateExercises");
     } catch (error) {
       console.error("Error submitting form: ", error);
     }
@@ -56,8 +55,8 @@ export default function EditExcerciseForm() {
 
   return (
     <div>
-      <h2>Edit Excercise</h2>
-      <form onSubmit={handleAddNew}>
+      <h2>Edit Exercise</h2>
+      <form onSubmit={updateExercise}>
         <label htmlFor="exercise-name">Exercise Name:</label>
         <input
           type="text"
@@ -116,6 +115,11 @@ export default function EditExcerciseForm() {
           value={defaultReps}
           onChange={(e) => setDefaultReps(e.target.value)}
         />
+        <div>
+          <button type="submit">Edit Excercise</button>
+        </div>
+
+        <Link to="/editCreateExercises">Back to Create or Edit Exercises</Link>
         {showDialog && <ErrorDialog onOk={handleOk} />}
       </form>
     </div>

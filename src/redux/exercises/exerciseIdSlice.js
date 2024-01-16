@@ -2,10 +2,10 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const exerciseIdSlice = createSlice({
   name: "exerciseId",
-  initialState: [],
+  initialState: null,
   reducers: {
     addExerciseId: (state, action) => {
-      state.push(action.payload);
+      return action.payload;
     },
     clearExerciseId: () => {
       return [];

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import supabase from "../supaBase.js";
-import { useSelector, useDispatch } from "react-redux";
-import ErrorDialog from "./ErrorDialog.jsx";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { addExerciseId } from "./redux/exercises/exerciseIdSlice.js";
 export default function EditCreateExercises() {
@@ -45,7 +44,6 @@ export default function EditCreateExercises() {
   }, [muscleGroup, searchTerm, exercises]);
 
   function editExercise(exercise) {
-    console.log(exercise);
     dispatch(addExerciseId(exercise));
     navigate("/editExcercise");
   }
@@ -94,14 +92,6 @@ export default function EditCreateExercises() {
               <p>{exercise.muscle_group}</p>
               <p>Sets {exercise.default_sets}</p>
               <p>Reps {exercise.default_reps}</p>
-              {/*
-              EditExerciseForm component will reusue the AddExerciseForm and autofill the values in a useEffect
-              then I will need to upsert into the 
-              supabase table. Once thats all done I should be done with this feature
-              
-              After done I should make sure I didn't break anything. 
-              I KNOW add New Exercise from EditCreateExercise DOES NOT work it is violating a workout_id contraint
-              I need to clear the exerciseId slice after I add an exercise as well so the store is clear.*/}
               <button onClick={() => editExercise(exercise)}>Edit</button>
             </li>
           ))
@@ -109,6 +99,7 @@ export default function EditCreateExercises() {
           <p>No exercises match your search.</p>
         )}
       </ul>
+      <Link to="/">Back</Link>
     </div>
   );
 }
