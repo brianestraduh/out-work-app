@@ -9,10 +9,10 @@ function Home() {
   const dispatch = useDispatch();
   useEffect(() => {
     // used to ensure that these 2 slices are cleared when the user leaves the home page
+    // this to ensure navigation works as intended
     return () => {
       dispatch(setWorkoutId(null));
       dispatch(clearExerciseId());
-      console.log("dismount");
     };
   }, []);
 

@@ -3,6 +3,8 @@ import supabase from "../supaBase.js";
 import Avatar from "./Avatar";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import Button from "./components/Button.jsx";
+import FormInput from "./components/FormInput.jsx";
 export default function Account() {
   const session = useSelector((state) => state.session);
   const [loading, setLoading] = useState(true);
@@ -42,7 +44,7 @@ export default function Account() {
     };
   }, [session]);
 
-  async function updateProfile(event, avatarUrl) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
     setLoading(true);
@@ -60,56 +62,47 @@ export default function Account() {
 
     if (error) {
       alert(error.message);
-    } else {
-      setAvatarUrl(avatarUrl);
     }
     setLoading(false);
   }
+  function handleAvatarUpload(event, url) {
+    setAvatarUrl(url);
+    handleSubmit(event);
+  }
   return (
-    <form onSubmit={updateProfile} className="form-widget">
-      <Avatar
-        url={avatar_url}
-        size={150}
-        onUpload={(event, url) => {
-          updateProfile(event, url);
-        }}
+    <form onSubmit={handleSubmit} className="form-widget">
+      <Avatar url={avatar_url} size={150} onUpload={handleAvatarUpload} />
+      <FormInput
+        label="Email"
+        htmlFor="email"
+        id="email"
+        type="text"
+        value={session.user.email}
+        disabled
       />
-      <div>
-        <label htmlFor="email">Email</label>
-        <input id="email" type="text" value={session.user.email} disabled />
-      </div>
-      <div>
-        <label htmlFor="username">Name</label>
-        <input
-          id="username"
-          type="text"
-          required
-          value={username || ""}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-      </div>
-      <div>
-        <label htmlFor="weight">Weight</label>
-        <input
-          id="weight"
-          type="number"
-          value={weight || ""}
-          onChange={(e) => setWeight(e.target.value)}
-        />
-      </div>
+      <FormInput
+        label="Name"
+        htmlFor="username"
+        id="username"
+        type="text"
+        required={true}
+        value={username || ""}
+        onChange={(e) => setUsername(e.target.value)}
+      />
+      <FormInput
+        label="Weight"
+        htmlFor="weight"
+        id="weight"
+        type="number"
+        value={weight || ""}
+        onChange={(e) => setWeight(e.target.value)}
+      />
 
-      <div>
-        <button
-          className="button block primary"
-          type="submit"
-          disabled={loading}
-        >
-          {loading ? "Loading ..." : "Update"}
-        </button>
-        <div>
-          <Link to="/">Back</Link>
-        </div>
-      </div>
+      <Button className="button block primary" type="submit" disabled={loading}>
+        {loading ? "Loading ..." : "Update"}
+      </Button>
+
+      <Link to="/">Back</Link>
     </form>
   );
 }
