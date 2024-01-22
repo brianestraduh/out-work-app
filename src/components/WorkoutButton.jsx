@@ -1,6 +1,6 @@
 import clsx from "clsx";
 export default function WorkoutButton(props) {
-  const { workout, index, className, onClick } = props;
+  const { children, workout, index, className, onClick } = props;
   const classes = clsx(
     {
       drag: true,
@@ -10,7 +10,7 @@ export default function WorkoutButton(props) {
 
   return (
     <button className={classes} onClick={onClick}>
-      {workout.name} : {workout.description}
+      {children}
     </button>
   );
 }

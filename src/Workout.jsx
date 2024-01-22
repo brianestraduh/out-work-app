@@ -41,7 +41,7 @@ function Workout() {
             onClick={() => handleClick(index, workout)}
             workout={workout}
             index={index}
-          />
+          >{`${workout.name} : ${workout.description}`}</WorkoutButton>
         );
       })}
       <div>

@@ -1,10 +1,12 @@
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import supabase from "../supaBase";
 import { addWorkout, deleteWorkout } from "./helpers/workout.js";
 import ConfirmationModal from "./ConfirmationModal.jsx";
 import ErrorDialog from "./ErrorDialog.jsx";
+import FormInput from "./components/FormInput.jsx";
+import Button from "./components/Button.jsx";
 function CreateEditWorkouts() {
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
@@ -15,7 +17,6 @@ function CreateEditWorkouts() {
   const [workoutToDelete, setWorkoutToDelete] = useState(null);
   const [showDialog, setShowDialog] = useState(false);
   const session = useSelector((state) => state.session);
-  const navigate = useNavigate();
 
   useEffect(() => {
     let ignore = false;
@@ -29,7 +30,6 @@ function CreateEditWorkouts() {
           console.warn(error);
         } else if (data) {
           setWorkouts(data);
-          console.log(data);
         }
       }
     }
@@ -82,10 +82,6 @@ function CreateEditWorkouts() {
     setWorkoutUpdated(!workoutsUpdated);
   };
 
-  const handleEdit = (id) => {
-    navigate(`/workout/${id}`);
-  };
-
   function handleOk() {
     setShowDialog(false);
   }
@@ -95,30 +91,27 @@ function CreateEditWorkouts() {
       <div>
         <h2>Create Workouts</h2>
         <form onSubmit={handleSubmit}>
+          <FormInput
+            label="Name"
+            htmlFor="name"
+            id="name"
+            required={true}
+            value={name || ""}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <FormInput
+            label="Description"
+            htmlFor="description"
+            id="description"
+            type="text"
+            required={true}
+            value={description || ""}
+            onChange={(e) => setDescription(e.target.value)}
+          />
           <div>
-            <label htmlFor="name">Name</label>
-            <input
-              id="name"
-              type="text"
-              required
-              value={name || ""}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
-          <div>
-            <label htmlFor="description">Description</label>
-            <input
-              id="description"
-              type="text"
-              required
-              value={description || ""}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </div>
-          <div>
-            <button type="submit" disabled={loading}>
-              Create
-            </button>
+            <Button type="submit" disabled={loading}>
+              {"Create Workout"}
+            </Button>
           </div>
         </form>
       </div>
@@ -128,12 +121,10 @@ function CreateEditWorkouts() {
           <div key={workout.id} draggable className="drag">
             <h3>{workout.name}</h3>
             <p>{workout.description}</p>
-            <button type="button" onClick={() => handleEdit(workout.id)}>
-              Edit
-            </button>
-            <button type="button" onClick={() => handleDelete(workout.id)}>
+            <Link to={`/workout/${workout.id}`}>Edit</Link>
+            <Button type="button" onClick={() => handleDelete(workout.id)}>
               Delete
-            </button>
+            </Button>
           </div>
         ))}
       </div>
