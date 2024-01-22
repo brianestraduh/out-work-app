@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { useEffect, useState, useRef } from "react";
 import supabase from "../supaBase.js";
 import { reorderExercises } from "./helpers/sortHelper.js";
+import ExerciseListItem from "./components/ExerciseListItem.jsx";
 export default function EditWorkout() {
   const [exercises, setExercises] = useState([]);
   const [exerciseOrder, setExerciseOrder] = useState([]);
@@ -74,10 +75,11 @@ export default function EditWorkout() {
           .sort((a, b) => a.index - b.index)
           .map((exercise, index) => {
             return (
-              <li
+              <ExerciseListItem
                 key={exercise.id}
+                exercise={exercise}
                 className="drag"
-                draggable
+                draggable={true}
                 onDragStart={() => {
                   dragExcercise.current = index;
                 }}
@@ -88,11 +90,7 @@ export default function EditWorkout() {
                   handleDrag(dragExcercise.current, overTakenExcercise.current)
                 }
                 onDragOver={(e) => e.preventDefault()}
-              >
-                <p>{exercise.name}</p>
-                <p>Sets {exercise.default_sets}</p>
-                <p>Reps {exercise.default_reps}</p>
-              </li>
+              ></ExerciseListItem>
             );
           })}
       </ul>
