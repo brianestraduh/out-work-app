@@ -3,11 +3,13 @@ import supabase from "../supaBase";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setWorkoutId } from "./redux/navigation/workoutIdSlice";
+import WorkoutButton from "./components/WorkoutButton";
 function Workout() {
   const [workouts, setWorkouts] = useState([]);
   const [activeIndex, setActiveIndex] = useState(null);
   const dispatch = useDispatch();
   const workoutID = useSelector((state) => state.workoutId);
+  // Loading Workouts from table on component mount
   useEffect(() => {
     const fetchExercises = async () => {
       const { data, error } = await supabase.from("workouts").select();
@@ -17,28 +19,29 @@ function Workout() {
     };
     fetchExercises();
   }, []);
+
+  //set Selected Workout
+  function handleClick(i, workout) {
+    if (activeIndex === i) {
+      setActiveIndex(null);
+    } else {
+      setActiveIndex(i);
+      dispatch(setWorkoutId(workout.id));
+    }
+  }
   return (
     <div>
       <h1>Select a Workout</h1>
 
       {workouts.map((workout, index) => {
         return (
-          <button
+          <WorkoutButton
             key={workout.id}
-            className={`drag ${activeIndex === index ? "active" : ""}`}
-            onClick={() => {
-              if (activeIndex === index) {
-                setActiveIndex(null);
-              } else {
-                console.log(workoutID, "pre");
-                setActiveIndex(index);
-                dispatch(setWorkoutId(workout.id));
-                console.log(workoutID, "post");
-              }
-            }}
-          >
-            {workout.name}: {workout.description}
-          </button>
+            className={activeIndex === index ? "active" : ""}
+            onClick={() => handleClick(index, workout)}
+            workout={workout}
+            index={index}
+          />
         );
       })}
       <div>

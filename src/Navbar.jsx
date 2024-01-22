@@ -9,6 +9,8 @@ function Navbar() {
   const dispatch = useDispatch();
   const session = useSelector((state) => state.session);
   const isDarkTheme = useSelector((state) => state.darkMode.darkMode);
+
+  //handle signout and remove token from local storage
   useEffect(() => {
     supabase.auth.onAuthStateChange((event) => {
       if (event === "SIGNED_OUT") {
@@ -21,6 +23,8 @@ function Navbar() {
   function signOutUser() {
     supabase.auth.signOut();
   }
+
+  //check if dark mode is enabled on page load
   useEffect(() => {
     if (isDarkTheme) {
       dispatch(toggleDarkMode());
