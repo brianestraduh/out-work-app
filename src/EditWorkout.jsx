@@ -3,6 +3,7 @@ import { setWorkoutId } from "./redux/navigation/workoutIdSlice.js";
 import { useDispatch } from "react-redux";
 import { useEffect, useState, useRef } from "react";
 import supabase from "../supaBase.js";
+import { reorderExercises } from "./helpers/sortHelper.js";
 export default function EditWorkout() {
   const [exercises, setExercises] = useState([]);
   const [exerciseOrder, setExerciseOrder] = useState([]);
@@ -11,6 +12,8 @@ export default function EditWorkout() {
   //dragging reference
   const dragExcercise = useRef(0);
   const overTakenExcercise = useRef(0);
+
+  //load exercises
   useEffect(() => {
     dispatch(setWorkoutId(id));
     const fetchExercises = async () => {
@@ -31,39 +34,24 @@ export default function EditWorkout() {
 
     fetchExercises();
   }, []);
-  // this function first handles the sorting of exercises based on what was dragged and dropped [39-50]
-  //it then creates an array containing the new index and associated workout id
-  // which is saved to a state variable where it can be used to save the new order in another function
-  function handleSort(dragIndex, dropIndex) {
-    const newExercises = [...exercises];
-    const draggedExercise = newExercises[dragIndex];
 
-    newExercises.splice(dragIndex, 1); // Remove the dragged item
-    newExercises.splice(dropIndex, 0, draggedExercise); // Insert the dragged item at the new position
-
-    // Update the index property of each exercise
-    newExercises.forEach((exercise, index) => {
-      exercise.index = index;
-    });
-
+  //
+  function handleDrag(dragIndex, dropIndex) {
+    const { newExercises, newOrder } = reorderExercises(
+      dragIndex,
+      dropIndex,
+      exercises
+    );
     setExercises(newExercises);
-    //create an array of objects where
-    const newOrder = newExercises.map((exercise, index) => ({
-      index,
-      name: exercise.id,
-    }));
     setExerciseOrder(newOrder);
-    console.log(newOrder); // Use newIndex instead of indexes
   }
-  // this function saves the new order of the exercises associated with this workout.
+
   async function handleSaveSort() {
-    console.log(exerciseOrder);
     for (let exercise of exerciseOrder) {
       const { error } = await supabase
         .from("workout_exercises")
         .update({ index: exercise.index })
         .eq("exercise_id", exercise.name);
-      console.log("success");
 
       if (error) {
         console.error("Error: ", error);
@@ -97,7 +85,7 @@ export default function EditWorkout() {
                   overTakenExcercise.current = index;
                 }}
                 onDragEnd={() =>
-                  handleSort(dragExcercise.current, overTakenExcercise.current)
+                  handleDrag(dragExcercise.current, overTakenExcercise.current)
                 }
                 onDragOver={(e) => e.preventDefault()}
               >
