@@ -3,6 +3,8 @@ import supabase from "../supaBase.js";
 import { useSelector } from "react-redux";
 import ErrorDialog from "./ErrorDialog.jsx";
 import { Link } from "react-router-dom";
+import ExerciseListItem from "./components/ExerciseListItem.jsx";
+
 export default function ExerciseLibrary() {
   const [exercises, setExercises] = useState([]);
   const [filteredExercises, setFilteredExercises] = useState([]);
@@ -105,15 +107,14 @@ export default function ExerciseLibrary() {
       <ul>
         {filteredExercises.length > 0 ? (
           filteredExercises.map((exercise) => (
-            <li key={exercise.id} className="drag">
-              <p>{exercise.name}</p>
-              <p>{exercise.description}</p>
-              <p>{exercise.muscle_group}</p>
-              <p>Sets {exercise.default_sets}</p>
-              <p>Reps {exercise.default_reps}</p>
+            <ExerciseListItem
+              key={exercise.id}
+              exercise={exercise}
+              className="drag"
+            >
               <button onClick={() => handleAdd(exercise.id)}>Add</button>
               <button>Edit</button>
-            </li>
+            </ExerciseListItem>
           ))
         ) : (
           <p>No exercises match your search.</p>

@@ -9,7 +9,6 @@ export default function EditCreateExercises() {
   const [muscleGroup, setMuscleGroup] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   // Inital load of exercises from supabase table
   useEffect(() => {
     const fetchExercises = async () => {
@@ -45,7 +44,7 @@ export default function EditCreateExercises() {
 
   function editExercise(exercise) {
     dispatch(addExerciseId(exercise));
-    navigate("/editExcercise");
+    console.log("dispatched!");
   }
   return (
     <div>
@@ -53,7 +52,6 @@ export default function EditCreateExercises() {
       <div>
         <Link to="/newExcercise">Add New Exercise</Link>
       </div>
-      {/* REFACTOR AND MAKE THIS A COMPONENT AS IT IS ALSO USED IN ADDEXERCISEFORM JSX*/}
       <label htmlFor="muscle-group-filter">Search by Muscle:</label>
       <select
         name="muscle-group-filter"
@@ -92,7 +90,12 @@ export default function EditCreateExercises() {
               <p>{exercise.muscle_group}</p>
               <p>Sets {exercise.default_sets}</p>
               <p>Reps {exercise.default_reps}</p>
-              <button onClick={() => editExercise(exercise)}>Edit</button>
+              <Link
+                to={"/editExcercise"}
+                onClick={() => editExercise(exercise)}
+              >
+                Edit
+              </Link>
             </li>
           ))
         ) : (

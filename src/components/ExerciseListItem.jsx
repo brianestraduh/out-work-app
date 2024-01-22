@@ -21,8 +21,11 @@ export default function ExerciseListItem(props) {
       onDragOver={onDragOver}
     >
       <p>{exercise.name}</p>
+      <p>{exercise.description}</p>
+      <p>{exercise.muscle_group}</p>
       <p>Sets {exercise.default_sets}</p>
       <p>Reps {exercise.default_reps}</p>
+      {children}
     </li>
   );
 }
