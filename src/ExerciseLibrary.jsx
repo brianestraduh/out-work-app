@@ -4,6 +4,9 @@ import { useSelector } from "react-redux";
 import ErrorDialog from "./ErrorDialog.jsx";
 import { Link } from "react-router-dom";
 import ExerciseListItem from "./components/ExerciseListItem.jsx";
+import FormInput from "./components/FormInput.jsx";
+import FormSelect from "./components/FormSelect.jsx";
+import { filterExercises } from "./helpers/filterHelper.js";
 
 export default function ExerciseLibrary() {
   const [exercises, setExercises] = useState([]);
@@ -26,26 +29,12 @@ export default function ExerciseLibrary() {
   }, []);
   //HANDLES FILTER using search in combination with muscleGroup filter
   useEffect(() => {
-    let filtered = exercises;
-
-    // Filter by muscle group if selected
-    if (muscleGroup !== "") {
-      filtered = filtered.filter(
-        (exercise) => exercise.muscle_group === muscleGroup
-      );
-    }
-
-    // Filter by search term if entered
-    if (searchTerm !== "") {
-      const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
-      filtered = filtered.filter((exercise) =>
-        exercise.name.toLowerCase().includes(lowerCaseSearchTerm)
-      );
-    }
+    const filtered = filterExercises(exercises, muscleGroup, searchTerm);
 
     // Set the filtered exercises
     setFilteredExercises(filtered);
   }, [muscleGroup, searchTerm, exercises]);
+
   async function handleAdd(id) {
     const exerciseToAdd = {
       workout_id: workoutId,
@@ -74,36 +63,22 @@ export default function ExerciseLibrary() {
       <div>
         <Link to={`/workout/${workoutId}`}>Back to Edit Workout</Link>
       </div>
-      {/* REFACTOR AND MAKE THIS A COMPONENT AS IT IS ALSO USED IN ADDEXERCISEFORM JSX*/}
-      <label htmlFor="muscle-group-filter">Search by Muscle:</label>
-      <select
+      <FormSelect
+        label="Search by Muscle:"
+        htmlFor="muscle-group-filter"
         name="muscle-group-filter"
         id="muscle-group-filter"
         onChange={(e) => setMuscleGroup(e.target.value)}
         value={muscleGroup}
-      >
-        <option value="">Select</option>
-        <option value="chest-muscle">Chest</option>
-        <option value="back-muscle">Back</option>
-        <option value="shoulder-muscle">Shoulder</option>
-        <option value="arm-muscle">Arm</option>
-        <option value="abdominal-muscle">Abdominal</option>
-        <option value="leg-muscle">Leg</option>
-        <option value="hip-muscle">Hip</option>
-        <option value="core-muscle">Core</option>
-        <option value="forearm-muscle">Forearm</option>
-        <option value="neck-muscle">Neck</option>
-      </select>
-      <div>
-        <label htmlFor="search">Search Exercises:</label>
-        <input
-          id="search"
-          type="text"
-          autoComplete="off"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
+      />
+      <FormInput
+        label="Search Exercises:"
+        htmlFor="search"
+        id="search"
+        type="text"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
       <ul>
         {filteredExercises.length > 0 ? (
           filteredExercises.map((exercise) => (
