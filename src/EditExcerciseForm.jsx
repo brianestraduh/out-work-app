@@ -3,7 +3,8 @@ import { useSelector } from "react-redux";
 import supabase from "../supaBase";
 import { useNavigate, Link } from "react-router-dom";
 import ErrorDialog from "./ErrorDialog";
-
+import FormInput from "./components/FormInput";
+import FormSelect from "./components/FormSelect";
 export default function EditExcerciseForm() {
   const exerciseData = useSelector((state) => state.exerciseId);
   const [name, setName] = useState(exerciseData.name);
@@ -57,61 +58,53 @@ export default function EditExcerciseForm() {
     <div>
       <h2>Edit Exercise</h2>
       <form onSubmit={updateExercise}>
-        <label htmlFor="exercise-name">Exercise Name:</label>
-        <input
+        <FormInput
+          label="Exercise Name:"
+          htmlFor="exercise-name"
           type="text"
           name="exercise-name"
           id="exercise-name"
-          required
+          required={true}
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-
-        <label htmlFor="exercise-description">Description: </label>
-        <input
+        <FormInput
+          label="Description: "
+          htmlFor="exercise-description"
           type="text"
           name="exercise-description"
           id="exercise-description"
-          required
+          required={true}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
-        <select
-          name="muscle-group"
-          id="muscle-group"
+        <FormSelect
+          label="Search by Muscle:"
+          htmlFor="muscle-group-filter"
+          name="muscle-group-filter"
+          id="muscle-group-filter"
           onChange={(e) => setMuscleGroup(e.target.value)}
           value={muscleGroup}
-          required
-        >
-          <option value="">Select</option>
-          <option value="chest-muscle">Chest</option>
-          <option value="back-muscle">Back</option>
-          <option value="shoulder-muscle">Shoulder</option>
-          <option value="arm-muscle">Arm</option>
-          <option value="abdominal-muscle">Abdominal</option>
-          <option value="leg-muscle">Leg</option>
-          <option value="hip-muscle">Hip</option>
-          <option value="core-muscle">Core</option>
-          <option value="forearm-muscle">Forearm</option>
-          <option value="neck-muscle">Neck</option>
-        </select>
-        <label htmlFor="default-sets">Default Sets:</label>
-        <input
+        />
+        <FormInput
+          label="Default Sets:"
+          htmlFor="default-sets"
           type="number"
           step="1"
           name="default-sets"
           id="default-sets"
-          required
+          required={true}
           value={defaultSets}
           onChange={(e) => setDefaultSets(e.target.value)}
         />
-        <label htmlFor="default-reps">Default Reps:</label>
-        <input
+        <FormInput
+          label="Default Reps:"
+          htmlFor="default-reps"
           type="number"
           step="1"
           name="default-reps"
           id="default-reps"
-          required
+          required={true}
           value={defaultReps}
           onChange={(e) => setDefaultReps(e.target.value)}
         />
@@ -120,7 +113,9 @@ export default function EditExcerciseForm() {
         </div>
 
         <Link to="/editCreateExercises">Back to Create or Edit Exercises</Link>
-        {showDialog && <ErrorDialog onOk={handleOk} />}
+        {showDialog && (
+          <ErrorDialog onOk={handleOk}>Exercise Already Exists.</ErrorDialog>
+        )}
       </form>
     </div>
   );

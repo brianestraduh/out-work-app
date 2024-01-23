@@ -5,6 +5,7 @@ export default function FormInput({
   id,
   type,
   required,
+  step,
   value,
   onChange,
   className,
@@ -22,6 +23,7 @@ export default function FormInput({
       <label htmlFor={htmlFor}>{label}</label>
       <input
         id={id}
+        step={step}
         required={required}
         value={value}
         onChange={onChange}

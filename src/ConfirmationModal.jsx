@@ -1,7 +1,8 @@
-export default function ConfirmationModal({ onConfirm, onCancel }) {
+export default function ConfirmationModal(props) {
+  const { onConfirm, onCancel, children } = props;
   return (
     <dialog open>
-      <h2>Are you sure?</h2>
+      {children}
       <button onClick={onConfirm}>Yes</button>
       <button onClick={onCancel}>No</button>
     </dialog>

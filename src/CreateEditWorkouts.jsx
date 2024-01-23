@@ -129,7 +129,9 @@ function CreateEditWorkouts() {
         ))}
       </div>
       {showModal && (
-        <ConfirmationModal onConfirm={handleConfirm} onCancel={handleCancel} />
+        <ConfirmationModal onConfirm={handleConfirm} onCancel={handleCancel}>
+          Are you sure?
+        </ConfirmationModal>
       )}
       {showDialog && <ErrorDialog onOk={handleOk} />}
       <Link to="/">Back</Link>

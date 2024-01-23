@@ -1,7 +1,8 @@
-export default function ErrorDialog({ onOk }) {
+export default function ErrorDialog(props) {
+  const { onOk, children } = props;
   return (
     <dialog open>
-      <h2>Exercise already exists.</h2>
+      {children}
       <button onClick={onOk}>Ok</button>
     </dialog>
   );
