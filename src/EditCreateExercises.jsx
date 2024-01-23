@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import supabase from "../supaBase.js";
 import { useDispatch } from "react-redux";
-import { Form, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { addExerciseId } from "./redux/exercises/exerciseIdSlice.js";
 import ExerciseListItem from "./components/ExerciseListItem.jsx";
 import { filterExercises } from "./helpers/filterHelper.js";
 import FormSelect from "./components/FormSelect.jsx";
+import FormInput from "./components/FormInput.jsx";
 export default function EditCreateExercises() {
   const [exercises, setExercises] = useState([]);
   const [filteredExercises, setFilteredExercises] = useState([]);
@@ -47,16 +48,14 @@ export default function EditCreateExercises() {
         onChange={(e) => setMuscleGroup(e.target.value)}
         value={muscleGroup}
       />
-      <div>
-        <label htmlFor="search">Search Exercises:</label>
-        <input
-          id="search"
-          type="text"
-          autoComplete="off"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
+      <FormInput
+        label="Search Exercises:"
+        htmlFor="search"
+        id="search"
+        type="text"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
       <ul>
         {filteredExercises.length > 0 ? (
           filteredExercises.map((exercise) => (
