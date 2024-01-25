@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import supabase from "../supaBase.js";
 import { useSelector } from "react-redux";
 import ErrorDialog from "./ErrorDialog.jsx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ExerciseListItem from "./components/ExerciseListItem.jsx";
 import FormInput from "./components/FormInput.jsx";
 import FormSelect from "./components/FormSelect.jsx";
 import { filterExercises } from "./helpers/filterHelper.js";
+import Button from "./components/Button.jsx";
 
 export default function ExerciseLibrary() {
   const [exercises, setExercises] = useState([]);
@@ -17,6 +18,8 @@ export default function ExerciseLibrary() {
   const { user } = session;
   const workoutId = useSelector((state) => state.workoutId);
   const [showDialog, setShowDialog] = useState(false);
+  const navigate = useNavigate();
+
   // Inital load of exercises from supabase table
   useEffect(() => {
     const fetchExercises = async () => {
@@ -36,21 +39,27 @@ export default function ExerciseLibrary() {
   }, [muscleGroup, searchTerm, exercises]);
 
   async function handleAdd(id) {
-    const exerciseToAdd = {
-      workout_id: workoutId,
-      exercise_id: id,
-      user_id: user.id,
-    };
-    const { error } = await supabase
-      .from("workout_exercises")
-      .insert(exerciseToAdd)
-      .select();
+    try {
+      const exerciseToAdd = {
+        workout_id: workoutId,
+        exercise_id: id,
+        user_id: user.id,
+      };
+      const { error } = await supabase
+        .from("workout_exercises")
+        .insert(exerciseToAdd)
+        .select();
 
-    if (error) {
-      if (error.code === "23505") {
-        setShowDialog(true);
+      navigate(`/workout/${workoutId}`);
+
+      if (error) {
+        if (error.code === "23505") {
+          setShowDialog(true);
+        }
         throw error;
       }
+    } catch (error) {
+      console.error("Error adding exercise:", error);
     }
   }
   function handleOk() {
@@ -87,8 +96,7 @@ export default function ExerciseLibrary() {
               exercise={exercise}
               className="drag"
             >
-              <button onClick={() => handleAdd(exercise.id)}>Add</button>
-              <button>Edit</button>
+              <Button onClick={() => handleAdd(exercise.id)}>Add</Button>
             </ExerciseListItem>
           ))
         ) : (
