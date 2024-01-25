@@ -7,11 +7,16 @@ import ExerciseListItem from "./components/ExerciseListItem.jsx";
 import { filterExercises } from "./helpers/filterHelper.js";
 import FormSelect from "./components/FormSelect.jsx";
 import FormInput from "./components/FormInput.jsx";
+import Button from "./components/Button.jsx";
+import ConfirmationModal from "./ConfirmationModal.jsx";
 export default function EditCreateExercises() {
   const [exercises, setExercises] = useState([]);
   const [filteredExercises, setFilteredExercises] = useState([]);
   const [muscleGroup, setMuscleGroup] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [exerciseToDelete, setExerciseToDelete] = useState();
+  const [exercisesUpdated, setExercisesUpdated] = useState(false);
   const dispatch = useDispatch();
   // Inital load of exercises from supabase table
   useEffect(() => {
@@ -22,7 +27,7 @@ export default function EditCreateExercises() {
       if (error) console.log("Error: ", error);
     };
     fetchExercises();
-  }, []);
+  }, [exercisesUpdated]);
   //HANDLES FILTER using search in combination with muscleGroup filter
   useEffect(() => {
     const filtered = filterExercises(exercises, muscleGroup, searchTerm);
@@ -33,6 +38,41 @@ export default function EditCreateExercises() {
 
   function editExercise(exercise) {
     dispatch(addExerciseId(exercise));
+  }
+
+  const handleCancel = () => {
+    // handle cancel action
+    setShowModal(false);
+  };
+  // removing row from db, which removes exercise from workout
+  const handleConfirm = async () => {
+    try {
+      // Delete from workout_exercises
+      await supabase
+        .from("workout_exercises")
+        .delete()
+        .eq("exercise_id", exerciseToDelete);
+
+      // Delete from exercise_sets
+      await supabase
+        .from("exercise_sets")
+        .delete()
+        .eq("exercise_id", exerciseToDelete);
+
+      // Delete from exercises
+      await supabase.from("exercises").delete().eq("id", exerciseToDelete);
+
+      setShowModal(false);
+      setExercisesUpdated(!exercisesUpdated);
+      console.log("success!");
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  function handleDelete(id) {
+    setExerciseToDelete(id);
+    setShowModal(true);
   }
   return (
     <div>
@@ -70,12 +110,18 @@ export default function EditCreateExercises() {
               >
                 Edit
               </Link>
+              <Button onClick={() => handleDelete(exercise.id)}>Delete</Button>
             </ExerciseListItem>
           ))
         ) : (
           <p>No exercises match your search.</p>
         )}
       </ul>
+      {showModal && (
+        <ConfirmationModal onConfirm={handleConfirm} onCancel={handleCancel}>
+          Are you sure?
+        </ConfirmationModal>
+      )}
       <Link to="/">Back</Link>
     </div>
   );
