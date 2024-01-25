@@ -5,9 +5,14 @@ import { useEffect, useState, useRef } from "react";
 import supabase from "../supaBase.js";
 import { reorderExercises } from "./helpers/sortHelper.js";
 import ExerciseListItem from "./components/ExerciseListItem.jsx";
+import Button from "./components/Button.jsx";
+import ConfirmationModal from "./ConfirmationModal.jsx";
 export default function EditWorkout() {
   const [exercises, setExercises] = useState([]);
   const [exerciseOrder, setExerciseOrder] = useState([]);
+  const [exerciseToRemove, setExerciseToRemove] = useState();
+  const [showModal, setShowModal] = useState(false);
+  const [workoutUpdated, setWorkoutUpdated] = useState(false);
   const dispatch = useDispatch();
   const { id } = useParams();
   //dragging reference
@@ -34,9 +39,9 @@ export default function EditWorkout() {
     };
 
     fetchExercises();
-  }, []);
+  }, [workoutUpdated]);
 
-  //
+  //reordering of exercise order
   function handleDrag(dragIndex, dropIndex) {
     const { newExercises, newOrder } = reorderExercises(
       dragIndex,
@@ -46,7 +51,7 @@ export default function EditWorkout() {
     setExercises(newExercises);
     setExerciseOrder(newOrder);
   }
-
+  //saving changes to the db
   async function handleSaveSort() {
     for (let exercise of exerciseOrder) {
       const { error } = await supabase
@@ -59,6 +64,33 @@ export default function EditWorkout() {
       }
     }
   }
+
+  function handleRemove(id) {
+    setExerciseToRemove(id);
+    setShowModal(true);
+  }
+  const handleCancel = () => {
+    // handle cancel action
+    setShowModal(false);
+  };
+  // removing row from db, which removes exercise from workout
+  const handleConfirm = async () => {
+    // handle confirm action
+
+    try {
+      await supabase
+        .from("workout_exercises")
+        .delete()
+        .eq("workout_id", id)
+        .eq("exercise_id", exerciseToRemove);
+
+      setShowModal(false);
+      setWorkoutUpdated(!workoutUpdated);
+      console.log("success!");
+    } catch (error) {
+      alert(error.message);
+    }
+  };
   return (
     <div>
       <h1> {`Edit Workout ${id}`}</h1>
@@ -90,10 +122,19 @@ export default function EditWorkout() {
                   handleDrag(dragExcercise.current, overTakenExcercise.current)
                 }
                 onDragOver={(e) => e.preventDefault()}
-              ></ExerciseListItem>
+              >
+                <Button onClick={() => handleRemove(exercise.id)}>
+                  Remove
+                </Button>
+              </ExerciseListItem>
             );
           })}
       </ul>
+      {showModal && (
+        <ConfirmationModal onConfirm={handleConfirm} onCancel={handleCancel}>
+          Are you sure?
+        </ConfirmationModal>
+      )}
       <button onClick={handleSaveSort}>Save Order</button>
       <Link to="/createEditWorkouts">Back</Link>
     </div>
