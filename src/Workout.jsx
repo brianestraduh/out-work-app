@@ -1,14 +1,16 @@
 import { Link } from "react-router-dom";
 import supabase from "../supaBase";
 import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { setWorkoutId } from "./redux/navigation/workoutIdSlice";
+import { useDispatch } from "react-redux";
+import {
+  setWorkoutId,
+  setWorkoutName,
+} from "./redux/navigation/workoutIdSlice";
 import WorkoutButton from "./components/WorkoutButton";
 function Workout() {
   const [workouts, setWorkouts] = useState([]);
   const [activeIndex, setActiveIndex] = useState(null);
   const dispatch = useDispatch();
-  const workoutID = useSelector((state) => state.workoutId);
   // Loading Workouts from table on component mount
   useEffect(() => {
     const fetchExercises = async () => {
@@ -27,6 +29,7 @@ function Workout() {
     } else {
       setActiveIndex(i);
       dispatch(setWorkoutId(workout.id));
+      dispatch(setWorkoutName(`${workout.name}: ${workout.description}`));
     }
   }
   return (

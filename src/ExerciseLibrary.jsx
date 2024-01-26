@@ -16,7 +16,7 @@ export default function ExerciseLibrary() {
   const [searchTerm, setSearchTerm] = useState("");
   const session = useSelector((state) => state.session);
   const { user } = session;
-  const workoutId = useSelector((state) => state.workoutId);
+  const workoutId = useSelector((state) => state.workoutId.id);
   const [showDialog, setShowDialog] = useState(false);
   const navigate = useNavigate();
 

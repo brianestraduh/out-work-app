@@ -13,7 +13,7 @@ export default function AddExcerciseForm() {
   const [defaultSets, setDefaultSets] = useState("");
   const [defaultReps, setDefaultReps] = useState("");
   const [showDialog, setShowDialog] = useState(false);
-  const workoutId = useSelector((state) => state.workoutId);
+  const workoutId = useSelector((state) => state.workoutId.id);
   const session = useSelector((state) => state.session);
 
   async function handleAddNew(event) {

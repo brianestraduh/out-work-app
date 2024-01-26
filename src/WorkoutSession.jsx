@@ -5,13 +5,18 @@ import { useEffect, useState, useRef } from "react";
 import Exercise from "./Exercise";
 import { clearExercises } from "./redux/workout/exerciseSlice";
 import { postWorkoutSession } from "./helpers/workoutSession";
+import { clearWorkoutInfo } from "./redux/navigation/workoutIdSlice";
+import ConfirmationModal from "./ConfirmationModal";
+import Button from "./components/Button";
 export default function WorkoutSession() {
-  const workoutId = useSelector((state) => state.workoutId);
+  const workoutId = useSelector((state) => state.workoutId.id);
+  const workoutName = useSelector((state) => state.workoutId.name);
   const session = useSelector((state) => state.session);
   const { user } = session;
   const exerciseStore = useSelector((state) => state.exercise);
   const dispatch = useDispatch();
   const [exercises, setExercises] = useState([]);
+  const [showModal, setShowModal] = useState(false);
   const startTimeRef = useRef(null);
   const navigate = useNavigate();
 
@@ -38,11 +43,22 @@ export default function WorkoutSession() {
     // clear the ExerciseStore when Session dismounts (ends)
     return () => {
       dispatch(clearExercises());
-      console.log(exerciseStore, "dismount");
     };
   }, []);
 
-  async function handlePostWorkout() {
+  function handleBack() {
+    dispatch(clearWorkoutInfo());
+  }
+
+  const handleComplete = () => {
+    setShowModal(true);
+  };
+  const handleCancel = () => {
+    // handle cancel action
+    setShowModal(false);
+  };
+
+  const handleConfirm = async () => {
     try {
       await postWorkoutSession(
         startTimeRef.current,
@@ -50,18 +66,15 @@ export default function WorkoutSession() {
         user.id,
         exerciseStore
       );
+      dispatch(clearWorkoutInfo());
       navigate("/");
     } catch (error) {
       console.error("Error posting workout session:", error);
     }
-  }
-
+  };
   return (
     <div>
-      <h2>{`Workout ${workoutId}`}</h2>
-      {/* NEED TO PASS THE WORKOUTNAME NOT THE ID, MAY NEED ANOTHER api CALL*/}
-      {/* NEED LOGIC TO MAKE SURE USER UNDERSTANDS PRESSING BACK WILL DELETE THE WORKOUT*/}
-
+      <p>{workoutName ? `${workoutName}` : "fail"}</p>
       <ul>
         {exercises
           .sort((a, b) => a.index - b.index)
@@ -75,11 +88,15 @@ export default function WorkoutSession() {
             );
           })}
       </ul>
-      <div>
-        {/* NEED TO ADD LOGIC TO MAKE SURE USER UNDERSTANDS WORKOUT will be saved*/}
-        <button onClick={handlePostWorkout}>Complete workout</button>
-      </div>
-      <Link to="/startWorkout">Back</Link>
+      <Button onClick={handleComplete}>Complete workout</Button>
+      {showModal && (
+        <ConfirmationModal onConfirm={handleConfirm} onCancel={handleCancel}>
+          Are you sure?
+        </ConfirmationModal>
+      )}
+      <Link to="/startWorkout" onClick={handleBack}>
+        Back
+      </Link>
     </div>
   );
 }
