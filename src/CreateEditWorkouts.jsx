@@ -1,44 +1,39 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import supabase from "../supaBase";
 import { addWorkout, deleteWorkout } from "./helpers/workout.js";
 import ConfirmationModal from "./ConfirmationModal.jsx";
 import ErrorDialog from "./ErrorDialog.jsx";
 import FormInput from "./components/FormInput.jsx";
 import Button from "./components/Button.jsx";
+import { setWorkoutsInfo } from "./redux/workoutSession/workoutsSlice.js";
 function CreateEditWorkouts() {
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [workouts, setWorkouts] = useState([]);
+  const workouts = useSelector((state) => state.workouts.workouts);
   const [workoutsUpdated, setWorkoutUpdated] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [workoutToDelete, setWorkoutToDelete] = useState(null);
   const [showDialog, setShowDialog] = useState(false);
   const session = useSelector((state) => state.session);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    let ignore = false;
-    async function getWorkouts() {
-      const { data, error } = await supabase
-        .from("workouts")
-        .select(`id, name, description`);
-
-      if (!ignore) {
-        if (error) {
-          console.warn(error);
-        } else if (data) {
-          setWorkouts(data);
-        }
-      }
+    if (Array.isArray(workouts) && workouts.length !== 0) {
+      return;
     }
-    getWorkouts();
-
-    return () => {
-      ignore = true;
+    const fetchExercises = async () => {
+      const { data, error } = await supabase.from("workouts").select();
+      dispatch(setWorkoutsInfo(data));
+      console.log(data);
+      if (error) console.log("Error: ", error);
     };
-  }, [workoutsUpdated]);
+    fetchExercises();
+
+    fetchExercises();
+  }, [dispatch, workouts]);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -46,7 +41,14 @@ function CreateEditWorkouts() {
     setLoading(true);
 
     try {
-      await addWorkout(supabase, session, name, description);
+      await addWorkout(
+        supabase,
+        session,
+        name,
+        description,
+        dispatch,
+        setWorkoutsInfo
+      );
       setName("");
       setDescription("");
     } catch (error) {
@@ -74,7 +76,7 @@ function CreateEditWorkouts() {
   const handleConfirm = async () => {
     // handle confirm action
     try {
-      await deleteWorkout(supabase, workoutToDelete);
+      await deleteWorkout(supabase, workoutToDelete, dispatch, setWorkoutsInfo);
     } catch (error) {
       alert(error.message);
     }

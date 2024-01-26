@@ -10,7 +10,6 @@ import WorkoutButton from "./components/WorkoutButton";
 import { setWorkoutsInfo } from "./redux/workoutSession/workoutsSlice";
 function Workout() {
   const workouts = useSelector((state) => state.workouts.workouts);
-
   const [activeIndex, setActiveIndex] = useState(null);
   const dispatch = useDispatch();
   // Loading Workouts from table on component mount
