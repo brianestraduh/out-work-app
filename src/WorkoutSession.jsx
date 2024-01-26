@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import supabase from "../supaBase";
 import { useEffect, useState, useRef } from "react";
@@ -16,7 +16,8 @@ export default function WorkoutSession() {
   const exerciseStore = useSelector((state) => state.exercise);
   const dispatch = useDispatch();
   const [exercises, setExercises] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+  const [showCompleteModal, setShowCompleteModal] = useState(false);
+  const [showBackModal, setShowBackModal] = useState(false);
   const startTimeRef = useRef(null);
   const navigate = useNavigate();
 
@@ -47,15 +48,19 @@ export default function WorkoutSession() {
   }, []);
 
   function handleBack() {
-    dispatch(clearWorkoutInfo());
+    setShowBackModal(true);
   }
 
   const handleComplete = () => {
-    setShowModal(true);
+    setShowCompleteModal(true);
   };
   const handleCancel = () => {
     // handle cancel action
-    setShowModal(false);
+    setShowCompleteModal(false);
+  };
+  const handleBackCancel = () => {
+    // handle cancel action
+    setShowBackModal(false);
   };
 
   const handleConfirm = async () => {
@@ -72,6 +77,11 @@ export default function WorkoutSession() {
       console.error("Error posting workout session:", error);
     }
   };
+
+  function handleBackConfirm() {
+    dispatch(clearWorkoutInfo());
+    navigate("/startWorkout");
+  }
   return (
     <div>
       <h2>{workoutName}</h2>
@@ -89,14 +99,20 @@ export default function WorkoutSession() {
           })}
       </ul>
       <Button onClick={handleComplete}>Complete workout</Button>
-      {showModal && (
+      {showCompleteModal && (
         <ConfirmationModal onConfirm={handleConfirm} onCancel={handleCancel}>
           Are you sure?
         </ConfirmationModal>
       )}
-      <Link to="/startWorkout" onClick={handleBack}>
-        Back
-      </Link>
+      {showBackModal && (
+        <ConfirmationModal
+          onConfirm={handleBackConfirm}
+          onCancel={handleBackCancel}
+        >
+          Are you sure? Workout has NOT been completed.{" "}
+        </ConfirmationModal>
+      )}
+      <Button onClick={handleBack}> Back </Button>
     </div>
   );
 }
