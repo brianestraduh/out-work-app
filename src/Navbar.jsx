@@ -8,7 +8,7 @@ function Navbar() {
   let navigate = useNavigate();
   const dispatch = useDispatch();
   const session = useSelector((state) => state.session);
-  const isDarkTheme = useSelector((state) => state.darkMode.darkMode);
+  const isDarkTheme = useSelector((state) => state.darkMode);
 
   //handle signout and remove token from local storage
   useEffect(() => {

@@ -4,6 +4,7 @@ import sessionReducer from "./redux/session/sessionSlice.js";
 import workoutIdReducer from "./redux/workoutSession/workoutIdSlice.js";
 import exerciseReducer from "./redux/workoutSession/exerciseSlice.js";
 import exerciseIdReducer from "./redux/exercises/exerciseIdSlice.js";
+import workoutsReducer from "./redux/workoutSession/workoutsSlice.js";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   workoutId: workoutIdReducer,
   exercise: exerciseReducer,
   exerciseId: exerciseIdReducer,
+  workouts: workoutsReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
