@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import FormInput from "./components/FormInput";
 export default function Sets({
   defaultReps,
   setIndex,
@@ -29,22 +30,30 @@ export default function Sets({
   return (
     <div className={`set ${isChecked ? "complete" : ""}`}>
       <p>{`Set ${setIndex}`}</p>
-      <label htmlFor={repId}>Reps:</label>
-      <input
+
+      <FormInput
+        label="Reps:"
+        htmlFor={repId}
         type="number"
         id={repId}
         defaultValue={defaultReps}
         onChange={handleRepsChange}
       />
-      <label htmlFor={weightId}>Weight:</label>
-      <input
+      <FormInput
+        label="Weight:"
+        htmlFor={weightId}
         type="number"
         id={weightId}
         defaultValue={0}
         onChange={handleWeightChange}
       />
-      <label htmlFor={completeId}>Complete:</label>
-      <input type="checkbox" id={completeId} onChange={handleCheck} />
+      <FormInput
+        label="Complete:"
+        htmlFor={completeId}
+        type="checkbox"
+        id={completeId}
+        onChange={handleCheck}
+      />
     </div>
   );
 }

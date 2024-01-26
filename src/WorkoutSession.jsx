@@ -74,7 +74,7 @@ export default function WorkoutSession() {
   };
   return (
     <div>
-      <p>{workoutName ? `${workoutName}` : "fail"}</p>
+      <h2>{workoutName}</h2>
       <ul>
         {exercises
           .sort((a, b) => a.index - b.index)

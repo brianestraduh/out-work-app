@@ -6,6 +6,7 @@ export default function FormInput({
   type,
   required,
   step,
+  defaultValue,
   value,
   onChange,
   className,
@@ -24,7 +25,9 @@ export default function FormInput({
       <input
         id={id}
         step={step}
+        type={type}
         required={required}
+        defaultValue={defaultValue}
         value={value}
         onChange={onChange}
         {...rest}
