@@ -1,26 +1,31 @@
 import { Link } from "react-router-dom";
 import supabase from "../supaBase";
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   setWorkoutId,
   setWorkoutName,
 } from "./redux/workoutSession/workoutIdSlice";
 import WorkoutButton from "./components/WorkoutButton";
+import { setWorkoutsInfo } from "./redux/workoutSession/workoutsSlice";
 function Workout() {
-  const [workouts, setWorkouts] = useState([]);
+  const workouts = useSelector((state) => state.workouts.workouts);
+
   const [activeIndex, setActiveIndex] = useState(null);
   const dispatch = useDispatch();
   // Loading Workouts from table on component mount
   useEffect(() => {
+    if (Array.isArray(workouts) && workouts.length !== 0) {
+      return;
+    }
     const fetchExercises = async () => {
       const { data, error } = await supabase.from("workouts").select();
-      setWorkouts(data);
+      dispatch(setWorkoutsInfo(data));
       console.log(data);
       if (error) console.log("Error: ", error);
     };
     fetchExercises();
-  }, []);
+  }, [dispatch, workouts]);
 
   //set Selected Workout
   function handleClick(i, workout) {
