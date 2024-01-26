@@ -3,9 +3,9 @@ import { useSelector, useDispatch } from "react-redux";
 import supabase from "../supaBase";
 import { useEffect, useState, useRef } from "react";
 import Exercise from "./Exercise";
-import { clearExercises } from "./redux/workout/exerciseSlice";
+import { clearExercises } from "./redux/workoutSession/exerciseSlice";
 import { postWorkoutSession } from "./helpers/workoutSession";
-import { clearWorkoutInfo } from "./redux/navigation/workoutIdSlice";
+import { clearWorkoutInfo } from "./redux/workoutSession/workoutIdSlice";
 import ConfirmationModal from "./ConfirmationModal";
 import Button from "./components/Button";
 export default function WorkoutSession() {

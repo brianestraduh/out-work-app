@@ -1,42 +1,29 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import darkModeReducer from "./redux/darkMode/darkModeSlice.js";
 import sessionReducer from "./redux/session/sessionSlice.js";
-import workoutIdReducer from "./redux/navigation/workoutIdSlice.js";
-import exerciseReducer from "./redux/workout/exerciseSlice.js";
+import workoutIdReducer from "./redux/workoutSession/workoutIdSlice.js";
+import exerciseReducer from "./redux/workoutSession/exerciseSlice.js";
 import exerciseIdReducer from "./redux/exercises/exerciseIdSlice.js";
-const saveToLocalStorage = (state) => {
-  try {
-    const serializedState = JSON.stringify(state.darkMode);
-    localStorage.setItem("darkMode", serializedState);
-  } catch (e) {
-    console.warn(e);
-  }
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
+
+const persistConfig = {
+  key: "root",
+  storage,
 };
 
-const loadFromLocalStorage = () => {
-  try {
-    const serializedState = localStorage.getItem("darkMode");
-    if (serializedState === null) return undefined;
-    return { darkMode: JSON.parse(serializedState) };
-  } catch (e) {
-    console.warn(e);
-    return undefined;
-  }
-};
-
-const store = configureStore({
-  preloadedState: loadFromLocalStorage(),
-  reducer: {
-    darkMode: darkModeReducer,
-    session: sessionReducer,
-    workoutId: workoutIdReducer,
-    exercise: exerciseReducer,
-    exerciseId: exerciseIdReducer,
-  },
+const rootReducer = combineReducers({
+  darkMode: darkModeReducer,
+  session: sessionReducer,
+  workoutId: workoutIdReducer,
+  exercise: exerciseReducer,
+  exerciseId: exerciseIdReducer,
 });
 
-store.subscribe(() => {
-  saveToLocalStorage(store.getState());
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export const store = configureStore({
+  reducer: persistedReducer,
 });
 
-export default store;
+export const persistor = persistStore(store);

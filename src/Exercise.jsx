@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Sets from "./Sets";
 import { useDispatch, useSelector } from "react-redux";
-import { upsertExercise } from "./redux/workout/exerciseSlice";
+import { upsertExercise } from "./redux/workoutSession/exerciseSlice";
 export default function Exercise({ exerciseDetails, index }) {
   const { name, description, default_sets, default_reps, id } = exerciseDetails;
   const [sets, SetSets] = useState(default_sets);

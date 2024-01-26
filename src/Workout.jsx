@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import {
   setWorkoutId,
   setWorkoutName,
-} from "./redux/navigation/workoutIdSlice";
+} from "./redux/workoutSession/workoutIdSlice";
 import WorkoutButton from "./components/WorkoutButton";
 function Workout() {
   const [workouts, setWorkouts] = useState([]);

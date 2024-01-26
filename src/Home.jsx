@@ -2,7 +2,7 @@ import "./App.css";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { setWorkoutId } from "./redux/navigation/workoutIdSlice.js";
+import { setWorkoutId } from "./redux/workoutSession/workoutIdSlice.js";
 import { clearExerciseId } from "./redux/exercises/exerciseIdSlice.js";
 
 function Home() {

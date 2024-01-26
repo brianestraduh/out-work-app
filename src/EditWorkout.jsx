@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router-dom";
-import { setWorkoutId } from "./redux/navigation/workoutIdSlice.js";
+import { setWorkoutId } from "./redux/workoutSession/workoutIdSlice.js";
 import { useDispatch } from "react-redux";
 import { useEffect, useState, useRef } from "react";
 import supabase from "../supaBase.js";
