@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import supabase from "../supaBase";
 import { Link } from "react-router-dom";
 import ErrorDialog from "./ErrorDialog";
 import FormInput from "./components/FormInput";
 import FormSelect from "./components/FormSelect";
+import { setExerciseList } from "./redux/exercises/exerciseListSlice";
 
 export default function AddExcerciseForm() {
   const [name, setName] = useState("");
@@ -15,6 +17,8 @@ export default function AddExcerciseForm() {
   const [showDialog, setShowDialog] = useState(false);
   const workoutId = useSelector((state) => state.workoutId.id);
   const session = useSelector((state) => state.session);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   async function handleAddNew(event) {
     event.preventDefault();
@@ -30,36 +34,30 @@ export default function AddExcerciseForm() {
     };
 
     try {
-      const { data, error } = await supabase
-        .from("exercises")
-        .insert(newExcercise)
-        .select();
-      setName("");
-      setDescription("");
-      setMuscleGroup("");
-      setDefaultSets("");
-      setDefaultReps("");
+      console.log("About to insert new exercise");
+      const { error } = await supabase.from("exercises").insert(newExcercise);
 
       if (error) {
+        console.log("Error inserting new exercise", error);
         if (error.code === "23505") {
           setShowDialog(true);
           throw error;
         }
       }
+      //This is to update exerciseList in store and update UI of ExerciseLibrary
+      let { data, error: fetchError } = await supabase
+        .from("exercises")
+        .select();
+      if (fetchError) {
+        console.log("Error fetching updated list of exercises", fetchError);
+        throw fetchError;
+      }
 
-      // Get the id of the newly inserted exercise
-      const exerciseId = data[0].id;
+      console.log("About to dispatch setExercisesList and navigate");
 
-      // Insert a new entry into the workout_exercises table
-      const { error: workoutExerciseError } = await supabase
-        .from("workout_exercises")
-        .insert([
-          { workout_id: workoutId, exercise_id: exerciseId, user_id: user.id },
-        ]);
-
-      if (workoutExerciseError) throw workoutExerciseError;
-
-      // Navigate away or change state here, after the insert operation has completed
+      // Dispatch setExercisesList with updated list
+      dispatch(setExerciseList(data));
+      navigate("/exerciseLibrary");
     } catch (error) {
       console.error("Error submitting form: ", error);
     }

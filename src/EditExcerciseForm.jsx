@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import supabase from "../supaBase";
 import { useNavigate, Link } from "react-router-dom";
 import ErrorDialog from "./ErrorDialog";
 import FormInput from "./components/FormInput";
 import FormSelect from "./components/FormSelect";
+import { setExerciseList } from "./redux/exercises/exerciseListSlice";
 export default function EditExcerciseForm() {
   const exerciseData = useSelector((state) => state.exerciseId);
   const [name, setName] = useState(exerciseData.name);
@@ -14,6 +15,7 @@ export default function EditExcerciseForm() {
   const [defaultReps, setDefaultReps] = useState(exerciseData.default_reps);
   const [showDialog, setShowDialog] = useState(false);
   const session = useSelector((state) => state.session);
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
@@ -45,7 +47,20 @@ export default function EditExcerciseForm() {
 
       console.log(data);
       console.log("Update successful");
-      navigate("/editCreateExercises");
+      try {
+        const { data, error } = await supabase.from("exercises").select();
+
+        if (error) {
+          console.error("Error fetching exercises:", error);
+          // Handle the error as needed
+          return;
+        }
+
+        dispatch(setExerciseList(data));
+        navigate("/editCreateExercises");
+      } catch (error) {
+        console.error("Unexpected error:", error);
+      }
     } catch (error) {
       console.error("Error submitting form: ", error);
     }

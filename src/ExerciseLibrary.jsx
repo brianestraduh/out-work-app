@@ -24,7 +24,6 @@ export default function ExerciseLibrary() {
   const { user } = session;
   const workoutId = useSelector((state) => state.workoutId.id);
   const [showDialog, setShowDialog] = useState(false);
-  const [exercisesUpdated, setExercisesUpdated] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -77,8 +76,20 @@ export default function ExerciseLibrary() {
       await supabase.from("exercises").delete().eq("id", exerciseToDelete);
 
       setShowModal(false);
-      setExercisesUpdated(!exercisesUpdated);
-      console.log("success!");
+      //This is to update exerciseList in store and update UI of ExerciseLibrary
+      try {
+        const { data, error } = await supabase.from("exercises").select();
+
+        if (error) {
+          console.error("Error fetching exercises:", error);
+          // Handle the error as needed
+          return;
+        }
+
+        dispatch(setExerciseList(data));
+      } catch (error) {
+        console.error("Unexpected error:", error);
+      }
     } catch (error) {
       alert(error.message);
     }
@@ -121,6 +132,11 @@ export default function ExerciseLibrary() {
     <div>
       <h2>Exercise Library</h2>
       <div>
+        <div>
+          {workoutId === null && (
+            <Link to="/newExcercise">Add New Exercise</Link>
+          )}
+        </div>
         {workoutId === null && <Link to="/">Back</Link>}
         {workoutId && (
           <Link to={`/workout/${workoutId}`}>Back to Edit Workout</Link>
