@@ -10,9 +10,11 @@ import { filterExercises } from "./helpers/filterHelper.js";
 import Button from "./components/Button.jsx";
 import { addExerciseId } from "./redux/exercises/exerciseIdSlice.js";
 import ConfirmationModal from "./ConfirmationModal.jsx";
+import { setExerciseList } from "./redux/exercises/exerciseListSlice.js";
 
 export default function ExerciseLibrary() {
-  const [exercises, setExercises] = useState([]);
+  //const [exercises, setExercises] = useState([]);
+  const exercises = useSelector((state) => state.exerciseList.exerciseList);
   const [filteredExercises, setFilteredExercises] = useState([]);
   const [muscleGroup, setMuscleGroup] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -28,9 +30,14 @@ export default function ExerciseLibrary() {
 
   // Inital load of exercises from supabase table
   useEffect(() => {
+    if (Array.isArray(exercises) && exercises.length !== 0) {
+      return;
+    }
+
     const fetchExercises = async () => {
       const { data, error } = await supabase.from("exercises").select();
-      setExercises(data);
+      dispatch(setExerciseList(data));
+      console.log("store", exercises);
       console.log(data);
       if (error) console.log("Error: ", error);
     };
@@ -114,7 +121,10 @@ export default function ExerciseLibrary() {
     <div>
       <h2>Exercise Library</h2>
       <div>
-        <Link to={`/workout/${workoutId}`}>Back to Edit Workout</Link>
+        {workoutId === null && <Link to="/">Back</Link>}
+        {workoutId && (
+          <Link to={`/workout/${workoutId}`}>Back to Edit Workout</Link>
+        )}
       </div>
       <FormSelect
         label="Search by Muscle:"
