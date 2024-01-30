@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { setWorkoutId } from "./redux/workoutSession/workoutIdSlice.js";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react";
 import supabase from "../supaBase.js";
 import { reorderExercises } from "./helpers/sortHelper.js";
@@ -14,7 +14,9 @@ export default function EditWorkout() {
   const [showModal, setShowModal] = useState(false);
   const [workoutUpdated, setWorkoutUpdated] = useState(false);
   const dispatch = useDispatch();
-  const { id } = useParams();
+  const workoutId = useSelector((state) => state.workoutId.id);
+  const { id: idString } = useParams();
+  const id = Number(idString);
   //dragging reference
   const dragExcercise = useRef(0);
   const overTakenExcercise = useRef(0);
@@ -22,23 +24,32 @@ export default function EditWorkout() {
   //load exercises
   useEffect(() => {
     dispatch(setWorkoutId(id));
-    const fetchExercises = async () => {
+    const fetchExercises = async (id) => {
+      console.log("workoutId", id);
+
       const { data, error } = await supabase
         .from("workout_exercises")
         .select(
-          `
-          exercises (
-            *
-          )
-        `
+          "*, exercises!workout_exercises_exercise_id_fkey(name, description, default_sets, default_reps)"
         )
         .eq("workout_id", id);
-      const exercises = data.map((item) => item.exercises);
+
+      console.log("error", error);
+
+      // Restructure the objects in the data array
+      const exercises = data.map((item) => ({
+        ...item,
+        name: item.exercises.name,
+        description: item.exercises.description,
+        defaultSets: item.exercises.default_sets,
+        defaultReps: item.exercises.default_reps,
+      }));
+      console.log("exercise", exercises);
       setExercises(exercises);
       if (error) console.log("Error: ", error);
     };
 
-    fetchExercises();
+    fetchExercises(id);
   }, [workoutUpdated]);
 
   //reordering of exercise order

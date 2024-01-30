@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import Sets from "./Sets";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { upsertExercise } from "./redux/workoutSession/exerciseSlice";
+import Button from "./components/Button";
 export default function Exercise({ exerciseDetails, index }) {
   const { name, description, default_sets, default_reps, id } = exerciseDetails;
-  const [sets, SetSets] = useState(default_sets);
+  const [sets, setSets] = useState(default_sets);
   const [setsData, setSetsData] = useState([]);
   const dispatch = useDispatch();
 
@@ -14,7 +15,11 @@ export default function Exercise({ exerciseDetails, index }) {
     dispatch(upsertExercise(exerciseData));
   }, [setsData]);
   function handleAddSets() {
-    SetSets(sets + 1);
+    setSets(sets + 1);
+  }
+
+  function handleRemoveSets() {
+    setSets(sets - 1);
   }
 
   function handleSetDataChange(index, setData) {
@@ -41,7 +46,8 @@ export default function Exercise({ exerciseDetails, index }) {
           />
         );
       })}
-      <button onClick={handleAddSets}>Add Set</button>
+      <Button onClick={handleAddSets}>Add Set</Button>
+      <Button onClick={handleRemoveSets}>Remove Set</Button>
     </div>
   );
 }

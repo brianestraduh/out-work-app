@@ -1,10 +1,18 @@
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { fetchSessions } from "./helpers/previousWorkouts";
+
 function PreviousWorkouts() {
+  const [sessions, setSessions] = useState([]);
+
+  useEffect(() => {
+    fetchSessions();
+  }, []);
+
   return (
     <div>
-      <h1>Previous Workouts</h1>
-      <Link to="/">Back</Link>
+      <h2>Test</h2>
     </div>
   );
 }
+
 export default PreviousWorkouts;
