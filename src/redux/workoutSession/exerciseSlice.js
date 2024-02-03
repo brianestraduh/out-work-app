@@ -6,7 +6,7 @@ const exerciseSlice = createSlice({
   reducers: {
     upsertExercise: (state, action) => {
       const index = state.findIndex(
-        (exercise) => exercise.id === action.payload.id
+        (exercise) => exercise.exercise_id === action.payload.exercise_id
       );
 
       if (index !== -1) {

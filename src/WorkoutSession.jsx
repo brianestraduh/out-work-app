@@ -32,8 +32,6 @@ export default function WorkoutSession() {
         )
         .eq("workout_id", workoutId);
 
-      console.log("error", error);
-
       // Restructure the objects in the data array
       const exercises = data.map((item) => ({
         ...item,
@@ -68,6 +66,7 @@ export default function WorkoutSession() {
   const handleBackCancel = () => {
     // handle cancel action
     setShowBackModal(false);
+    console.log("store", exerciseStore);
   };
 
   const handleConfirm = async () => {

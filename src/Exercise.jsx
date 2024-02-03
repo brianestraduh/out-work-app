@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Sets from "./Sets";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { upsertExercise } from "./redux/workoutSession/exerciseSlice";
 import Button from "./components/Button";
 export default function Exercise({ exerciseDetails, index }) {
