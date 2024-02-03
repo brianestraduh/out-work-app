@@ -22,10 +22,10 @@ async function postWorkoutSession(startTime, workoutId, userId, exerciseStore) {
 
       // Iterate over each exercise and its sets data
       for (const exercise of exerciseStore) {
-        const { id, setsData } = exercise;
+        const { exercise_id, setsData } = exercise;
         if (!Array.isArray(setsData)) {
           console.error(
-            `setsData for exercise ${id} is not an array:`,
+            `setsData for exercise ${exercise_id} is not an array:`,
             setsData
           );
           continue; // Skip to the next exercise
@@ -41,7 +41,7 @@ async function postWorkoutSession(startTime, workoutId, userId, exerciseStore) {
               .from("exercise_sets")
               .insert([
                 {
-                  exercise_id: id,
+                  exercise_id: exercise_id,
                   set_index: setIndex,
                   reps: reps,
                   weight: weight,

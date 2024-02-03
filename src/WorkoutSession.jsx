@@ -28,19 +28,26 @@ export default function WorkoutSession() {
       const { data, error } = await supabase
         .from("workout_exercises")
         .select(
-          `
-              exercises (
-                *
-              )
-            `
+          "*, exercises!workout_exercises_exercise_id_fkey(name, description, default_sets, default_reps)"
         )
         .eq("workout_id", workoutId);
-      const exercisesList = data.map((item) => item.exercises);
-      setExercises(exercisesList);
+
+      console.log("error", error);
+
+      // Restructure the objects in the data array
+      const exercises = data.map((item) => ({
+        ...item,
+        name: item.exercises.name,
+        description: item.exercises.description,
+        defaultSets: item.exercises.default_sets,
+        defaultReps: item.exercises.default_reps,
+      }));
+      setExercises(exercises);
       if (error) console.log("Error: ", error);
     };
 
     fetchExercises();
+
     // clear the ExerciseStore when Session dismounts (ends)
     return () => {
       dispatch(clearExercises());
