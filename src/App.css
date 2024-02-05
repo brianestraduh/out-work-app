@@ -111,3 +111,6 @@ dialog::backdrop {
 .complete {
   background-color: green;
 }
+li {
+  list-style-type: none;
+}
