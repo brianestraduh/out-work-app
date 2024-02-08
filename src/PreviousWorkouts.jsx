@@ -5,24 +5,32 @@ import Button from "./components/Button";
 import { Link } from "react-router-dom";
 import ConfirmationModal from "./ConfirmationModal.jsx";
 import supabase from "../supaBase.js";
-
+import FormSelectDate from "./components/FormSelectDate.jsx";
+import FormInput from "./components/FormInput.jsx";
+import { filterSessions } from "./helpers/filterHelper.js";
 function PreviousWorkouts() {
   const [sessions, setSessions] = useState([]);
   const [visibleDetails, setVisibleDetails] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [sessionToDelete, setSessionToDelete] = useState(null);
   const [sessionsUpdated, setSessionsUpdated] = useState(false);
+  const [dateCutOff, setDateCutOff] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     fetchSessions()
       .then((sessionData) => {
         console.log(sessionData);
-        setSessions(sessionData);
+        const filtered = filterSessions(sessionData, dateCutOff, searchTerm);
+        setSessions(filtered);
       })
       .catch((error) => {
         console.error(error);
       });
-  }, [sessionsUpdated]);
+  }, [sessionsUpdated, dateCutOff, searchTerm]);
+  useEffect(() => {
+    console.log(dateCutOff);
+  }, [dateCutOff]);
 
   const handleDetails = (index) => {
     setVisibleDetails((prevVisibleDetails) => {
@@ -66,10 +74,23 @@ function PreviousWorkouts() {
       alert(error.message);
     }
   };
+
+  function handleDateChange(event) {
+    setDateCutOff(event.target.value);
+  }
   return (
     <div>
       <h2>Previous Workouts</h2>
       <Link to="/">Back</Link>
+      <FormSelectDate onChange={handleDateChange} />
+      <FormInput
+        label="Search by Workout Name:"
+        htmlFor="search-workout"
+        id="search-workout"
+        type="text"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
       <ul>
         {sessions.map((session, index) => {
           const { name, description } = session.workouts;
