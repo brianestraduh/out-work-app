@@ -10,17 +10,17 @@ import {
 
 Chart.register(BarController, LinearScale, CategoryScale, BarElement);
 
-function SessionStats({ onDateChange }) {
+function SessionStats({ onDateChange, sessionData }) {
   const canvasRef = useRef(null);
   // duration will be data and is an array where each entry is an object with the duration
   // in minutes and the date of the session
-  const [duration, setDuration] = useState([]);
-  const [totalDuration, setTotalDuration] = useState(0);
-  const [weightMoved, setWeightMoved] = useState([]);
-  const [totalWeightMoved, setTotalWeightMoved] = useState(0);
-  const [daysWorkedOut, setDaysWorkedOut] = useState([]);
-  const [totalDaysWorkedOut, setTotalDaysWorkedOut] = useState(0);
-  const [stat, setStat] = useState(totalWeightMoved);
+  //write a helper function that takes in the sessionData and returns the data with objects containing
+  // duration and date
+  //repeat for daysWorkedOut
+  // const durationData
+  // const daysWorkedOutData
+  // const durationTotal
+  // const daysWorkedOutTotal
 
   useEffect(() => {
     const data = [
