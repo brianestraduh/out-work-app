@@ -1,13 +1,16 @@
 import { useRef, useEffect, useState } from "react";
-import { Chart } from "chart.js/auto";
-import BarController from "chart.js/controllers/barController";
-import LinearScale from "chart.js/scales/linearScale";
-import CategoryScale from "chart.js/scales/categoryScale";
-import BarElement from "chart.js/elements/barElement";
+import FormSelectDate from "./components/FormSelectDate.jsx";
+import {
+  Chart,
+  BarController,
+  LinearScale,
+  CategoryScale,
+  BarElement,
+} from "chart.js";
 
 Chart.register(BarController, LinearScale, CategoryScale, BarElement);
 
-function SessionStats() {
+function SessionStats({ onDateChange }) {
   const canvasRef = useRef(null);
   // duration will be data and is an array where each entry is an object with the duration
   // in minutes and the date of the session
@@ -56,9 +59,14 @@ function SessionStats() {
         },
       },
     });
-  }, [stat]);
+  }, []);
 
-  return <canvas ref={canvasRef} />;
+  return (
+    <>
+      <FormSelectDate onChange={onDateChange} />
+      <canvas ref={canvasRef} />
+    </>
+  );
 }
 
 export default SessionStats;
