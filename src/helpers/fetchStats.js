@@ -1,16 +1,9 @@
 import supabase from "../../supaBase";
 
 async function fetchSessionStats(dateCutoff) {
-  const timeIntervals = {
-    "this week": 6.048e8,
-    "this month": 2.628e9,
-    "within 3 months": 7.884e9,
-    "within a year": 3.154e10,
-  };
+  const cutOffDate = getCutOffDate(dateCutoff);
 
-  //I need to get to a timestamp
-  const timeAtCutOff = new Date().getTime() - timeIntervals[dateCutoff];
-  const timestampCutOff = new Date(timeAtCutOff).toISOString();
+  const timestampCutOff = cutOffDate.toISOString();
   const { data, error } = await supabase
     .from("workout_session")
     .select("*")
@@ -25,16 +18,9 @@ async function fetchSessionStats(dateCutoff) {
 }
 
 async function fetchExerciseStats(dateCutoff, exerciseId = null) {
-  const timeIntervals = {
-    "this week": 6.048e8,
-    "this month": 2.628e9,
-    "within 3 months": 7.884e9,
-    "within a year": 3.154e10,
-  };
+  const cutOffDate = getCutOffDate(dateCutoff);
 
-  //I need to get to a timestamp
-  const timeAtCutOff = new Date().getTime() - timeIntervals[dateCutoff];
-  const timestampCutOff = new Date(timeAtCutOff).toISOString();
+  const timestampCutOff = cutOffDate.toISOString();
   if (exerciseId === null) {
     const { data, error } = await supabase
       .from("exercise_sets")
@@ -60,6 +46,31 @@ async function fetchExerciseStats(dateCutoff, exerciseId = null) {
     console.log("exercise_sets", data);
     return data;
   }
+}
+function getCutOffDate(dateCutoff) {
+  const now = new Date();
+  let cutOffDate;
+
+  switch (dateCutoff) {
+    case "this week":
+      cutOffDate = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate() - now.getDay()
+      );
+      break;
+    case "this month":
+      cutOffDate = new Date(now.getFullYear(), now.getMonth(), 1);
+      break;
+    case "within 3 months":
+      cutOffDate = new Date(now.getFullYear(), now.getMonth() - 2, 1);
+      break;
+    case "within a year":
+      cutOffDate = new Date(now.getFullYear(), 0, 1);
+      break;
+  }
+
+  return cutOffDate;
 }
 
 export { fetchSessionStats, fetchExerciseStats };

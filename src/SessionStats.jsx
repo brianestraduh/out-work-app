@@ -1,5 +1,7 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 import FormSelectDate from "./components/FormSelectDate.jsx";
+import { durationArr } from "./helpers/sessionStatsHelper.js";
+import { generateLabels } from "./helpers/chartsHelper.js";
 import {
   Chart,
   BarController,
@@ -10,37 +12,32 @@ import {
 
 Chart.register(BarController, LinearScale, CategoryScale, BarElement);
 
-function SessionStats({ onDateChange, sessionData }) {
+function SessionStats({ onDateChange, sessionData, sessionCutOffDate }) {
+  const cutOffDate = sessionCutOffDate;
+  const durationData = durationArr(sessionData, cutOffDate);
   const canvasRef = useRef(null);
-  // duration will be data and is an array where each entry is an object with the duration
-  // in minutes and the date of the session
-  //write a helper function that takes in the sessionData and returns the data with objects containing
-  // duration and date
-  //repeat for daysWorkedOut
-  // const durationData
-  // const daysWorkedOutData
-  // const durationTotal
-  // const daysWorkedOutTotal
+  const chartRef = useRef(null); // Add this line
 
   useEffect(() => {
-    const data = [
-      { year: 2010, count: 10 },
-      { year: 2011, count: 20 },
-      { year: 2012, count: 15 },
-      { year: 2013, count: 25 },
-      { year: 2014, count: 22 },
-      { year: 2015, count: 30 },
-      { year: 2016, count: 28 },
-    ];
+    console.log("duration arr", durationData), [durationData];
+  });
 
-    new Chart(canvasRef.current, {
+  useEffect(() => {
+    const data = durationData;
+
+    // Destroy the previous chart if it exists
+    if (chartRef.current) {
+      chartRef.current.destroy();
+    }
+
+    chartRef.current = new Chart(canvasRef.current, {
       type: "bar",
       data: {
-        labels: data.map((row) => row.year),
+        labels: generateLabels(cutOffDate),
         datasets: [
           {
-            label: "Acquisitions by year",
-            data: data.map((row) => row.count),
+            label: "Duration (minutes)",
+            data: data.map((row) => row.duration),
             backgroundColor: "rgba(75,192,192,0.4)",
             borderColor: "rgba(75,192,192,1)",
             borderWidth: 1,
@@ -59,7 +56,7 @@ function SessionStats({ onDateChange, sessionData }) {
         },
       },
     });
-  }, []);
+  }, [durationData]); // Add durationData as a dependency
 
   return (
     <>

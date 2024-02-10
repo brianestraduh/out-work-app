@@ -27,7 +27,11 @@ function Progression() {
     <div>
       <h1>Progression</h1>
       <Link to="/">Back</Link>
-      <SessionStats onDateChange={handleDateChange} sessionData={sessions} />
+      <SessionStats
+        onDateChange={handleDateChange}
+        sessionData={sessions}
+        sessionCutOffDate={sessionCutOffDate}
+      />
     </div>
   );
 }
