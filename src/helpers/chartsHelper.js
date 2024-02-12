@@ -1,4 +1,21 @@
 function generateLabels(cutOffDate) {
+  const monthsOfYear = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sept",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  const currentMonthIndex = new Date().getMonth();
+
   switch (cutOffDate) {
     case "this week":
       return [
@@ -22,18 +39,18 @@ function generateLabels(cutOffDate) {
     case "within 3 months":
     case "within a year":
       return [
-        "January",
-        "February",
-        "March",
-        "April",
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
         "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sept",
+        "Oct",
+        "Nov",
+        "Dec",
       ];
     default:
       return [];

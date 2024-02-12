@@ -7,7 +7,24 @@ function durationArr(sessionData, cutOffDate) {
       date: dateConversion(session.sessiondate, cutOffDate),
     };
   });
-  return durationArr;
+
+  const result = sumDurationsByDate(durationArr);
+
+  return result;
+}
+
+function sessCountArr(sessionData, cutOffDate) {
+  const durationArr = sessionData.map((session) => {
+    // then SessionStats can take care of ensuring that the graph changes accordingly
+    // such as making sure the axis changes to the correct units
+    return {
+      count: 0,
+      date: dateConversion(session.sessiondate, cutOffDate),
+    };
+  });
+  const result = sumCountByDate(durationArr);
+  console.log("result", result);
+  return result;
 }
 
 function dateConversion(isoDate, cutOffDate) {
@@ -28,7 +45,10 @@ function dateConversion(isoDate, cutOffDate) {
     const date = new Date(isoDate);
     const dayOfMonth = date.getDate();
     return dayOfMonth;
-  } else if ((cutOffDate === "within 3 months") | "within a year") {
+  } else if (
+    cutOffDate === "within 3 months" ||
+    cutOffDate === "within a year"
+  ) {
     const date = new Date(isoDate);
     const monthsOfYear = [
       "January",
@@ -49,4 +69,36 @@ function dateConversion(isoDate, cutOffDate) {
   }
 }
 
-export { durationArr };
+function sumDurationsByDate(data) {
+  return data.reduce((acc, curr) => {
+    const existingIndex = acc.findIndex((item) => item.date === curr.date);
+
+    if (existingIndex > -1) {
+      // If the date already exists in the accumulator, add the current duration to the existing duration
+      acc[existingIndex].duration += curr.duration;
+    } else {
+      // If the date does not exist in the accumulator, add the current item to the accumulator
+      acc.push({ ...curr });
+    }
+
+    return acc;
+  }, []);
+}
+
+function sumCountByDate(data) {
+  return data.reduce((acc, curr) => {
+    const existingIndex = acc.findIndex((item) => item.date === curr.date);
+
+    if (existingIndex > -1) {
+      // If the date already exists in the accumulator, increment the count by 1
+      acc[existingIndex].count += 1;
+    } else {
+      // If the date does not exist in the accumulator, add the current item to the accumulator with a count of 1
+      acc.push({ ...curr, count: 1 });
+    }
+
+    return acc;
+  }, []);
+}
+
+export { durationArr, sessCountArr };

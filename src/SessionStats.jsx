@@ -1,24 +1,34 @@
-import { useRef, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchSessionStats } from "./helpers/fetchStats";
 import FormSelectDate from "./components/FormSelectDate.jsx";
-import { durationArr } from "./helpers/sessionStatsHelper.js";
+import { durationArr, sessCountArr } from "./helpers/sessionStatsHelper.js";
 import { generateLabels } from "./helpers/chartsHelper.js";
 import {
-  Chart,
-  BarController,
-  LinearScale,
+  Chart as ChartJS,
   CategoryScale,
+  LinearScale,
   BarElement,
+  Title,
+  Tooltip,
+  Legend,
 } from "chart.js";
+import { Bar } from "react-chartjs-2";
 
-Chart.register(BarController, LinearScale, CategoryScale, BarElement);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 function SessionStats() {
   const [sessions, setSessions] = useState([]);
   const [sessionCutOffDate, setSessionCutOffDate] = useState("this month");
   const [durationData, setDurationData] = useState([]);
-  const canvasRef = useRef(null);
-  const chartRef = useRef(null); // Add this line
+  const [sessCountData, setSessCountData] = useState([]);
+  const [toggleDataTypes, setToggleDataTypes] = useState(false);
 
   useEffect(() => {
     fetchSessionStats(sessionCutOffDate).then((data) => {
@@ -28,61 +38,63 @@ function SessionStats() {
 
   useEffect(() => {
     setDurationData(durationArr(sessions, sessionCutOffDate));
-    console.log(durationData);
+    setSessCountData(sessCountArr(sessions, sessionCutOffDate));
+    console.log("countData", sessCountData);
   }, [sessions]);
 
-  useEffect(() => {
-    const data = durationData;
-
-    // Destroy the previous chart if it exists
-    if (chartRef.current) {
-      chartRef.current.destroy();
-    }
-
-    chartRef.current = new Chart(canvasRef.current, {
-      type: "bar",
-      data: {
-        labels: generateLabels(sessionCutOffDate),
-        datasets: [
-          {
-            label: "Duration (minutes)",
-            data: data.map((row) => row.duration),
-            backgroundColor: "rgba(75,192,192,0.4)",
-            borderColor: "rgba(75,192,192,1)",
-            borderWidth: 1,
-          },
-        ],
-      },
-      options: {
-        scales: {
-          y: {
-            type: "linear",
-            beginAtZero: true,
-          },
-          x: {
-            type: "category",
-          },
-        },
-      },
-    });
-  }, [durationData]); // Add durationData as a dependency
+  const durationLabel = {
+    label: `Duration`,
+    data: durationData.map((sess) => sess.duration),
+    backgroundColor: "rgba(57, 255, 20, 0.5)",
+  };
+  const countLabel = {
+    label: `Count`,
+    data: sessCountData.map((sess) => sess.count),
+    backgroundColor: "rgba(0, 0, 128, 0.5)",
+  };
 
   function handleDateChange(event) {
     setSessionCutOffDate(event.target.value);
   }
+  //data and options objects for chart.js
+  const data = {
+    labels: generateLabels(sessionCutOffDate),
+    datasets: [toggleDataTypes ? countLabel : durationLabel],
+  };
+
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top",
+      },
+      title: {
+        display: true,
+        text: `Duration of sessions ${sessionCutOffDate}`,
+      },
+    },
+  };
+
+  function handleToggle() {
+    setToggleDataTypes(!toggleDataTypes);
+  }
   return (
     <>
       <FormSelectDate onChange={handleDateChange} />
-      <canvas ref={canvasRef} />
+      <button onClick={handleToggle}>
+        {toggleDataTypes ? "Session Count" : "Session Duration"}
+      </button>
+
+      <Bar data={data} options={options} />
     </>
   );
 }
 
 export default SessionStats;
 
-//I need to aggregate the data such that it sums the works outs for each day and month using a reduce
-// funciton probably
-//this should be done in the sessionStatsHelper.js file
-//such that I return an aray of objects with the date and the duration of the workouts for period of time
-// as a sum of the workouts for that day or month
-//{duration: 30, date: January} which could be the some of 2 or more workouts for that month
+// Now in order to minimize effort to implement count of sessions and toggling between duration
+// and count of sessions, I want to create a new state called statsType and when the user
+// changes from duration to count of sessions, the state will change and the chart will re-render
+// with the new data. I'll use conditionals to do this
+// I don't want a drop down for this, I want a button that toggles between duration and count of sessions
+// may do the same for the date range
