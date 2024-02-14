@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { fetchSessionStats } from "./helpers/fetchStats";
 import SessionStats from "./SessionStats";
+import { ExerciseStats } from "./ExerciseStats";
 
 function Progression() {
   const [exerciseData, setExerciseData] = useState([]);
@@ -18,6 +19,7 @@ function Progression() {
       <h1>Progression</h1>
       <Link to="/">Back</Link>
       <SessionStats />
+      <ExerciseStats />
     </div>
   );
 }

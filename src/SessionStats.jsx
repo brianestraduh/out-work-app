@@ -39,7 +39,6 @@ function SessionStats() {
   useEffect(() => {
     setDurationData(durationArr(sessions, sessionCutOffDate));
     setSessCountData(sessCountArr(sessions, sessionCutOffDate));
-    console.log("countData", sessCountData);
   }, [sessions]);
 
   const durationLabel = {
@@ -64,13 +63,18 @@ function SessionStats() {
 
   const options = {
     responsive: true,
-    plugins: {
-      legend: {
-        position: "top",
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: "Time",
+        },
       },
-      title: {
-        display: true,
-        text: `Duration of sessions ${sessionCutOffDate}`,
+      y: {
+        title: {
+          display: true,
+          text: `${toggleDataTypes ? "Count" : "Minutes"}`,
+        },
       },
     },
   };
@@ -80,6 +84,7 @@ function SessionStats() {
   }
   return (
     <>
+      <h2>Session Stats</h2>
       <FormSelectDate onChange={handleDateChange} />
       <button onClick={handleToggle}>
         {toggleDataTypes ? "Session Count" : "Session Duration"}
@@ -91,10 +96,3 @@ function SessionStats() {
 }
 
 export default SessionStats;
-
-// Now in order to minimize effort to implement count of sessions and toggling between duration
-// and count of sessions, I want to create a new state called statsType and when the user
-// changes from duration to count of sessions, the state will change and the chart will re-render
-// with the new data. I'll use conditionals to do this
-// I don't want a drop down for this, I want a button that toggles between duration and count of sessions
-// may do the same for the date range
