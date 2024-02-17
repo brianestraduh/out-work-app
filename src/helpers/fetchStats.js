@@ -24,7 +24,7 @@ async function fetchExerciseStats(dateCutoff, exerciseId = null) {
   if (exerciseId === null) {
     const { data, error } = await supabase
       .from("exercise_sets")
-      .select("*, exercises (name) ")
+      .select("*, exercises (name, muscle_group) ")
       .gte("timestamp", timestampCutOff);
 
     if (error) {

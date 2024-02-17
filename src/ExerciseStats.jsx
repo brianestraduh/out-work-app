@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchExerciseStats } from "./helpers/fetchStats";
+import { muscleGroupArr } from "./helpers/exerciseStatsHelper.js";
 import FormSelectDate from "./components/FormSelectDate.jsx";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
@@ -10,7 +11,7 @@ export function ExerciseStats() {
   const [exercises, setExercises] = useState([]);
   const [exerciseCutOffDate, setExerciseCutOffDate] = useState("this month");
   const [muscleGroupData, setMuscleGroupData] = useState([]);
-
+  const [displayedStat, setDisplayedStat] = useState("volume");
   useEffect(() => {
     fetchExerciseStats(exerciseCutOffDate).then((data) => {
       setExercises(data);
@@ -18,16 +19,27 @@ export function ExerciseStats() {
   }, [exerciseCutOffDate]);
 
   useEffect(() => {
-    setMuscleGroupData(durationArr(exercises, exerciseCutOffDate));
-    console.log("countData", sessCountData);
+    const muscleGroupData = muscleGroupArr(exercises);
+    setMuscleGroupData(muscleGroupData);
+    console.log("muscleGroupData", muscleGroupData);
   }, [exercises]);
 
+  function handleDateChange(event) {
+    setExerciseCutOffDate(event.target.value);
+  }
+
+  function handleToggle(stat) {
+    setDisplayedStat(stat);
+  }
+
   const data = {
-    labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+    labels: muscleGroupData.map((muscleGroup) => muscleGroup.muscleGroup),
     datasets: [
       {
-        label: "# of Votes",
-        data: [12, 19, 3, 5, 2, 3],
+        label: `${
+          displayedStat.charAt(0).toUpperCase() + displayedStat.slice(1)
+        } ${displayedStat === "volume" ? "(lbs)" : ""}`,
+        data: muscleGroupData.map((muscleGroup) => muscleGroup[displayedStat]),
         backgroundColor: [
           "rgba(255, 99, 132, 0.2)",
           "rgba(54, 162, 235, 0.2)",
@@ -51,6 +63,9 @@ export function ExerciseStats() {
   return (
     <div>
       <h2>Exercise Stats</h2>
+      <button onClick={() => handleToggle("volume")}>Volume</button>
+      <button onClick={() => handleToggle("reps")}>Reps</button>
+      <FormSelectDate onChange={handleDateChange} />
       <Doughnut data={data} />
     </div>
   );
