@@ -76,4 +76,39 @@ function workoutDuration(startTime) {
 
   return minutes;
 }
-export { postWorkoutSession };
+//user has pressed Complete workout "Are you sure?" Modal appears
+function createRecordsArr(exerciseStore) {
+  const recordsArr = exerciseStore.map((exercise) => {
+    //pr
+    let pr = exercise.setsData.reduce((max, current) => {
+      return current.weight > max ? current.weight : max;
+    }, -Infinity);
+    //1RM
+    //(Weight lifted / (1.0278 - (0.0278 * Repetitions)))
+    let oneRepMax = exercise.setsData.reduce((max, current) => {
+      let currentOneRepMax = current.weight / (1.0278 - 0.278 * current.reps);
+      return currentOneRepMax > max ? currentOneRepMax : max;
+    }, -Infinity);
+    let maxVolume = exercise.setsData.reduce((max, current) => {
+      let currentMaxVol = current.weight * current.reps;
+      return currentMaxVol > max ? currentMaxVol : max;
+    }, -Infinity);
+
+    return { [exercise.exercise_id]: { oneRepMax, pr, maxVolume } };
+  });
+  return recordsArr;
+}
+// if user clicks Yes
+function postRecords(recordsArr) {}
+//Change of plans! I want to get all the PRs when the exercise Session starts
+// If I do that then I will KNOW if something is a record and I can feed that to the createRecordsArr
+function getRecords(exerciseStore) {
+  let exercisesArr;
+  //make call to supa for records based off of exercise ids
+
+  //then return an array with all of the records for each exercise
+  // then I can use the array in the postRecords Array and see if the records should be updated!
+}
+
+//
+export { postWorkoutSession, createRecordsArr };
