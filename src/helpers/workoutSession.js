@@ -77,38 +77,125 @@ function workoutDuration(startTime) {
   return minutes;
 }
 //user has pressed Complete workout "Are you sure?" Modal appears
-function createRecordsArr(exerciseStore) {
+function createRecordsArr(exerciseStore, currentRecords) {
   const recordsArr = exerciseStore.map((exercise) => {
     //pr
-    let pr = exercise.setsData.reduce((max, current) => {
-      return current.weight > max ? current.weight : max;
-    }, -Infinity);
-    //1RM
-    //(Weight lifted / (1.0278 - (0.0278 * Repetitions)))
-    let oneRepMax = exercise.setsData.reduce((max, current) => {
-      let currentOneRepMax = current.weight / (1.0278 - 0.278 * current.reps);
-      return currentOneRepMax > max ? currentOneRepMax : max;
-    }, -Infinity);
-    let maxVolume = exercise.setsData.reduce((max, current) => {
-      let currentMaxVol = current.weight * current.reps;
-      return currentMaxVol > max ? currentMaxVol : max;
-    }, -Infinity);
+    let completedSets = exercise.setsData.filter((set) => set.completeStatus);
 
-    return { [exercise.exercise_id]: { oneRepMax, pr, maxVolume } };
+    let pr = null;
+    let oneRepMax = null;
+    let maxVolume = null;
+
+    if (completedSets.length > 0) {
+      pr = completedSets.reduce((max, current) => {
+        return current.weight > max ? current.weight : max;
+      }, -Infinity);
+
+      oneRepMax = completedSets.reduce((max, current) => {
+        let currentOneRepMax = current.weight / (1.0278 - 0.278 * current.reps);
+        return currentOneRepMax > max ? currentOneRepMax : max;
+      }, -Infinity);
+
+      maxVolume = completedSets.reduce((max, current) => {
+        let currentMaxVol = current.weight * current.reps;
+        return currentMaxVol > max ? currentMaxVol : max;
+      }, -Infinity);
+    }
+
+    // Find the corresponding record in currentRecords
+    let currentRecord = currentRecords.find(
+      (record) => record.exercise_id === exercise.exercise_id
+    );
+
+    // Initialize record status
+    let prBroken = false,
+      oneRepMaxBroken = false,
+      maxVolumeBroken = false,
+      firstRecord = false;
+
+    // If a corresponding record was found, compare the values
+    if (currentRecord) {
+      if (pr > currentRecord.pr) {
+        prBroken = true;
+      }
+      if (oneRepMax > currentRecord.oneRepMax) {
+        oneRepMaxBroken = true;
+      }
+      if (maxVolume > currentRecord.maxVolume) {
+        maxVolumeBroken = true;
+      }
+    } else {
+      // If no corresponding record was found, it's the first record
+      firstRecord = true;
+    }
+
+    return {
+      [exercise.exercise_id]: {
+        oneRepMax,
+        pr,
+        maxVolume,
+        prBroken,
+        oneRepMaxBroken,
+        maxVolumeBroken,
+        firstRecord,
+      },
+    };
   });
+
   return recordsArr;
 }
 // if user clicks Yes
-function postRecords(recordsArr) {}
-//Change of plans! I want to get all the PRs when the exercise Session starts
-// If I do that then I will KNOW if something is a record and I can feed that to the createRecordsArr
-function getRecords(exerciseStore) {
-  let exercisesArr;
-  //make call to supa for records based off of exercise ids
+async function postRecords(recordsArr, userId) {
+  for (let record of recordsArr) {
+    for (let exercise_id in record) {
+      let exerciseRecord = record[exercise_id];
 
-  //then return an array with all of the records for each exercise
-  // then I can use the array in the postRecords Array and see if the records should be updated!
+      // Prepare the data to be upserted
+      let data = {
+        user_id: userId, // include the userId
+        exercise_id: exercise_id,
+        pr: exerciseRecord.pr,
+        oneRepMax: exerciseRecord.oneRepMax,
+        maxVolume: exerciseRecord.maxVolume,
+      };
+
+      // If a record has been broken, upsert the corresponding timestamp
+      if (exerciseRecord.prBroken) {
+        data.prTimestamp = new Date();
+      }
+      if (exerciseRecord.oneRepMaxBroken) {
+        data.oneRepMaxTimestamp = new Date();
+      }
+      if (exerciseRecord.maxVolumeBroken) {
+        data.maxVolumeTimestamp = new Date();
+      }
+
+      // Upsert the data
+      const { error } = await supabase
+        .from("exercise_records")
+        .upsert(data, { returning: "minimal", onConflict: "exercise_id" });
+
+      if (error) {
+        console.error("Error: ", error);
+      }
+    }
+  }
+}
+async function getRecords(exerciseStore) {
+  const exerciseIDs = exerciseStore.map((exercise) => exercise.exercise_id);
+
+  const { data, error } = await supabase
+    .from("exercise_records")
+    .select("*")
+    .in("exercise_id", exerciseIDs);
+
+  if (error) {
+    console.error("Error: ", error);
+  } else {
+    console.log("current records: ", data);
+  }
+  return data;
 }
 
 //
-export { postWorkoutSession, createRecordsArr };
+export { postWorkoutSession, createRecordsArr, getRecords, postRecords };

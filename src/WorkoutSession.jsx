@@ -8,6 +8,11 @@ import { postWorkoutSession } from "./helpers/workoutSession";
 import { clearWorkoutInfo } from "./redux/workoutSession/workoutIdSlice";
 import ConfirmationModal from "./ConfirmationModal";
 import Button from "./components/Button";
+import {
+  getRecords,
+  createRecordsArr,
+  postRecords,
+} from "./helpers/workoutSession";
 export default function WorkoutSession() {
   const workoutId = useSelector((state) => state.workoutId.id);
   const workoutName = useSelector((state) => state.workoutId.name);
@@ -19,6 +24,8 @@ export default function WorkoutSession() {
   const [showCompleteModal, setShowCompleteModal] = useState(false);
   const [showBackModal, setShowBackModal] = useState(false);
   const startTimeRef = useRef(null);
+  const records = useRef(null);
+  const newRecordsArr = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,6 +48,8 @@ export default function WorkoutSession() {
         defaultReps: item.exercises.default_reps,
       }));
       setExercises(exercises);
+      const recordsData = await getRecords(exerciseStore);
+      records.current = recordsData;
       if (error) console.log("Error: ", error);
     };
 
@@ -58,6 +67,7 @@ export default function WorkoutSession() {
 
   const handleComplete = () => {
     setShowCompleteModal(true);
+    newRecordsArr.current = createRecordsArr(exerciseStore, records.current);
   };
   const handleCancel = () => {
     // handle cancel action
