@@ -48,8 +48,7 @@ export default function WorkoutSession() {
         defaultReps: item.exercises.default_reps,
       }));
       setExercises(exercises);
-      const recordsData = await getRecords(exerciseStore);
-      records.current = recordsData;
+      records.current = await getRecords(exercises);
       if (error) console.log("Error: ", error);
     };
 
@@ -67,7 +66,9 @@ export default function WorkoutSession() {
 
   const handleComplete = () => {
     setShowCompleteModal(true);
-    newRecordsArr.current = createRecordsArr(exerciseStore, records.current);
+    console.log("records in workoutSession", records.current);
+    newRecordsArr.current = createRecordsArr(exerciseStore, ...records.current);
+    console.log("newRecordsArr", newRecordsArr.current);
   };
   const handleCancel = () => {
     // handle cancel action
@@ -87,6 +88,7 @@ export default function WorkoutSession() {
         user.id,
         exerciseStore
       );
+      await postRecords(newRecordsArr.current, user.id);
       dispatch(clearWorkoutInfo());
       navigate("/");
     } catch (error) {

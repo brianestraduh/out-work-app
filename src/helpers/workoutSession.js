@@ -76,7 +76,11 @@ function workoutDuration(startTime) {
 
   return minutes;
 }
-//user has pressed Complete workout "Are you sure?" Modal appears
+// this will make it such that those rows always exist and are null if there is no record.
+//getRecords will always match up
+//Now I will need to modify createRecordsArray to make sure it supports comparing against null values
+// Then I should be good to go
+
 function createRecordsArr(exerciseStore, currentRecords) {
   const recordsArr = exerciseStore.map((exercise) => {
     //pr
@@ -92,7 +96,9 @@ function createRecordsArr(exerciseStore, currentRecords) {
       }, -Infinity);
 
       oneRepMax = completedSets.reduce((max, current) => {
-        let currentOneRepMax = current.weight / (1.0278 - 0.278 * current.reps);
+        let currentOneRepMax = Math.round(
+          current.weight * (1 + 0.0333 * current.reps)
+        );
         return currentOneRepMax > max ? currentOneRepMax : max;
       }, -Infinity);
 
@@ -101,32 +107,26 @@ function createRecordsArr(exerciseStore, currentRecords) {
         return currentMaxVol > max ? currentMaxVol : max;
       }, -Infinity);
     }
-
     // Find the corresponding record in currentRecords
-    let currentRecord = currentRecords.find(
-      (record) => record.exercise_id === exercise.exercise_id
-    );
+    let currentRecord = currentRecords;
 
     // Initialize record status
     let prBroken = false,
       oneRepMaxBroken = false,
-      maxVolumeBroken = false,
-      firstRecord = false;
-
+      maxVolumeBroken = false;
+    console.log("current record obj", currentRecord);
     // If a corresponding record was found, compare the values
     if (currentRecord) {
       if (pr > currentRecord.pr) {
         prBroken = true;
+        console.log("pr broken");
       }
-      if (oneRepMax > currentRecord.oneRepMax) {
+      if (oneRepMax > currentRecord.one_rep_max) {
         oneRepMaxBroken = true;
       }
-      if (maxVolume > currentRecord.maxVolume) {
+      if (maxVolume > currentRecord.max_volume) {
         maxVolumeBroken = true;
       }
-    } else {
-      // If no corresponding record was found, it's the first record
-      firstRecord = true;
     }
 
     return {
@@ -137,11 +137,10 @@ function createRecordsArr(exerciseStore, currentRecords) {
         prBroken,
         oneRepMaxBroken,
         maxVolumeBroken,
-        firstRecord,
       },
     };
   });
-
+  console.log(recordsArr);
   return recordsArr;
 }
 // if user clicks Yes
@@ -150,39 +149,49 @@ async function postRecords(recordsArr, userId) {
     for (let exercise_id in record) {
       let exerciseRecord = record[exercise_id];
 
-      // Prepare the data to be upserted
-      let data = {
-        user_id: userId, // include the userId
-        exercise_id: exercise_id,
-        pr: exerciseRecord.pr,
-        oneRepMax: exerciseRecord.oneRepMax,
-        maxVolume: exerciseRecord.maxVolume,
-      };
+      // Check if any record has been broken
+      if (
+        exerciseRecord.prBroken ||
+        exerciseRecord.oneRepMaxBroken ||
+        exerciseRecord.maxVolumeBroken
+      ) {
+        console.log("new record");
+        // Prepare the data to be upserted
+        let data = {
+          user_id: userId, // include the userId
+          exercise_id: exercise_id,
+          pr: exerciseRecord.pr,
+          one_rep_max: exerciseRecord.oneRepMax,
+          max_volume: exerciseRecord.maxVolume,
+        };
 
-      // If a record has been broken, upsert the corresponding timestamp
-      if (exerciseRecord.prBroken) {
-        data.prTimestamp = new Date();
-      }
-      if (exerciseRecord.oneRepMaxBroken) {
-        data.oneRepMaxTimestamp = new Date();
-      }
-      if (exerciseRecord.maxVolumeBroken) {
-        data.maxVolumeTimestamp = new Date();
-      }
+        // If a record has been broken, upsert the corresponding timestamp
+        if (exerciseRecord.prBroken) {
+          data.pr_date = new Date();
+        }
+        if (exerciseRecord.oneRepMaxBroken) {
+          data.one_rep_max_date = new Date();
+        }
+        if (exerciseRecord.maxVolumeBroken) {
+          data.max_vol_date = new Date();
+        }
+        console.log("data record to be posted", data);
+        // Upsert the data
+        const { error } = await supabase
+          .from("exercise_records")
+          .upsert(data, { returning: "minimal", onConflict: "exercise_id" });
 
-      // Upsert the data
-      const { error } = await supabase
-        .from("exercise_records")
-        .upsert(data, { returning: "minimal", onConflict: "exercise_id" });
-
-      if (error) {
-        console.error("Error: ", error);
+        if (error) {
+          console.error("Error: ", error);
+        }
+        console.log("new record inserted");
       }
+      // If no record has been broken, the loop will simply move on to the next exercise
     }
   }
 }
-async function getRecords(exerciseStore) {
-  const exerciseIDs = exerciseStore.map((exercise) => exercise.exercise_id);
+async function getRecords(exercises) {
+  const exerciseIDs = exercises.map((exercise) => exercise.exercise_id);
 
   const { data, error } = await supabase
     .from("exercise_records")
