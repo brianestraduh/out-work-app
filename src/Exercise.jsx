@@ -27,6 +27,7 @@ export default function Exercise({ exerciseDetails, index }) {
     setSetsData((prevSetsData) => {
       const newSetsData = [...prevSetsData];
       newSetsData[index] = setData;
+      console.log(newSetsData, "newSetsData");
       return newSetsData;
     });
   }
@@ -39,8 +40,11 @@ export default function Exercise({ exerciseDetails, index }) {
       {Array.from({ length: sets }).map((_, i) => {
         return (
           <Sets
-            key={i}
+            key={`${exercise_id}-${i}`}
+            id={`${exercise_id}-${i}`}
             defaultReps={defaultReps}
+            defaultWeight={0}
+            completeStatus={false}
             exerciseIndex={index}
             setIndex={i + 1}
             onSetDataChange={(setData) => handleSetDataChange(i, setData)}

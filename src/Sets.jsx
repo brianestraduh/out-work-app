@@ -1,14 +1,35 @@
 import { useState, useEffect } from "react";
 import FormInput from "./components/FormInput";
+
 export default function Sets({
   defaultReps,
+  defaultWeight,
+  completeStatus,
   setIndex,
   exerciseIndex,
   onSetDataChange,
 }) {
-  const [isChecked, setIsChecked] = useState(false);
-  const [reps, setReps] = useState(defaultReps);
-  const [weight, setWeight] = useState(0);
+  const storageKey = `set-${exerciseIndex}-${setIndex}`;
+
+  const getInitialState = (key, defaultValue) => {
+    const savedValue = sessionStorage.getItem(key);
+    if (savedValue) {
+      if (savedValue === "true") return true;
+      if (savedValue === "false") return false;
+      return JSON.parse(savedValue);
+    }
+    return defaultValue;
+  };
+
+  const [isChecked, setIsChecked] = useState(
+    getInitialState(`${storageKey}-checked`, completeStatus)
+  );
+  const [reps, setReps] = useState(
+    getInitialState(`${storageKey}-reps`, defaultReps.toString())
+  );
+  const [weight, setWeight] = useState(
+    getInitialState(`${storageKey}-weight`, defaultWeight.toString())
+  );
 
   const repId = `repetitions-${exerciseIndex}-${setIndex}`;
   const weightId = `repetitions-${exerciseIndex}-${setIndex}`;
@@ -18,15 +39,28 @@ export default function Sets({
     setIsChecked(!isChecked);
   };
   const handleRepsChange = (event) => {
-    setReps(Number(event.target.value));
+    setReps(event.target.value);
   };
 
   const handleWeightChange = (event) => {
-    setWeight(Number(event.target.value));
+    setWeight(event.target.value);
   };
+
   useEffect(() => {
-    onSetDataChange({ setIndex, reps, weight, completeStatus: isChecked });
+    onSetDataChange({
+      setIndex,
+      reps: Number(reps),
+      weight: Number(weight),
+      completeStatus: isChecked,
+    });
   }, [reps, weight, isChecked]);
+
+  useEffect(() => {
+    sessionStorage.setItem(`${storageKey}-checked`, JSON.stringify(isChecked));
+    sessionStorage.setItem(`${storageKey}-reps`, reps);
+    sessionStorage.setItem(`${storageKey}-weight`, weight);
+  }, [isChecked, reps, weight]);
+
   return (
     <div className={`set ${isChecked ? "complete" : ""}`}>
       <p>{`Set ${setIndex}`}</p>
@@ -36,7 +70,7 @@ export default function Sets({
         htmlFor={repId}
         type="number"
         id={repId}
-        defaultValue={defaultReps}
+        value={reps}
         onChange={handleRepsChange}
       />
       <FormInput
@@ -44,7 +78,7 @@ export default function Sets({
         htmlFor={weightId}
         type="number"
         id={weightId}
-        defaultValue={0}
+        value={weight}
         onChange={handleWeightChange}
       />
       <FormInput
@@ -52,6 +86,7 @@ export default function Sets({
         htmlFor={completeId}
         type="checkbox"
         id={completeId}
+        checked={isChecked}
         onChange={handleCheck}
       />
     </div>

@@ -89,6 +89,7 @@ export default function WorkoutSession() {
         exerciseStore
       );
       await postRecords(newRecordsArr.current, user.id);
+      clearWorkoutData();
       dispatch(clearWorkoutInfo());
       navigate("/");
     } catch (error) {
@@ -97,8 +98,26 @@ export default function WorkoutSession() {
   };
 
   function handleBackConfirm() {
+    clearWorkoutData();
     dispatch(clearWorkoutInfo());
     navigate("/startWorkout");
+  }
+
+  function clearWorkoutData() {
+    const keysToRemove = [];
+
+    // Gather keys
+    for (let i = 0; i < sessionStorage.length; i++) {
+      const key = sessionStorage.key(i);
+      if (key.includes("set-")) {
+        keysToRemove.push(key);
+      }
+    }
+
+    // Remove keys
+    for (let key of keysToRemove) {
+      sessionStorage.removeItem(key);
+    }
   }
   return (
     <div>
