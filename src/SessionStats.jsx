@@ -87,7 +87,7 @@ function SessionStats() {
       <h2>Session Stats</h2>
       <FormSelectDate onChange={handleDateChange} />
       <button onClick={handleToggle}>
-        {toggleDataTypes ? "Session Count" : "Session Duration"}
+        {toggleDataTypes ? "Session Duration" : "Session Count"}
       </button>
 
       <Bar data={data} options={options} />

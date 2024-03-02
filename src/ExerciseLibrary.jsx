@@ -79,7 +79,6 @@ export default function ExerciseLibrary() {
       //This is to update exerciseList in store and update UI of ExerciseLibrary
       try {
         const { data, error } = await supabase.from("exercises").select();
-
         if (error) {
           console.error("Error fetching exercises:", error);
           // Handle the error as needed
