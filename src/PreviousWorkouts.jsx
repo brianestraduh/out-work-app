@@ -14,14 +14,14 @@ function PreviousWorkouts() {
   const [showModal, setShowModal] = useState(false);
   const [sessionToDelete, setSessionToDelete] = useState(null);
   const [sessionsUpdated, setSessionsUpdated] = useState(false);
-  const [dateCutOff, setDateCutOff] = useState("");
+  const [dateCutOff, setDateCutOff] = useState("this week");
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    fetchSessions()
+    fetchSessions(dateCutOff)
       .then((sessionData) => {
         console.log(sessionData);
-        const filtered = filterSessions(sessionData, dateCutOff, searchTerm);
+        const filtered = filterSessions(sessionData, searchTerm);
         setSessions(filtered);
       })
       .catch((error) => {

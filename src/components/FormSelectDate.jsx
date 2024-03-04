@@ -15,7 +15,7 @@ export default function FormSelectDate(props) {
         name="session-date-filter"
         id="session-date-filter"
         onChange={onChange}
-        defaultValue={"this month"}
+        defaultValue={"this week"}
       >
         <option value="this week">this week</option>
         <option value="this month">this month</option>

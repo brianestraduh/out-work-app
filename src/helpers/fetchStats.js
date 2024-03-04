@@ -73,4 +73,4 @@ function getCutOffDate(dateCutoff) {
   return cutOffDate;
 }
 
-export { fetchSessionStats, fetchExerciseStats };
+export { fetchSessionStats, fetchExerciseStats, getCutOffDate };

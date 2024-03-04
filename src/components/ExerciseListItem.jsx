@@ -23,8 +23,8 @@ export default function ExerciseListItem(props) {
       <p>{exercise.name}</p>
       <p>{exercise.description}</p>
       <p>{exercise.muscle_group}</p>
-      <p>{`Sets ${exercise.default_sets}`}</p>
-      <p>{`Reps ${exercise.default_reps}`}</p>
+      <p>{`Sets ${exercise?.default_sets ?? exercise?.defaultSets}`}</p>
+      <p>{`Reps ${exercise?.default_reps ?? exercise?.defaultReps}`}</p>
       {children}
     </li>
   );

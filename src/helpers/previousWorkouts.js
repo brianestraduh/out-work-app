@@ -1,11 +1,15 @@
 import supabase from "../../supaBase";
+import { getCutOffDate } from "./fetchStats";
 
-async function fetchSessions() {
+async function fetchSessions(dateCutOff) {
+  const cutOffDate = getCutOffDate(dateCutOff);
+  const timestampCutOff = cutOffDate.toISOString();
   try {
     // Fetch workout sessions along with workout details
     const { data: sessionData, error: sessionError } = await supabase
       .from("workout_session")
-      .select("*, workouts:workout_id(name, description)");
+      .select("*, workouts:workout_id(name, description)")
+      .gte("sessiondate", timestampCutOff);
 
     if (sessionError) throw sessionError;
 
