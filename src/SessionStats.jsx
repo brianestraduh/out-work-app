@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { fetchSessionStats } from "./helpers/fetchStats";
 import FormSelectDate from "./components/FormSelectDate.jsx";
 import { durationArr, sessCountArr } from "./helpers/sessionStatsHelper.js";
-import { generateLabels } from "./helpers/chartsHelper.js";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -25,7 +24,7 @@ ChartJS.register(
 
 function SessionStats() {
   const [sessions, setSessions] = useState([]);
-  const [sessionCutOffDate, setSessionCutOffDate] = useState("this month");
+  const [sessionCutOffDate, setSessionCutOffDate] = useState("this week");
   const [durationData, setDurationData] = useState([]);
   const [sessCountData, setSessCountData] = useState([]);
   const [toggleDataTypes, setToggleDataTypes] = useState(false);
@@ -57,7 +56,7 @@ function SessionStats() {
   }
   //data and options objects for chart.js
   const data = {
-    labels: generateLabels(sessionCutOffDate),
+    labels: sessCountData.map((sess) => sess.date),
     datasets: [toggleDataTypes ? countLabel : durationLabel],
   };
 

@@ -7,7 +7,7 @@ function durationArr(sessionData, cutOffDate) {
       date: dateConversion(session.sessiondate, cutOffDate),
     };
   });
-
+  console.log("testing dur ", durationArr);
   const result = sumDurationsByDate(durationArr);
 
   return result;
