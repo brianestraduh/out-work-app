@@ -3,6 +3,8 @@ import { toggleDarkMode } from "./redux/darkMode/darkModeSlice.js";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import supabase from "../supaBase.js";
+import Button from "./components/Button.jsx";
+import darkIcon from "./assets/dark.svg";
 
 function Navbar() {
   let navigate = useNavigate();
@@ -40,11 +42,21 @@ function Navbar() {
   }, [isDarkTheme]);
 
   return (
-    <nav className="">
-      <p>NavBar</p>
-      <button onClick={() => dispatch(toggleDarkMode())}>DarkMode</button>
-      {session && <button onClick={signOutUser}>Sign Out</button>}
-    </nav>
+    <header>
+      <Button
+        onClick={() => dispatch(toggleDarkMode())}
+        ariaLabel={"Toggle dark mode"}
+        className="ax-button"
+        id="dark-mode-toggle"
+      >
+        <img src={darkIcon} alt="Dark mode toggle" className="dark-mode-icon" />
+      </Button>
+      <nav>
+        <div className="container">
+          {session && <button onClick={signOutUser}>Sign Out</button>}
+        </div>
+      </nav>
+    </header>
   );
 }
 
