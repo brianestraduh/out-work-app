@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import supabase from "../supaBase.js";
-import "./App.css";
 import Login from "./Login.jsx";
 import Navbar from "./Navbar.jsx";
 import Home from "./Home.jsx";

@@ -1,0 +1,4 @@
+@layer base, component, page;
+
+@import url("src/App.css");
+@import url("src/index.css");

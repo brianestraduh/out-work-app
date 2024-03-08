@@ -13,7 +13,6 @@ import ConfirmationModal from "./ConfirmationModal.jsx";
 import { setExerciseList } from "./redux/exercises/exerciseListSlice.js";
 
 export default function ExerciseLibrary() {
-  //const [exercises, setExercises] = useState([]);
   const exercises = useSelector((state) => state.exerciseList.exerciseList);
   const [filteredExercises, setFilteredExercises] = useState([]);
   const [muscleGroup, setMuscleGroup] = useState("");
