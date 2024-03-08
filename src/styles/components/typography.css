@@ -1,0 +1,7 @@
+@layer base {
+  .logo-text {
+    font-size: var(--xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary);
+  }
+}

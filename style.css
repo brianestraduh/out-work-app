@@ -3,3 +3,6 @@
 @import url("/_base.css");
 @import url("src/styles/components/container.css");
 @import url("src/styles/components/button.css");
+@import url("src/styles/components/images.css");
+@import url("src/styles/components/typography.css");
+@import url("src/styles/components/nav.css");

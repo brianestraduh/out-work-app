@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import supabase from "../supaBase.js";
 import Button from "./components/Button.jsx";
 import darkIcon from "./assets/dark.svg";
-
+import logo from "./assets/outwork-logo.svg";
 function Navbar() {
   let navigate = useNavigate();
   const dispatch = useDispatch();
@@ -43,17 +43,33 @@ function Navbar() {
 
   return (
     <header>
-      <Button
-        onClick={() => dispatch(toggleDarkMode())}
-        ariaLabel={"Toggle dark mode"}
-        className="ax-button"
-        id="dark-mode-toggle"
-      >
-        <img src={darkIcon} alt="Dark mode toggle" className="dark-mode-icon" />
-      </Button>
       <nav>
-        <div className="container">
-          {session && <button onClick={signOutUser}>Sign Out</button>}
+        <Button
+          onClick={() => dispatch(toggleDarkMode())}
+          ariaLabel={"Toggle dark mode"}
+          className="ax-button"
+          id="dark-mode-toggle"
+        >
+          <img
+            src={darkIcon}
+            alt="Dark mode toggle"
+            className="dark-mode-icon"
+          />
+        </Button>
+        <div className="nav-container">
+          <div className="nav-flex">
+            <div className="nav-flex-logo">
+              <img src={logo} alt="Outwork logo" className="outwork-logo" />
+              <p className="logo-text">OutWork</p>
+            </div>
+            {session ? (
+              <Button onClick={signOutUser} className="primary-btn">
+                Sign Out
+              </Button>
+            ) : (
+              <span className="primary-btn">Learn More</span>
+            )}
+          </div>
         </div>
       </nav>
     </header>

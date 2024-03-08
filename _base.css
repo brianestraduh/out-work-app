@@ -9,11 +9,22 @@
   }
 
   :root {
-    --main-color: #355fe5;
-    --text-color: #OA112F;
+    --main-color: #3fcf8e;
+    --complementary-white: #ffffff;
+    --complementary-grey: #a9a9a9;
+    --complementary-black: #000000;
+    --vibrant-orange: #ffa500;
     --main-font: "Montserrat", sans-serif;
-    --background-color: #f3f3f3;
-    --light-text-color: #5c5c5c;
+    --sm: 1rem;
+    --m: 1.25rem;
+    --l: 1.5rem;
+    --xl: 2rem;
+    --xx1: 2.5rem;
+    --font-weight-light: 300;
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-bold: 700;
+    --font-weight-extra-bold: 800;
   }
 
   html {
