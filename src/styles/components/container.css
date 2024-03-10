@@ -1,8 +1,60 @@
 @layer component {
   .container {
     width: 100%;
-    max-width: 1400px;
     margin: 0 auto;
     padding: 0 15px;
+    display: flex;
+    justify-content: center;
+  }
+  .login-form {
+    margin-left: -1rem;
+    margin-right: -1rem;
+    margin-top: 2.5rem;
+    flex: auto;
+    background-color: white;
+    padding: 1rem 2.5rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  }
+
+  @media (min-width: 640px) {
+    /* sm: */
+    .login-form {
+      margin-left: 0;
+      margin-right: 0;
+      border-radius: 2.5rem;
+      padding: 6rem;
+      max-width: 1000px;
+      flex: 0 0 50%;
+    }
+  }
+  .hero-container {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .hero-light {
+    background-color: var(--main-color);
+  }
+  .hero-dark {
+    background-color: var(--complementary-black);
+  }
+
+  .hero-text-container {
+    max-width: 300px;
+    line-height: 1.35;
+  }
+
+  @media (min-width: 640px) {
+    .hero-container {
+      padding-top: 7rem;
+      padding-bottom: 7rem;
+    }
+    .hero-text-container {
+      max-width: 800px;
+    }
   }
 }

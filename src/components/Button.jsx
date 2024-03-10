@@ -13,7 +13,7 @@ export default function Button(props) {
   } = props;
   const classes = clsx(
     {
-      btn: true,
+      "ax-btn": true,
     },
     className
   );

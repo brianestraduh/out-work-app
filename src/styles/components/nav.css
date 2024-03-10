@@ -10,6 +10,9 @@
     margin: 0 auto;
     padding: 0 15px;
   }
+  nav {
+    background-color: var(--complementary-white);
+  }
 
   .nav-flex-logo {
     display: flex;
@@ -34,7 +37,7 @@
       font-size: var(--l);
     }
     .nav-flex {
-      flex-direction: column;
+      justify-content: space-evenly;
     }
   }
 }

@@ -47,20 +47,20 @@ function Navbar() {
         <Button
           onClick={() => dispatch(toggleDarkMode())}
           ariaLabel={"Toggle dark mode"}
-          className="ax-button"
+          className="dark-mode-icon"
           id="dark-mode-toggle"
         >
-          <img
-            src={darkIcon}
-            alt="Dark mode toggle"
-            className="dark-mode-icon"
-          />
+          <img src={darkIcon} alt="Dark mode toggle" className="darkmode-img" />
         </Button>
-        <div className="nav-container">
+        <div
+          className={
+            isDarkTheme ? "nav-container dark-nav-container" : "nav-container"
+          }
+        >
           <div className="nav-flex">
             <div className="nav-flex-logo">
               <img src={logo} alt="Outwork logo" className="outwork-logo" />
-              <p className="logo-text">OutWork</p>
+              {session && <p className="logo-text">OutWork</p>}
             </div>
             {session ? (
               <Button onClick={signOutUser} className="primary-btn">

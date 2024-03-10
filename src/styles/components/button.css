@@ -1,9 +1,9 @@
 @layer component {
   .dark-mode-icon {
-    width: 25px;
-    height: 25px;
     cursor: pointer;
     transition: transform 0.1s ease-in-out;
+    background-color: transparent;
+    border: none;
   }
 
   .dark-mode-icon:active {
@@ -33,6 +33,10 @@
 
   .primary-btn:hover {
     background-color: var(--complementary-grey);
+  }
+  .dark-btn {
+    background-color: var(--complementary-white);
+    color: var(--complementary-black);
   }
 
   @media (max-width: 768px) {

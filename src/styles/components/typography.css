@@ -4,4 +4,25 @@
     font-weight: var(--font-weight-bold);
     color: var(--color-primary);
   }
+  .white-header-text {
+    color: var(--complementary-white);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--xxl);
+  }
+  .white-p-text {
+    color: var(--complementary-white);
+    font-weight: var(--font-weight-normal);
+    font-size: var(--xl);
+    text-align: center;
+  }
+  @media (max-width: 768px) {
+    .white-p-text {
+      font-size: var(--sm);
+    }
+    .white-header-text {
+      color: var(--complementary-white);
+      font-weight: var(--font-weight-bold);
+      font-size: var(--l);
+    }
+  }
 }
