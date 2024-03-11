@@ -51,7 +51,7 @@
   @media (min-width: 640px) {
     .hero-container {
       padding-top: 7rem;
-      padding-bottom: 7rem;
+      padding-bottom: 5rem;
     }
     .hero-text-container {
       max-width: 800px;

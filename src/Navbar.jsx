@@ -67,7 +67,7 @@ function Navbar() {
                 Sign Out
               </Button>
             ) : (
-              <span className="primary-btn">Learn More</span>
+              <p className="logo-text">OutWork</p>
             )}
           </div>
         </div>
