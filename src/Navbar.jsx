@@ -57,11 +57,9 @@ function Navbar() {
             isDarkTheme ? "nav-container dark-nav-container" : "nav-container"
           }
         >
-          <div className="nav-flex">
-            <div className="nav-flex-logo">
-              <img src={logo} alt="Outwork logo" className="outwork-logo" />
-              {session && <p className="logo-text">OutWork</p>}
-            </div>
+          <div className="nav-grid">
+            <img src={logo} alt="Outwork logo" className="outwork-logo" />
+            {session && <p className="logo-text">OutWork</p>}
             {session ? (
               <Button onClick={signOutUser} className="primary-btn">
                 Sign Out

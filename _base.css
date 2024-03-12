@@ -23,12 +23,15 @@
 
   body {
     font-family: var(--main-font);
-    margin: 0;
   }
 
   html,
-  body {
+  body,
+  #root {
     background-color: var(--background-color);
+    margin: 0;
+    padding: 0;
+    height: 100%;
   }
 
   /* dark mode */

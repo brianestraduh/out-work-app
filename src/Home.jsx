@@ -16,27 +16,33 @@ function Home() {
   }, []);
 
   return (
-    <div>
-      <ul>
-        <li>
-          <Link to="/account">Account</Link>
-        </li>
-        <li>
-          <Link to="/startWorkout">Start Workout</Link>
-        </li>
-        <li>
-          <Link to="/createEditWorkouts">Create or Edit Workouts</Link>
-        </li>
-        <li>
-          <Link to="/editCreateExercises">Create or Edit Exercises</Link>
-        </li>
-        <li>
-          <Link to="/previousWorkouts">Previous WorkOuts</Link>
-        </li>
-        <li>
-          <Link to="/progression">Progression</Link>
-        </li>
-      </ul>
+    <div className="container">
+      <div className="menu-grid">
+        <div className="row">
+          <Link className="menu-item" to="/account">
+            Account
+          </Link>
+          <Link className="menu-item" to="/previousWorkouts">
+            Previous WorkOuts
+          </Link>
+        </div>
+        <div className="row">
+          <Link className="menu-item" to="/createEditWorkouts">
+            Create or Edit Workouts
+          </Link>
+          <Link className="menu-item" to="/editCreateExercises">
+            Create or Edit Exercises
+          </Link>
+        </div>
+        <div className="row">
+          <Link className="menu-item" to="/progression">
+            Progression
+          </Link>
+          <Link className="menu-item" to="/startWorkout">
+            Start Workout
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }
