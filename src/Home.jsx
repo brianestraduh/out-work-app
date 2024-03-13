@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setWorkoutId } from "./redux/workoutSession/workoutIdSlice.js";
 import { clearExerciseId } from "./redux/exercises/exerciseIdSlice.js";
+import Card from "./components/Card.jsx";
 
 function Home() {
   const dispatch = useDispatch();
@@ -18,30 +18,12 @@ function Home() {
   return (
     <div className="menu-container">
       <div className="menu-grid">
-        <div className="row">
-          <Link className="menu-item" to="/account">
-            Account
-          </Link>
-          <Link className="menu-item" to="/previousWorkouts">
-            Previous WorkOuts
-          </Link>
-        </div>
-        <div className="row">
-          <Link className="menu-item" to="/createEditWorkouts">
-            Create or Edit Workouts
-          </Link>
-          <Link className="menu-item" to="/editCreateExercises">
-            Create or Edit Exercises
-          </Link>
-        </div>
-        <div className="row">
-          <Link className="menu-item" to="/progression">
-            Progression
-          </Link>
-          <Link className="menu-item" to="/startWorkout">
-            Start Workout
-          </Link>
-        </div>
+        <Card section="Account">Account</Card>
+        <Card section="previousWorkouts">Previous Workouts</Card>
+        <Card section="createEditWorkouts">Create or Edit Workouts</Card>
+        <Card section="editCreateExercises">Edit or Create Exercises</Card>
+        <Card section="progression">Prgoression</Card>
+        <Card section="startWorkout">Start Workout</Card>
       </div>
     </div>
   );
