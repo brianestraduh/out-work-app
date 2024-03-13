@@ -8,8 +8,10 @@ function Login() {
   const isDarkTheme = useSelector((state) => state.darkMode);
   return (
     <>
-      <Hero className={isDarkTheme ? "hero-dark" : "hero-light"}></Hero>
-      <div className="container">
+      <Hero
+        className={isDarkTheme ? "hero-dark container" : "hero-light container"}
+      ></Hero>
+      <div className="login-container">
         <div className=" login-form">
           <Auth
             supabaseClient={supabase}

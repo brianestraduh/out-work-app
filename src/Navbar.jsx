@@ -52,22 +52,18 @@ function Navbar() {
         >
           <img src={darkIcon} alt="Dark mode toggle" className="darkmode-img" />
         </Button>
-        <div
-          className={
-            isDarkTheme ? "nav-container dark-nav-container" : "nav-container"
-          }
-        >
-          <div className="nav-grid">
+        <div className="nav-container">
+          <div className="logo-name-flex">
             <img src={logo} alt="Outwork logo" className="outwork-logo" />
-            {session && <p className="logo-text">OutWork</p>}
-            {session ? (
-              <Button onClick={signOutUser} className="primary-btn">
-                Sign Out
-              </Button>
-            ) : (
-              <p className="logo-text">OutWork</p>
-            )}
+            <p className="logo-text">OutWork</p>
           </div>
+          {session ? (
+            <Button onClick={signOutUser} className="primary-btn">
+              Sign Out
+            </Button>
+          ) : (
+            <span className="primary-btn">Learn More</span>
+          )}
         </div>
       </nav>
     </header>

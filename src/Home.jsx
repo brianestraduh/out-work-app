@@ -16,7 +16,7 @@ function Home() {
   }, []);
 
   return (
-    <div className="container">
+    <div className="menu-container">
       <div className="menu-grid">
         <div className="row">
           <Link className="menu-item" to="/account">
@@ -47,3 +47,5 @@ function Home() {
   );
 }
 export default Home;
+
+//figure out container issues. Go look at a previous project and figure it out to avoid the issu
