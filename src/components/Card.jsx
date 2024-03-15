@@ -1,24 +1,17 @@
 import { Link } from "react-router-dom";
 
-export default function Card({ section, children }) {
+export default function Card({
+  section,
+  img,
+  imgDescription,
+  description,
+  children,
+}) {
   return (
     <div className="menu-card">
       <div>
         <span className="menu-card-icon-flex">
-          <svg
-            className="menu-card-icon"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
-            ></path>
-          </svg>
+          {<img className="menu-card-icon" src={img} alt={imgDescription} />}
         </span>
       </div>
       <div className="menu-icon-text-margin">
@@ -29,10 +22,7 @@ export default function Card({ section, children }) {
             {children}
           </Link>
         </h3>
-        <p className="menu-card-description">
-          Doloribus dolores nostrum quia qui natus officia quod et dolorem. Sit
-          repellendus qui ut at blanditiis et quo et molestiae.
-        </p>
+        <p className="menu-card-description">{description}</p>
       </div>
       <span className="menu-card-arrow" aria-hidden="true">
         <svg className="menu-card-icon" fill="currentColor" viewBox="0 0 24 24">
