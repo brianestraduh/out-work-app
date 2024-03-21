@@ -1,4 +1,3 @@
-import clsx from "clsx";
 export default function ExerciseListItem(props) {
   const {
     exercise,
@@ -10,21 +9,23 @@ export default function ExerciseListItem(props) {
     onDragEnd,
     onDragOver,
   } = props;
-  const classes = clsx({}, className);
   return (
     <li
-      className={classes}
+      className="list-container ul-border"
       draggable={draggable}
       onDragStart={onDragStart}
       onDragEnter={onDragEnter}
       onDragEnd={onDragEnd}
       onDragOver={onDragOver}
     >
-      <p>{exercise.name}</p>
-      <p>{exercise.description}</p>
-      <p>{exercise.muscle_group}</p>
-      <p>{`Sets ${exercise?.default_sets ?? exercise?.defaultSets}`}</p>
-      <p>{`Reps ${exercise?.default_reps ?? exercise?.defaultReps}`}</p>
+      <div>
+        <p className="list-title-text">
+          {`${exercise.name} | ${exercise.muscle_group}`}{" "}
+        </p>
+        <p>{exercise.description}</p>
+        <p>{`Sets ${exercise?.default_sets ?? exercise?.defaultSets}`}</p>
+        <p>{`Reps ${exercise?.default_reps ?? exercise?.defaultReps}`}</p>
+      </div>
       {children}
     </li>
   );

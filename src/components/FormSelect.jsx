@@ -11,12 +11,15 @@ export default function FormSelect(props) {
   );
   return (
     <div className={classes}>
-      <label htmlFor="muscle-group-filter">Search by Muscle:</label>
+      <label htmlFor="muscle-group-filter" className="input-title">
+        Search by Muscle:
+      </label>
       <select
         name="muscle-group-filter"
         id="muscle-group-filter"
         onChange={onChange}
         value={muscleGroup}
+        className="select-dd"
       >
         <option value="">Select</option>
         <option value="chest-muscle">Chest</option>

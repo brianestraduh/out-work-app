@@ -1,0 +1,25 @@
+.ul-border {
+  border-top: 1px solid #f3f4f6;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.list-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0 1.5rem;
+  padding: 1.25rem 0;
+}
+
+.list-title-text {
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: #1f2937;
+}
+
+.btn-container {
+  display: flex;
+  align-items: center;
+  gap: 0 1.5rem;
+}

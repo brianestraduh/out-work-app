@@ -11,6 +11,9 @@ import Button from "./components/Button.jsx";
 import { addExerciseId } from "./redux/exercises/exerciseIdSlice.js";
 import ConfirmationModal from "./ConfirmationModal.jsx";
 import { setExerciseList } from "./redux/exercises/exerciseListSlice.js";
+import dumbell from "./assets/dumbell.svg";
+import backDark from "./assets/back-dark.svg";
+import backLight from "./assets/back-light.svg";
 
 export default function ExerciseLibrary() {
   const exercises = useSelector((state) => state.exerciseList.exerciseList);
@@ -25,6 +28,7 @@ export default function ExerciseLibrary() {
   const [showDialog, setShowDialog] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const isDarkTheme = useSelector((state) => state.darkMode);
 
   // Inital load of exercises from supabase table
   useEffect(() => {
@@ -127,19 +131,25 @@ export default function ExerciseLibrary() {
   }
 
   return (
-    <div>
-      <h2>Exercise Library</h2>
-      <div>
-        <div>
-          {workoutId === null && (
-            <Link to="/newExcercise">Add New Exercise</Link>
-          )}
-        </div>
-        {workoutId === null && <Link to="/">Back</Link>}
-        {workoutId && (
-          <Link to={`/workout/${workoutId}`}>Back to Edit Workout</Link>
-        )}
-      </div>
+    <div className="exercise-container">
+      {workoutId === null && (
+        <Link to="/newExcercise" className="blank-exercise-btn">
+          <img className="img-exercise" src={dumbell}></img>
+          <span className="new-exercise-txt">Add New Exercise</span>
+        </Link>
+      )}
+      {workoutId === null && (
+        <Link to="/">
+          <img
+            src={isDarkTheme ? backDark : backLight}
+            alt="back-arrow-icon"
+            className="back-btn img-back"
+          />
+        </Link>
+      )}
+      {workoutId && (
+        <Link to={`/workout/${workoutId}`}>Back to Edit Workout</Link>
+      )}
       <FormSelect
         label="Search by Muscle:"
         htmlFor="muscle-group-filter"
@@ -147,6 +157,7 @@ export default function ExerciseLibrary() {
         id="muscle-group-filter"
         onChange={(e) => setMuscleGroup(e.target.value)}
         value={muscleGroup}
+        className="width-50"
       />
       <FormInput
         label="Search Exercises:"
@@ -155,6 +166,7 @@ export default function ExerciseLibrary() {
         type="text"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
+        className="width-50"
       />
       <ul>
         {filteredExercises.length > 0 ? (
@@ -164,22 +176,30 @@ export default function ExerciseLibrary() {
               exercise={exercise}
               className="drag"
             >
-              {workoutId && (
-                <Button onClick={() => handleAdd(exercise.id)}>Add</Button>
-              )}
-              {workoutId === null && (
-                <Link
-                  to={"/editExcercise"}
-                  onClick={() => editExercise(exercise)}
-                >
-                  Edit
-                </Link>
-              )}
-              {workoutId === null && (
-                <Button onClick={() => handleDelete(exercise.id)}>
-                  Delete
-                </Button>
-              )}
+              <div className="btn-container">
+                {workoutId && (
+                  <Button onClick={() => handleAdd(exercise.id)}>Add</Button>
+                )}
+                {workoutId === null && (
+                  <Link
+                    to={"/editExcercise"}
+                    onClick={() => editExercise(exercise)}
+                    className={
+                      isDarkTheme ? "secondary-btn" : "secondary-dark-btn"
+                    }
+                  >
+                    Edit
+                  </Link>
+                )}
+                {workoutId === null && (
+                  <Button
+                    onClick={() => handleDelete(exercise.id)}
+                    className={isDarkTheme ? "primary-btn" : "primary-dark-btn"}
+                  >
+                    Delete
+                  </Button>
+                )}
+              </div>
             </ExerciseListItem>
           ))
         ) : (

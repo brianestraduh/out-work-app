@@ -21,7 +21,9 @@ export default function FormInput({
 
   return (
     <div className={classes}>
-      <label htmlFor={htmlFor}>{label}</label>
+      <label htmlFor={htmlFor} className="input-title">
+        {label}
+      </label>
       <input
         id={id}
         step={step}
@@ -31,6 +33,7 @@ export default function FormInput({
         value={value}
         onChange={onChange}
         {...rest}
+        className="input"
       />
     </div>
   );
