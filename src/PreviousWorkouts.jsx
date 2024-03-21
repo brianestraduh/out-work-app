@@ -8,6 +8,7 @@ import supabase from "../supaBase.js";
 import FormSelectDate from "./components/FormSelectDate.jsx";
 import FormInput from "./components/FormInput.jsx";
 import { filterSessions } from "./helpers/filterHelper.js";
+import { useSelector } from "react-redux";
 function PreviousWorkouts() {
   const [sessions, setSessions] = useState([]);
   const [visibleDetails, setVisibleDetails] = useState([]);
@@ -16,6 +17,7 @@ function PreviousWorkouts() {
   const [sessionsUpdated, setSessionsUpdated] = useState(false);
   const [dateCutOff, setDateCutOff] = useState("this week");
   const [searchTerm, setSearchTerm] = useState("");
+  const isDarkTheme = useSelector((state) => state.darkMode);
 
   useEffect(() => {
     fetchSessions(dateCutOff)
@@ -79,10 +81,12 @@ function PreviousWorkouts() {
     setDateCutOff(event.target.value);
   }
   return (
-    <div>
+    <div className="exercise-container">
       <h2>Previous Workouts</h2>
-      <Link to="/">Back</Link>
-      <FormSelectDate onChange={handleDateChange} />
+      <Link to="/" className={isDarkTheme ? "primary-btn" : "primary-dark-btn"}>
+        Back
+      </Link>
+      <FormSelectDate onChange={handleDateChange} className="width-50" />
       <FormInput
         label="Search by Workout Name:"
         htmlFor="search-workout"
@@ -90,6 +94,7 @@ function PreviousWorkouts() {
         type="text"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
+        className="width-50"
       />
       <ul>
         {sessions.map((session, index) => {
@@ -101,30 +106,46 @@ function PreviousWorkouts() {
           }/${date.getDate()}/${date.getFullYear()}`;
 
           return (
-            <li key={session_id} className="drag">
-              <p>{name}</p>
-              <p>{description}</p>
-              <p>{`Duration: ${duration} mins`}</p>
-              <p>{friendlyDate}</p>
+            <li key={session_id} className="list-grid ul-border">
+              <p className="list-title-text">{name}</p>
+              <p className={isDarkTheme ? "descr-dark-text" : "descr-text"}>
+                {description}
+              </p>
+              <p
+                className={isDarkTheme ? "set-rep-dark-text" : "set-rep-text"}
+              >{`Duration: ${duration} mins`}</p>
+              <p className={isDarkTheme ? "set-rep-dark-text" : "set-rep-text"}>
+                {friendlyDate}
+              </p>
               {visibleDetails.includes(index) ? (
                 <>
                   <ExerciseSessionList
                     className={"place-holder"}
                     exercises={exercises}
                     handleClick={() => handleDetails(index)}
+                    isDarkTheme={isDarkTheme}
                   />
                 </>
               ) : (
                 <>
-                  <Button onClick={() => handleDetails(index)}>
+                  <Button
+                    onClick={() => handleDetails(index)}
+                    className={
+                      isDarkTheme ? "secondary-btn" : "secondary-dark-btn"
+                    }
+                  >
                     Exercise Details
                   </Button>
                 </>
               )}
               <div>
-                <Button onClick={() => handleDelete(session_id)}>Delete</Button>
+                <Button
+                  onClick={() => handleDelete(session_id)}
+                  className={isDarkTheme ? "primary-btn" : "primary-dark-btn"}
+                >
+                  Delete
+                </Button>
               </div>
-              ;
             </li>
           );
         })}

@@ -10,6 +10,14 @@
   gap: 0 1.5rem;
   padding: 1.25rem 0;
 }
+.list-grid {
+  display: grid;
+  grid-template-columns: 1fr 0.5fr 1fr 0.5fr 1fr 1fr;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0 1.5rem;
+  padding: 1.25rem 0;
+}
 
 .list-title-text {
   font-size: 0.875rem;
