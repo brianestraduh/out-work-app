@@ -11,7 +11,13 @@ export default function ExerciseSessionList(props) {
           return (
             <li key={id} className="list-container ul-border">
               <div>
-                <p className="list-title-text">{name}</p>
+                <p
+                  className={
+                    isDarkTheme ? "list-title-dark-text" : "list-title-text"
+                  }
+                >
+                  {name}
+                </p>
                 <ul>
                   {setsData.map((set) => {
                     const { set_index, reps, weight, complete_status, set_id } =

@@ -36,7 +36,7 @@
 
   /* dark mode */
   body.dark {
-    --background-color: #9ca3af;
+    background: linear-gradient(to right, #282828, #1a1a1a);
     --text-color: var(--complementary-white);
   }
 

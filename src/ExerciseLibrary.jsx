@@ -12,6 +12,7 @@ import { addExerciseId } from "./redux/exercises/exerciseIdSlice.js";
 import ConfirmationModal from "./ConfirmationModal.jsx";
 import { setExerciseList } from "./redux/exercises/exerciseListSlice.js";
 import dumbell from "./assets/dumbell.svg";
+import darkDumbell from "./assets/dumbell-dark.svg";
 import backDark from "./assets/back-dark.svg";
 import backLight from "./assets/back-light.svg";
 
@@ -134,8 +135,17 @@ export default function ExerciseLibrary() {
     <div className="exercise-container">
       {workoutId === null && (
         <Link to="/newExcercise" className="blank-exercise-btn">
-          <img className="img-exercise" src={dumbell}></img>
-          <span className="new-exercise-txt">Add New Exercise</span>
+          <img
+            className="img-exercise"
+            src={isDarkTheme ? darkDumbell : dumbell}
+          ></img>
+          <span
+            className={
+              isDarkTheme ? "new-exercise-dark-txt" : "new-exercise-txt"
+            }
+          >
+            Add New Exercise
+          </span>
         </Link>
       )}
       {workoutId === null && (
@@ -158,6 +168,7 @@ export default function ExerciseLibrary() {
         onChange={(e) => setMuscleGroup(e.target.value)}
         value={muscleGroup}
         className="width-50"
+        isDarkTheme={isDarkTheme}
       />
       <FormInput
         label="Search Exercises:"
@@ -167,6 +178,7 @@ export default function ExerciseLibrary() {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         className="width-50"
+        isDarkTheme={isDarkTheme}
       />
       <ul>
         {filteredExercises.length > 0 ? (

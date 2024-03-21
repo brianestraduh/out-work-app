@@ -147,6 +147,14 @@
     color: #1f2937;
   }
 
+  .new-exercise-dark-txt {
+    margin-top: 0.5rem;
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #d1d5db;
+  }
+
   .img-exercise {
     margin-left: auto;
     margin-right: auto;

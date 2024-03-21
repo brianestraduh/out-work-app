@@ -1,8 +1,17 @@
 import clsx from "clsx";
 
 export default function FormSelect(props) {
-  const { className, muscleGroup, label, htmlFor, name, id, onChange, value } =
-    props;
+  const {
+    className,
+    muscleGroup,
+    label,
+    htmlFor,
+    name,
+    id,
+    onChange,
+    value,
+    isDarkTheme,
+  } = props;
   const classes = clsx(
     {
       input: true,
@@ -11,7 +20,7 @@ export default function FormSelect(props) {
   );
   return (
     <div className={classes}>
-      <label htmlFor="muscle-group-filter" className="input-title">
+      <label htmlFor="muscle-group-filter" className="input-dark-title">
         Search by Muscle:
       </label>
       <select

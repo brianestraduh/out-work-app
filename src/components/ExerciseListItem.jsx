@@ -20,7 +20,7 @@ export default function ExerciseListItem(props) {
       onDragOver={onDragOver}
     >
       <div>
-        <p className="list-title-text">
+        <p className={isDarkTheme ? "list-title-dark-text" : "list-title-text"}>
           {`${exercise.name} | ${exercise.muscle_group}`}{" "}
         </p>
         <p className={isDarkTheme ? "descr-dark-text" : "descr-text"}>

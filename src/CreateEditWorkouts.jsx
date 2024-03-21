@@ -89,8 +89,8 @@ function CreateEditWorkouts() {
   }
 
   return (
-    <div>
-      <div>
+    <div className="form-container">
+      <div className="edit-form">
         <h2>Create Workouts</h2>
         <form onSubmit={handleSubmit}>
           <FormInput
