@@ -51,3 +51,9 @@
 .width-50 {
   width: 50%;
 }
+
+.btn-container {
+  display: flex;
+  align-items: center;
+  margin-top: 2rem;
+}

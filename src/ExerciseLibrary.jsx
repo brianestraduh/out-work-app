@@ -175,6 +175,7 @@ export default function ExerciseLibrary() {
               key={exercise.id}
               exercise={exercise}
               className="drag"
+              isDarkTheme={isDarkTheme}
             >
               <div className="btn-container">
                 {workoutId && (

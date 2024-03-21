@@ -8,6 +8,7 @@ export default function ExerciseListItem(props) {
     onDragEnter,
     onDragEnd,
     onDragOver,
+    isDarkTheme,
   } = props;
   return (
     <li
@@ -22,9 +23,14 @@ export default function ExerciseListItem(props) {
         <p className="list-title-text">
           {`${exercise.name} | ${exercise.muscle_group}`}{" "}
         </p>
-        <p>{exercise.description}</p>
-        <p>{`Sets ${exercise?.default_sets ?? exercise?.defaultSets}`}</p>
-        <p>{`Reps ${exercise?.default_reps ?? exercise?.defaultReps}`}</p>
+        <p className={isDarkTheme ? "descr-dark-text" : "descr-text"}>
+          {exercise.description}
+        </p>
+        <p className={isDarkTheme ? "set-rep-dark-text" : "set-rep-text"}>
+          {`Sets ${exercise?.default_sets ?? exercise?.defaultSets} | `}
+          {`Reps ${exercise?.default_reps ?? exercise?.defaultReps}`}
+        </p>
+        <p></p>
       </div>
       {children}
     </li>

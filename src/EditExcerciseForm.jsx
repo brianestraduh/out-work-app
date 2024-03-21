@@ -16,6 +16,7 @@ export default function EditExcerciseForm() {
   const [showDialog, setShowDialog] = useState(false);
   const session = useSelector((state) => state.session);
   const dispatch = useDispatch();
+  const isDarkTheme = useSelector((state) => state.darkMode);
 
   const navigate = useNavigate();
 
@@ -70,68 +71,79 @@ export default function EditExcerciseForm() {
   }
 
   return (
-    <div>
-      <h2>Edit Exercise</h2>
-      <form onSubmit={updateExercise}>
-        <FormInput
-          label="Exercise Name:"
-          htmlFor="exercise-name"
-          type="text"
-          name="exercise-name"
-          id="exercise-name"
-          required={true}
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <FormInput
-          label="Description: "
-          htmlFor="exercise-description"
-          type="text"
-          name="exercise-description"
-          id="exercise-description"
-          required={true}
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-        <FormSelect
-          label="Search by Muscle:"
-          htmlFor="muscle-group-filter"
-          name="muscle-group-filter"
-          id="muscle-group-filter"
-          onChange={(e) => setMuscleGroup(e.target.value)}
-          value={muscleGroup}
-        />
-        <FormInput
-          label="Default Sets:"
-          htmlFor="default-sets"
-          type="number"
-          step="1"
-          name="default-sets"
-          id="default-sets"
-          required={true}
-          value={defaultSets}
-          onChange={(e) => setDefaultSets(e.target.value)}
-        />
-        <FormInput
-          label="Default Reps:"
-          htmlFor="default-reps"
-          type="number"
-          step="1"
-          name="default-reps"
-          id="default-reps"
-          required={true}
-          value={defaultReps}
-          onChange={(e) => setDefaultReps(e.target.value)}
-        />
-        <div>
-          <button type="submit">Edit Excercise</button>
-        </div>
-
-        <Link to="/editCreateExercises">Back to Create or Edit Exercises</Link>
-        {showDialog && (
-          <ErrorDialog onOk={handleOk}>Exercise Already Exists.</ErrorDialog>
-        )}
-      </form>
+    <div className="form-container">
+      <div className="edit-form">
+        <h2>Edit Exercise</h2>
+        <form onSubmit={updateExercise}>
+          <FormInput
+            label="Exercise Name:"
+            htmlFor="exercise-name"
+            type="text"
+            name="exercise-name"
+            id="exercise-name"
+            required={true}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <FormInput
+            label="Description: "
+            htmlFor="exercise-description"
+            type="text"
+            name="exercise-description"
+            id="exercise-description"
+            required={true}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+          <FormSelect
+            label="Search by Muscle:"
+            htmlFor="muscle-group-filter"
+            name="muscle-group-filter"
+            id="muscle-group-filter"
+            onChange={(e) => setMuscleGroup(e.target.value)}
+            value={muscleGroup}
+          />
+          <FormInput
+            label="Default Sets:"
+            htmlFor="default-sets"
+            type="number"
+            step="1"
+            name="default-sets"
+            id="default-sets"
+            required={true}
+            value={defaultSets}
+            onChange={(e) => setDefaultSets(e.target.value)}
+          />
+          <FormInput
+            label="Default Reps:"
+            htmlFor="default-reps"
+            type="number"
+            step="1"
+            name="default-reps"
+            id="default-reps"
+            required={true}
+            value={defaultReps}
+            onChange={(e) => setDefaultReps(e.target.value)}
+          />
+          <div className="btn-container">
+            <Link
+              to="/editCreateExercises"
+              className={isDarkTheme ? "secondary-btn" : "secondary-dark-btn"}
+            >
+              Back to Create or Edit Exercises
+            </Link>
+            <button
+              type="submit"
+              className={isDarkTheme ? "primary-btn" : "primary-dark-btn"}
+            >
+              Confirm Changes
+            </button>
+          </div>
+          {showDialog && (
+            <ErrorDialog onOk={handleOk}>Exercise Already Exists.</ErrorDialog>
+          )}
+        </form>
+      </div>
     </div>
   );
 }

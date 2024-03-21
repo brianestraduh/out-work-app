@@ -16,10 +16,37 @@
   font-weight: 600;
   line-height: 1.5;
   color: #1f2937;
+  font-family: var(--main-font);
 }
 
+.descr-text {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.descr-dark-text {
+  font-size: 0.75rem;
+  color: #ffffff;
+}
+
+.set-rep-text {
+  font-size: 0.75rem;
+  color: var(--complementary-black);
+}
+
+.set-rep-dark-text {
+  font-size: 0.75rem;
+  color: #ffffff;
+}
 .btn-container {
   display: flex;
   align-items: center;
   gap: 0 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .btn-container {
+    flex-direction: column;
+    gap: 3rem 0;
+  }
 }
