@@ -65,4 +65,9 @@
     background: transparent;
     box-shadow: none;
   }
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
 }

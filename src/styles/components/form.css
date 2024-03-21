@@ -59,3 +59,10 @@
   align-items: center;
   margin-top: 2rem;
 }
+.btn-center-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+  gap: 1.5rem;
+}

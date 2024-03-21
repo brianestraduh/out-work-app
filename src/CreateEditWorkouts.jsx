@@ -18,6 +18,7 @@ function CreateEditWorkouts() {
   const [workoutToDelete, setWorkoutToDelete] = useState(null);
   const [showDialog, setShowDialog] = useState(false);
   const session = useSelector((state) => state.session);
+  const isDarkTheme = useSelector((state) => state.darkMode);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -89,34 +90,37 @@ function CreateEditWorkouts() {
   }
 
   return (
-    <div className="form-container">
-      <div className="edit-form">
-        <h2>Create Workouts</h2>
-        <form onSubmit={handleSubmit}>
-          <FormInput
-            label="Name"
-            htmlFor="name"
-            id="name"
-            required={true}
-            value={name || ""}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <FormInput
-            label="Description"
-            htmlFor="description"
-            id="description"
-            type="text"
-            required={true}
-            value={description || ""}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-          <div>
-            <Button type="submit" disabled={loading}>
-              {"Create Workout"}
-            </Button>
-          </div>
-        </form>
-      </div>
+    <div className="exercise-container">
+      <h2
+        className={isDarkTheme ? "header-title-dark-text" : "header-title-text"}
+      >
+        Create and Edit Workouts
+      </h2>
+      <form onSubmit={handleSubmit} className="login-form">
+        <h2>Create Workout</h2>
+        <FormInput
+          label="Name"
+          htmlFor="name"
+          id="name"
+          required={true}
+          value={name || ""}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <FormInput
+          label="Description"
+          htmlFor="description"
+          id="description"
+          type="text"
+          required={true}
+          value={description || ""}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+        <div>
+          <Button type="submit" disabled={loading}>
+            {"Create Workout"}
+          </Button>
+        </div>
+      </form>
       <div>
         <h2>Edit Workouts</h2>
         {workouts.map((workout) => (

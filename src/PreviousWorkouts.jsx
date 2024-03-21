@@ -82,7 +82,11 @@ function PreviousWorkouts() {
   }
   return (
     <div className="exercise-container">
-      <h2>Previous Workouts</h2>
+      <h2
+        className={isDarkTheme ? "header-title-dark-text" : "header-title-text"}
+      >
+        Previous Workouts
+      </h2>
       <Link to="/" className={isDarkTheme ? "primary-btn" : "primary-dark-btn"}>
         Back
       </Link>
@@ -107,7 +111,13 @@ function PreviousWorkouts() {
 
           return (
             <li key={session_id} className="list-grid ul-border">
-              <p className="list-title-text">{name}</p>
+              <p
+                className={
+                  isDarkTheme ? "list-title-dark-text" : "list-title-text"
+                }
+              >
+                {name}
+              </p>
               <p className={isDarkTheme ? "descr-dark-text" : "descr-text"}>
                 {description}
               </p>
@@ -117,14 +127,32 @@ function PreviousWorkouts() {
               <p className={isDarkTheme ? "set-rep-dark-text" : "set-rep-text"}>
                 {friendlyDate}
               </p>
+
+              <Button
+                onClick={() => handleDelete(session_id)}
+                className={isDarkTheme ? "primary-btn" : "primary-dark-btn"}
+              >
+                Delete
+              </Button>
               {visibleDetails.includes(index) ? (
                 <>
-                  <ExerciseSessionList
-                    className={"place-holder"}
-                    exercises={exercises}
-                    handleClick={() => handleDetails(index)}
-                    isDarkTheme={isDarkTheme}
-                  />
+                  {" "}
+                  <Button
+                    onClick={() => handleDetails(index)}
+                    className={
+                      isDarkTheme ? "secondary-btn" : "secondary-dark-btn"
+                    }
+                  >
+                    Hide Details
+                  </Button>
+                  <div className="grid-expand-details">
+                    <ExerciseSessionList
+                      className={"place-holder"}
+                      exercises={exercises}
+                      handleClick={() => handleDetails(index)}
+                      isDarkTheme={isDarkTheme}
+                    />
+                  </div>
                 </>
               ) : (
                 <>
@@ -138,14 +166,6 @@ function PreviousWorkouts() {
                   </Button>
                 </>
               )}
-              <div>
-                <Button
-                  onClick={() => handleDelete(session_id)}
-                  className={isDarkTheme ? "primary-btn" : "primary-dark-btn"}
-                >
-                  Delete
-                </Button>
-              </div>
             </li>
           );
         })}

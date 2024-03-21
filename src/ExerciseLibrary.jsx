@@ -133,6 +133,17 @@ export default function ExerciseLibrary() {
 
   return (
     <div className="exercise-container">
+      {workoutId && (
+        <Link to={`/workout/${workoutId}`}>Back to Edit Workout</Link>
+      )}
+      {workoutId === null && (
+        <Link
+          to="/"
+          className={isDarkTheme ? "primary-btn" : "primary-dark-btn"}
+        >
+          Back
+        </Link>
+      )}
       {workoutId === null && (
         <Link to="/newExcercise" className="blank-exercise-btn">
           <img
@@ -148,18 +159,7 @@ export default function ExerciseLibrary() {
           </span>
         </Link>
       )}
-      {workoutId === null && (
-        <Link to="/">
-          <img
-            src={isDarkTheme ? backDark : backLight}
-            alt="back-arrow-icon"
-            className="back-btn img-back"
-          />
-        </Link>
-      )}
-      {workoutId && (
-        <Link to={`/workout/${workoutId}`}>Back to Edit Workout</Link>
-      )}
+
       <FormSelect
         label="Search by Muscle:"
         htmlFor="muscle-group-filter"

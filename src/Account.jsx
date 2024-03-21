@@ -11,6 +11,7 @@ export default function Account() {
   const [username, setUsername] = useState(null);
   const [weight, setWeight] = useState(null);
   const [avatar_url, setAvatarUrl] = useState(null);
+  const isDarkTheme = useSelector((state) => state.darkMode);
 
   useEffect(() => {
     let ignore = false;
@@ -70,39 +71,53 @@ export default function Account() {
     handleSubmit(event);
   }
   return (
-    <form onSubmit={handleSubmit} className="form-widget">
-      <Avatar url={avatar_url} size={150} onUpload={handleAvatarUpload} />
-      <FormInput
-        label="Email"
-        htmlFor="email"
-        id="email"
-        type="text"
-        value={session.user.email}
-        disabled
-      />
-      <FormInput
-        label="Name"
-        htmlFor="username"
-        id="username"
-        type="text"
-        required={true}
-        value={username || ""}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <FormInput
-        label="Weight"
-        htmlFor="weight"
-        id="weight"
-        type="number"
-        value={weight || ""}
-        onChange={(e) => setWeight(e.target.value)}
-      />
+    <div className="form-container">
+      <form onSubmit={handleSubmit} className="avatar-form">
+        <Avatar
+          url={avatar_url}
+          size={150}
+          onUpload={handleAvatarUpload}
+          isDarkTheme={isDarkTheme}
+        />
+        <FormInput
+          label="Email"
+          htmlFor="email"
+          id="email"
+          type="text"
+          value={session.user.email}
+          disabled
+        />
+        <FormInput
+          label="Name"
+          htmlFor="username"
+          id="username"
+          type="text"
+          required={true}
+          value={username || ""}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <FormInput
+          label="Weight"
+          htmlFor="weight"
+          id="weight"
+          type="number"
+          value={weight || ""}
+          onChange={(e) => setWeight(e.target.value)}
+        />
+        <div className="btn-center-container">
+          <Button
+            className={isDarkTheme ? "primary-btn" : "primary-dark-btn"}
+            type="submit"
+            disabled={loading}
+          >
+            {loading ? "Loading ..." : "Update"}
+          </Button>
 
-      <Button className="button block primary" type="submit" disabled={loading}>
-        {loading ? "Loading ..." : "Update"}
-      </Button>
-
-      <Link to="/">Back</Link>
-    </form>
+          <Link to="/" className="secondary-dark-btn">
+            Back
+          </Link>
+        </div>
+      </form>
+    </div>
   );
 }

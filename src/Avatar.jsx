@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import supabase from "../supaBase.js";
 
-export default function Avatar({ url, size, onUpload }) {
+export default function Avatar({ url, size, onUpload, isDarkTheme }) {
   const [avatarUrl, setAvatarUrl] = useState(null);
   const [uploading, setUploading] = useState(false);
 
@@ -54,7 +54,9 @@ export default function Avatar({ url, size, onUpload }) {
   }
 
   return (
-    <div>
+    <div
+      style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+    >
       {avatarUrl ? (
         <img
           src={avatarUrl}
@@ -68,8 +70,8 @@ export default function Avatar({ url, size, onUpload }) {
           style={{ height: size, width: size }}
         />
       )}
-      <div style={{ width: size }}>
-        <label className="button primary block" htmlFor="single">
+      <div style={{ width: size, display: "flex", justifyContent: "center" }}>
+        <label className="secondary-dark-btn" htmlFor="single">
           {uploading ? "Uploading ..." : "Upload"}
         </label>
         <input
