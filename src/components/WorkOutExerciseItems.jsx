@@ -1,10 +1,27 @@
 export default function ExerciseListItem(props) {
-  const { exercise, children, className, isDarkTheme } = props;
+  const {
+    exercise,
+    children,
+    className,
+    draggable,
+    onDragStart,
+    onDragEnter,
+    onDragEnd,
+    onDragOver,
+    isDarkTheme,
+  } = props;
   return (
-    <li className="list-container ul-border">
+    <li
+      className="exercise-workout-grid"
+      draggable={draggable}
+      onDragStart={onDragStart}
+      onDragEnter={onDragEnter}
+      onDragEnd={onDragEnd}
+      onDragOver={onDragOver}
+    >
       <div>
         <p className={isDarkTheme ? "list-title-dark-text" : "list-title-text"}>
-          {`${exercise.name} | ${exercise.muscle_group}`}{" "}
+          {`${exercise.name} | ${exercise.exercises.muscle_group}`}{" "}
         </p>
         <p className={isDarkTheme ? "descr-dark-text" : "descr-text"}>
           {exercise.description}

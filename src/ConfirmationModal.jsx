@@ -9,16 +9,16 @@ export default function ConfirmationModal(props) {
         <div className="title-text">{children}</div>
         <div className="btn-gap">
           <button
-            onClick={onCancel}
-            className={isDarkTheme ? "secondary-btn" : "secondary-dark-btn"}
-          >
-            No
-          </button>
-          <button
             onClick={onConfirm}
             className={isDarkTheme ? "primary-btn" : "primary-dark-btn"}
           >
             Yes
+          </button>
+          <button
+            onClick={onCancel}
+            className={isDarkTheme ? "secondary-btn" : "secondary-dark-btn"}
+          >
+            No
           </button>
         </div>
       </div>

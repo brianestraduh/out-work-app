@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react";
 import supabase from "../supaBase.js";
 import { reorderExercises } from "./helpers/sortHelper.js";
-import ExerciseListItem from "./components/ExerciseListItem.jsx";
+import WorkoutExerciseItems from "./components/WorkOutExerciseItems.jsx";
 import Button from "./components/Button.jsx";
 import ConfirmationModal from "./ConfirmationModal.jsx";
 export default function EditWorkout() {
@@ -30,7 +30,7 @@ export default function EditWorkout() {
       const { data, error } = await supabase
         .from("workout_exercises")
         .select(
-          "*, exercises!workout_exercises_exercise_id_fkey(name, description, default_sets, default_reps)"
+          "*, exercises!workout_exercises_exercise_id_fkey(name, description, default_sets, default_reps, muscle_group)"
         )
         .eq("workout_id", id);
 
@@ -103,38 +103,42 @@ export default function EditWorkout() {
     }
   };
   return (
-    <div>
+    <div className="previous-wo-container">
       <h1> {`Edit Workout ${id}`}</h1>
       <form>
         <div>
           <Link to={"/exerciseLibrary"}>Add from Excercise Library</Link>
         </div>
       </form>
-      <ul>
+      <ul className="exercise-workout-flex">
         {exercises
           .sort((a, b) => a.index - b.index)
           .map((exercise, index) => {
             return (
-              <ExerciseListItem
-                key={exercise.id}
-                exercise={exercise}
-                className="drag"
-                draggable={true}
-                onDragStart={() => {
-                  dragExcercise.current = index;
-                }}
-                onDragEnter={() => {
-                  overTakenExcercise.current = index;
-                }}
-                onDragEnd={() =>
-                  handleDrag(dragExcercise.current, overTakenExcercise.current)
-                }
-                onDragOver={(e) => e.preventDefault()}
-              >
-                <Button onClick={() => handleRemove(exercise.id)}>
-                  Remove
-                </Button>
-              </ExerciseListItem>
+              <li key={exercise.id} className="exercise-card">
+                <WorkoutExerciseItems
+                  exercise={exercise}
+                  className="drag"
+                  draggable={true}
+                  onDragStart={() => {
+                    dragExcercise.current = index;
+                  }}
+                  onDragEnter={() => {
+                    overTakenExcercise.current = index;
+                  }}
+                  onDragEnd={() =>
+                    handleDrag(
+                      dragExcercise.current,
+                      overTakenExcercise.current
+                    )
+                  }
+                  onDragOver={(e) => e.preventDefault()}
+                >
+                  <Button onClick={() => handleRemove(exercise.id)}>
+                    Remove
+                  </Button>
+                </WorkoutExerciseItems>
+              </li>
             );
           })}
       </ul>

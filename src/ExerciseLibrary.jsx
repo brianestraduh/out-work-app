@@ -137,10 +137,7 @@ export default function ExerciseLibrary() {
         <Link to={`/workout/${workoutId}`}>Back to Edit Workout</Link>
       )}
       {workoutId === null && (
-        <Link
-          to="/"
-          className={isDarkTheme ? "primary-btn" : "primary-dark-btn"}
-        >
+        <Link to="/" className="secondary-dark-btn">
           Back
         </Link>
       )}

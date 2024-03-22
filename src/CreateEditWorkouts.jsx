@@ -90,7 +90,10 @@ function CreateEditWorkouts() {
   }
 
   return (
-    <div className="exercise-container">
+    <div className="previous-wo-container">
+      <Link to="/" className={isDarkTheme ? "primary-btn" : "primary-dark-btn"}>
+        Back
+      </Link>
       <h2
         className={isDarkTheme ? "header-title-dark-text" : "header-title-text"}
       >
@@ -115,24 +118,54 @@ function CreateEditWorkouts() {
           value={description || ""}
           onChange={(e) => setDescription(e.target.value)}
         />
-        <div>
-          <Button type="submit" disabled={loading}>
+        <div className="btn-container">
+          <Button
+            type="submit"
+            disabled={loading}
+            className={isDarkTheme ? "primary-dark-btn" : "primary-btn"}
+          >
             {"Create Workout"}
           </Button>
         </div>
       </form>
       <div>
-        <h2>Edit Workouts</h2>
-        {workouts.map((workout) => (
-          <div key={workout.id} draggable className="drag">
-            <h3>{workout.name}</h3>
-            <p>{workout.description}</p>
-            <Link to={`/workout/${workout.id}`}>Edit</Link>
-            <Button type="button" onClick={() => handleDelete(workout.id)}>
-              Delete
-            </Button>
-          </div>
-        ))}
+        <ul>
+          {workouts.map((workout) => (
+            <li
+              key={workout.id}
+              draggable
+              className="workout-list-grid ul-border"
+            >
+              <p
+                className={
+                  isDarkTheme ? "list-title-dark-text" : "list-title-text"
+                }
+              >
+                {workout.name}
+              </p>
+              <p className={isDarkTheme ? "descr-dark-text" : "descr-text"}>
+                {workout.description}
+              </p>
+              <div className="btn-container">
+                <Link
+                  to={`/workout/${workout.id}`}
+                  className={
+                    isDarkTheme ? "secondary-btn" : "secondary-dark-btn"
+                  }
+                >
+                  Edit
+                </Link>
+                <Button
+                  type="button"
+                  onClick={() => handleDelete(workout.id)}
+                  className={isDarkTheme ? "primary-btn" : "primary-dark-btn"}
+                >
+                  Delete
+                </Button>
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
       {showModal && (
         <ConfirmationModal onConfirm={handleConfirm} onCancel={handleCancel}>
@@ -140,7 +173,6 @@ function CreateEditWorkouts() {
         </ConfirmationModal>
       )}
       {showDialog && <ErrorDialog onOk={handleOk} />}
-      <Link to="/">Back</Link>
     </div>
   );
 }

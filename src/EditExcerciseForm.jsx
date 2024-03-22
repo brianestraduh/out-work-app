@@ -126,10 +126,7 @@ export default function EditExcerciseForm() {
             onChange={(e) => setDefaultReps(e.target.value)}
           />
           <div className="btn-container">
-            <Link
-              to="/editCreateExercises"
-              className={isDarkTheme ? "secondary-btn" : "secondary-dark-btn"}
-            >
+            <Link to="/editCreateExercises" className="secondary-dark-btn">
               Back to Create or Edit Exercises
             </Link>
             <button

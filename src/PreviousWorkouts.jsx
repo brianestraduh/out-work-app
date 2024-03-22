@@ -81,7 +81,7 @@ function PreviousWorkouts() {
     setDateCutOff(event.target.value);
   }
   return (
-    <div className="exercise-container">
+    <div className="previous-wo-container">
       <h2
         className={isDarkTheme ? "header-title-dark-text" : "header-title-text"}
       >

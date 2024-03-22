@@ -4,6 +4,7 @@
   line-height: 1.5;
   color: #1f2937;
   font-family: var(--main-font);
+  text-align: center;
 }
 
 .header-title-dark-text {
@@ -12,6 +13,7 @@
   line-height: 1.5;
   color: #d3d3d3;
   font-family: var(--main-font);
+  text-align: center;
 }
 
 .ul-border {
@@ -35,6 +37,15 @@
   padding: 1.25rem 0;
 }
 
+.workout-list-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0 1.5rem;
+  padding: 1.25rem 0;
+}
+
 .details-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -42,6 +53,15 @@
   justify-content: space-between;
   gap: 0 1.5rem;
   padding: 1.25rem 0;
+}
+
+@media (max-width: 640px) {
+  .list-grid {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .details-grid {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 .exercise-flex {
   display: flex;
@@ -88,16 +108,4 @@
 .set-rep-dark-text {
   font-size: 0.75rem;
   color: #ffffff;
-}
-.btn-container {
-  display: flex;
-  align-items: center;
-  gap: 0 1.5rem;
-}
-
-@media (max-width: 640px) {
-  .btn-container {
-    flex-direction: column;
-    gap: 3rem 0;
-  }
 }

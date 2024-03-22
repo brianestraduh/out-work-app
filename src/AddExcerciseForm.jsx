@@ -137,10 +137,7 @@ export default function AddExcerciseForm() {
                 Back to Edit Workout
               </Link>
             ) : (
-              <Link
-                to="/editCreateExercises"
-                className={isDarkTheme ? "secondary-btn" : "secondary-dark-btn"}
-              >
+              <Link to="/editCreateExercises" className="secondary-dark-btn">
                 Back to Create or Edit Exercises
               </Link>
             )}

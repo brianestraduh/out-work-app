@@ -35,10 +35,12 @@
     align-items: center;
   }
   .login-form {
-    margin-left: -1rem;
-    margin-right: -1rem;
+    margin-left: 0;
+    margin-right: 0;
     margin-top: 2.5rem;
-    flex: auto;
+    border-radius: 2.5rem;
+    flex: 1 1 auto;
+    max-width: 85%;
     background-color: white;
     padding: 1rem 2.5rem;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
@@ -54,16 +56,20 @@
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    max-width: 85%;
+    border-radius: 2.5rem;
   }
 
   .edit-form {
-    width: 60%;
+    width: 85%;
     margin-left: -1rem;
     margin-right: -1rem;
     margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
     background-color: white;
     padding: 1rem 2.5rem;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    border-radius: 2.5rem;
     align-self: start;
   }
   .form-container {
@@ -89,6 +95,18 @@
     margin-left: auto;
     margin-right: auto;
   }
+  .previous-wo-container {
+    width: 95%;
+    padding: 1rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1rem;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+  }
 
   @media (min-width: 640px) {
     /* sm: */
@@ -96,9 +114,9 @@
       margin-left: 0;
       margin-right: 0;
       border-radius: 2.5rem;
-      padding: 6rem;
-      max-width: 1000px;
-      flex: 0 0 50%;
+      padding: 1.5rem;
+      max-width: 65%;
+      flex: auto;
     }
     .avatar-form {
       margin-left: 0;
@@ -117,7 +135,19 @@
       flex: 0 0 50%;
       align-self: start;
     }
+    .previous-wo-container {
+      width: 60%;
+    }
   }
+
+  @media (min-width: 1024px) {
+    /* md: */
+    .login-form {
+      max-width: 650px;
+      padding: 4rem;
+    }
+  }
+
   .hero-container {
     margin: auto;
     width: 100%;
