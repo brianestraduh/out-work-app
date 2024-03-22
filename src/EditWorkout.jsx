@@ -17,6 +17,7 @@ export default function EditWorkout() {
   const workoutId = useSelector((state) => state.workoutId.id);
   const { id: idString } = useParams();
   const id = Number(idString);
+  const isDarkTheme = useSelector((state) => state.darkMode);
   //dragging reference
   const dragExcercise = useRef(0);
   const overTakenExcercise = useRef(0);
@@ -104,10 +105,23 @@ export default function EditWorkout() {
   };
   return (
     <div className="previous-wo-container">
-      <h1> {`Edit Workout ${id}`}</h1>
+      <Link
+        to="/createEditWorkouts"
+        className={isDarkTheme ? "primary-dark-btn" : "primary-btn"}
+      >
+        Back
+      </Link>
+      <h2
+        className={isDarkTheme ? "header-title-dark-text" : "header-title-text"}
+      >
+        {" "}
+        {`Edit Workout ${id}`}
+      </h2>
       <form>
         <div>
-          <Link to={"/exerciseLibrary"}>Add from Excercise Library</Link>
+          <Link to={"/exerciseLibrary"} className="secondary-dark-btn">
+            Add from Excercise Library
+          </Link>
         </div>
       </form>
       <ul className="exercise-workout-flex">
@@ -115,26 +129,34 @@ export default function EditWorkout() {
           .sort((a, b) => a.index - b.index)
           .map((exercise, index) => {
             return (
-              <li key={exercise.id} className="exercise-card">
-                <WorkoutExerciseItems
-                  exercise={exercise}
-                  className="drag"
-                  draggable={true}
-                  onDragStart={() => {
-                    dragExcercise.current = index;
-                  }}
-                  onDragEnter={() => {
-                    overTakenExcercise.current = index;
-                  }}
-                  onDragEnd={() =>
-                    handleDrag(
-                      dragExcercise.current,
-                      overTakenExcercise.current
-                    )
-                  }
-                  onDragOver={(e) => e.preventDefault()}
-                >
-                  <Button onClick={() => handleRemove(exercise.id)}>
+              <li
+                key={exercise.id}
+                className="exercise-card"
+                draggable={true}
+                onDragStart={() => {
+                  dragExcercise.current = index;
+                }}
+                onTouchStart={() => {
+                  dragExcercise.current = index;
+                }}
+                onDragEnter={() => {
+                  overTakenExcercise.current = index;
+                }}
+                onTouchMove={() => {
+                  overTakenExcercise.current = index;
+                }}
+                onDragEnd={() =>
+                  handleDrag(dragExcercise.current, overTakenExcercise.current)
+                }
+                onTouchEnd={() =>
+                  handleDrag(dragExcercise.current, overTakenExcercise.current)
+                }
+              >
+                <WorkoutExerciseItems exercise={exercise}>
+                  <Button
+                    onClick={() => handleRemove(exercise.id)}
+                    className={isDarkTheme ? "primary-dark-btn" : "primary-btn"}
+                  >
                     Remove
                   </Button>
                 </WorkoutExerciseItems>
@@ -147,8 +169,9 @@ export default function EditWorkout() {
           Are you sure?
         </ConfirmationModal>
       )}
-      <button onClick={handleSaveSort}>Save Order</button>
-      <Link to="/createEditWorkouts">Back</Link>
+      <button onClick={handleSaveSort} className="secondary-dark-btn">
+        Save Order
+      </button>
     </div>
   );
 }
