@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import FormInput from "./components/FormInput";
+import ExerciseForm from "./components/ExerciseForm";
 
 export default function Sets({
   defaultReps,
@@ -62,33 +62,34 @@ export default function Sets({
   }, [isChecked, reps, weight]);
 
   return (
-    <div className={`set ${isChecked ? "complete" : ""}`}>
+    <div className={`Set ${isChecked ? "complete set-card" : "set-card"}`}>
       <p>{`Set ${setIndex}`}</p>
-
-      <FormInput
-        label="Reps:"
-        htmlFor={repId}
-        type="number"
-        id={repId}
-        value={reps}
-        onChange={handleRepsChange}
-      />
-      <FormInput
-        label="Weight:"
-        htmlFor={weightId}
-        type="number"
-        id={weightId}
-        value={weight}
-        onChange={handleWeightChange}
-      />
-      <FormInput
-        label="Complete:"
-        htmlFor={completeId}
-        type="checkbox"
-        id={completeId}
-        checked={isChecked}
-        onChange={handleCheck}
-      />
+      <div className="exercise-set-grid">
+        <ExerciseForm
+          label="Reps"
+          htmlFor={repId}
+          type="number"
+          id={repId}
+          value={reps}
+          onChange={handleRepsChange}
+        />
+        <ExerciseForm
+          label="Weight (lbs)"
+          htmlFor={weightId}
+          type="number"
+          id={weightId}
+          value={weight}
+          onChange={handleWeightChange}
+        />
+        <ExerciseForm
+          label="Complete"
+          htmlFor={completeId}
+          type="checkbox"
+          id={completeId}
+          checked={isChecked}
+          onChange={handleCheck}
+        />
+      </div>
     </div>
   );
 }

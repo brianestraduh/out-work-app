@@ -3,7 +3,7 @@ import Sets from "./Sets";
 import { useDispatch } from "react-redux";
 import { upsertExercise } from "./redux/workoutSession/exerciseSlice";
 import Button from "./components/Button";
-export default function Exercise({ exerciseDetails, index }) {
+export default function Exercise({ exerciseDetails, index, isDarkTheme }) {
   const { name, description, defaultSets, defaultReps, exercise_id } =
     exerciseDetails;
   const [sets, setSets] = useState(defaultSets);
@@ -33,7 +33,7 @@ export default function Exercise({ exerciseDetails, index }) {
   }
 
   return (
-    <div className="card">
+    <div className="workout-sess-card">
       <h2>{`Exercise ${index}`} </h2>
       <p>{name}</p>
       <p>{description}</p>
@@ -51,8 +51,20 @@ export default function Exercise({ exerciseDetails, index }) {
           />
         );
       })}
-      <Button onClick={handleAddSets}>Add Set</Button>
-      <Button onClick={handleRemoveSets}>Remove Set</Button>
+      <div className="btn-center-container">
+        <Button
+          onClick={handleAddSets}
+          className={isDarkTheme ? "primary-dark-btn" : "primary-btn"}
+        >
+          Add Set
+        </Button>
+        <Button
+          onClick={handleRemoveSets}
+          className={isDarkTheme ? "secondary-dark-btn" : "secondary-btn"}
+        >
+          Remove Set
+        </Button>
+      </div>
     </div>
   );
 }

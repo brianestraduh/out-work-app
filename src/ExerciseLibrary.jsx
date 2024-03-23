@@ -134,7 +134,9 @@ export default function ExerciseLibrary() {
   return (
     <div className="exercise-container">
       {workoutId && (
-        <Link to={`/workout/${workoutId}`}>Back to Edit Workout</Link>
+        <Link to={`/workout/${workoutId}`} className="secondary-dark-btn">
+          Back to Edit Workout
+        </Link>
       )}
       {workoutId === null && (
         <Link to="/" className="secondary-dark-btn">
@@ -188,7 +190,12 @@ export default function ExerciseLibrary() {
             >
               <div className="btn-container">
                 {workoutId && (
-                  <Button onClick={() => handleAdd(exercise.id)}>Add</Button>
+                  <Button
+                    onClick={() => handleAdd(exercise.id)}
+                    className={isDarkTheme ? "primary-btn" : "primary-dark-btn"}
+                  >
+                    Add
+                  </Button>
                 )}
                 {workoutId === null && (
                   <Link

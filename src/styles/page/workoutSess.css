@@ -1,0 +1,88 @@
+@layer page {
+  .exercise-set-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .workout-sess-card {
+    position: relative;
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 2.5rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    width: 100%;
+  }
+
+  .workoutInput {
+    border: none;
+    padding: 0.375rem 0;
+    color: #1f2937;
+    background-color: #ffffff;
+    outline: auto;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    font-family: var(--main-font);
+  }
+
+  .workout-input-area {
+    display: block;
+    width: 90%;
+    border-radius: 0.375rem;
+    border: none;
+    padding: 0.375rem 0;
+    color: #1f2937;
+    background-color: #ffffff;
+    font-size: 0.875rem;
+    text-align: center;
+    font-family: var(--main-font);
+    outline: auto;
+  }
+  .input-wo-title {
+    display: block;
+    text-align: center;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: #1f2937;
+    font-family: var(--main-font);
+  }
+
+  .complete {
+    background-color: var(--main-color);
+    outline: auto;
+  }
+
+  .set-card {
+    position: relative;
+    padding: 1rem;
+    width: 100%;
+  }
+
+  .checkbox {
+    display: block;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: 2px solid #1f2937;
+    padding: 0;
+    color: #1f2937;
+    background-color: #ffffff;
+    font-size: 0.875rem;
+    text-align: center;
+    font-family: var(--main-font);
+    outline: auto;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  }
+
+  .checkbox:checked {
+    background-color: #3fcfae;
+  }
+
+  .set-flex {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+}

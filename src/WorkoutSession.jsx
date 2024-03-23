@@ -27,6 +27,7 @@ export default function WorkoutSession() {
   const records = useRef(null);
   const newRecordsArr = useRef(null);
   const navigate = useNavigate();
+  const isDarkTheme = useSelector((state) => state.darkMode);
 
   useEffect(() => {
     // to be used to calculate workout duration
@@ -120,9 +121,16 @@ export default function WorkoutSession() {
     }
   }
   return (
-    <div>
-      <h2>{workoutName}</h2>
-      <ul>
+    <div className="previous-wo-container">
+      <Button onClick={handleBack} className="secondary-dark-btn">
+        Back
+      </Button>
+      <h2
+        className={isDarkTheme ? "header-title-dark-text" : "header-title-text"}
+      >
+        {workoutName}
+      </h2>
+      <ul className="previous-wo-container">
         {exercises
           .sort((a, b) => a.index - b.index)
           .map((exercise, index) => {
@@ -131,11 +139,17 @@ export default function WorkoutSession() {
                 key={exercise.id}
                 exerciseDetails={exercise}
                 index={index + 1}
+                isDarkTheme={isDarkTheme}
               />
             );
           })}
       </ul>
-      <Button onClick={handleComplete}>Complete workout</Button>
+      <Button
+        onClick={handleComplete}
+        className={isDarkTheme ? "primary-dark-btn" : "primary-btn"}
+      >
+        Complete workout
+      </Button>
       {showCompleteModal && (
         <ConfirmationModal onConfirm={handleConfirm} onCancel={handleCancel}>
           Are you sure?
@@ -149,7 +163,6 @@ export default function WorkoutSession() {
           Are you sure? Workout has NOT been completed.{" "}
         </ConfirmationModal>
       )}
-      <Button onClick={handleBack}> Back </Button>
     </div>
   );
 }

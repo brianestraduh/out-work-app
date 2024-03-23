@@ -12,6 +12,7 @@ function Workout() {
   const workouts = useSelector((state) => state.workouts.workouts);
   const [activeIndex, setActiveIndex] = useState(null);
   const dispatch = useDispatch();
+  const isDarkTheme = useSelector((state) => state.darkMode);
   // Loading Workouts from table on component mount
   useEffect(() => {
     if (Array.isArray(workouts) && workouts.length !== 0) {
@@ -37,30 +38,42 @@ function Workout() {
     }
   }
   return (
-    <div>
-      <h1>Select a Workout</h1>
-
-      {workouts.map((workout, index) => {
-        return (
-          <WorkoutButton
-            key={workout.id}
-            className={activeIndex === index ? "active" : ""}
-            onClick={() => handleClick(index, workout)}
-            workout={workout}
-            index={index}
-          >{`${workout.name} : ${workout.description}`}</WorkoutButton>
-        );
-      })}
-      <div>
-        {activeIndex !== null ? (
-          <Link to={"/workoutSession"} className="enabled-link">
-            Start Workout
-          </Link>
-        ) : (
-          <span className="disabled-link">Start Workout</span>
-        )}
+    <div className="previous-wo-container">
+      <Link to="/" className="secondary-dark-btn">
+        Back
+      </Link>
+      <h1
+        className={isDarkTheme ? "header-title-dark-text" : "header-title-text"}
+      >
+        Select a Workout
+      </h1>
+      <div className="exercise-workout-flex">
+        {workouts.map((workout, index) => {
+          return (
+            <WorkoutButton
+              key={workout.id}
+              className={
+                activeIndex === index
+                  ? "selected-workout workout-select-card"
+                  : "workout-select-card"
+              }
+              onClick={() => handleClick(index, workout)}
+              workout={workout}
+              index={index}
+            >{`${workout.name} : ${workout.description}`}</WorkoutButton>
+          );
+        })}
       </div>
-      <Link to="/">Back</Link>
+      {activeIndex !== null ? (
+        <Link
+          to={"/workoutSession"}
+          className={isDarkTheme ? "primary-dark-btn" : "primary-btn"}
+        >
+          Start Workout
+        </Link>
+      ) : (
+        <span className="disabled-btn">Start Workout</span>
+      )}
     </div>
   );
 }
