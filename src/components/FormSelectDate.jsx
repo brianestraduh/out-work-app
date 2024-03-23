@@ -4,18 +4,21 @@ export default function FormSelectDate(props) {
   const { className, onChange } = props;
   const classes = clsx(
     {
-      input: true,
+      datefilter: true,
     },
     className
   );
   return (
-    <div className={classes}>
-      <label htmlFor="session-date-filter">Filter by Date:</label>
+    <div>
+      <label htmlFor="session-date-filter" className="dateLabelFilter">
+        Filter by Date
+      </label>
       <select
         name="session-date-filter"
         id="session-date-filter"
         onChange={onChange}
         defaultValue={"this week"}
+        className="datefilter"
       >
         <option value="this week">this week</option>
         <option value="this month">this month</option>

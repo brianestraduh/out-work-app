@@ -185,7 +185,6 @@ export default function ExerciseLibrary() {
             <ExerciseListItem
               key={exercise.id}
               exercise={exercise}
-              className="drag"
               isDarkTheme={isDarkTheme}
             >
               <div className="btn-container">

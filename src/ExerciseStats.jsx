@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchExerciseStats } from "./helpers/fetchStats";
+import { useSelector } from "react-redux";
 import { muscleGroupArr } from "./helpers/exerciseStatsHelper.js";
 import FormSelectDate from "./components/FormSelectDate.jsx";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
@@ -12,6 +13,7 @@ export function ExerciseStats() {
   const [exerciseCutOffDate, setExerciseCutOffDate] = useState("this month");
   const [muscleGroupData, setMuscleGroupData] = useState([]);
   const [displayedStat, setDisplayedStat] = useState("volume");
+  const isDarkTheme = useSelector((state) => state.darkMode);
   useEffect(() => {
     fetchExerciseStats(exerciseCutOffDate).then((data) => {
       setExercises(data);
@@ -61,10 +63,20 @@ export function ExerciseStats() {
     ],
   };
   return (
-    <div>
-      <h2>Exercise Stats</h2>
-      <button onClick={() => handleToggle("volume")}>Volume</button>
-      <button onClick={() => handleToggle("reps")}>Reps</button>
+    <div className="stats-card exercise-stats-area">
+      <h3 className="header-title-text">Exercise Stats</h3>
+      <button
+        onClick={() => handleToggle("volume")}
+        className={isDarkTheme ? "primary-dark-btn" : "primary-btn"}
+      >
+        Volume
+      </button>
+      <button
+        onClick={() => handleToggle("reps")}
+        className="secondary-dark-btn"
+      >
+        Reps
+      </button>
       <FormSelectDate onChange={handleDateChange} />
       <Doughnut data={data} />
     </div>

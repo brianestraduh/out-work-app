@@ -1,0 +1,42 @@
+@layer page {
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+  }
+  .stats-card {
+    position: relative;
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 2.5rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .stats-grid {
+      grid-template-areas:
+        "item1 item2"
+        "item3 item3";
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+    .session-stats-area {
+      grid-area: item1;
+    }
+
+    .exercise-stats-area {
+      grid-area: item2;
+    }
+
+    .pr-area {
+      grid-area: item3;
+    }
+  }
+}

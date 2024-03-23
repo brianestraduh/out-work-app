@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchSessionStats } from "./helpers/fetchStats";
 import FormSelectDate from "./components/FormSelectDate.jsx";
+import { useSelector } from "react-redux";
 import { durationArr, sessCountArr } from "./helpers/sessionStatsHelper.js";
 import {
   Chart as ChartJS,
@@ -28,6 +29,7 @@ function SessionStats() {
   const [durationData, setDurationData] = useState([]);
   const [sessCountData, setSessCountData] = useState([]);
   const [toggleDataTypes, setToggleDataTypes] = useState(false);
+  const isDarkTheme = useSelector((state) => state.darkMode);
 
   useEffect(() => {
     fetchSessionStats(sessionCutOffDate).then((data) => {
@@ -82,15 +84,18 @@ function SessionStats() {
     setToggleDataTypes(!toggleDataTypes);
   }
   return (
-    <>
-      <h2>Session Stats</h2>
-      <FormSelectDate onChange={handleDateChange} />
-      <button onClick={handleToggle}>
+    <div className="stats-card session-stats-area">
+      <h3 className="header-title-text">Session Stats</h3>
+      <FormSelectDate onChange={handleDateChange} className="width-50" />
+      <button
+        onClick={handleToggle}
+        className={isDarkTheme ? "primary-dark-btn" : "primary-btn"}
+      >
         {toggleDataTypes ? "Session Duration" : "Session Count"}
       </button>
 
       <Bar data={data} options={options} />
-    </>
+    </div>
   );
 }
 
