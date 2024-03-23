@@ -1,4 +1,4 @@
-export default function ExerciseListItem(props) {
+export default function WorkoutExerciseItems(props) {
   const {
     exercise,
     children,
