@@ -1,8 +1,18 @@
-# React + Vite
+# OutWork App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+I created this app to track my workouts and view my progress over weeks/months on my phone. 
 
-Currently, two official plugins are available:
+## Tech stack used
+**React/JS** Front End
+Stlyed using **Plain CSS/Components**
+Relational DB/Auth/Backend using **Supabase**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+I learned a TON on this project. It was my first one using any sort of backend. I learned to read documentation and was introduced to new concepts like RLS (Row Level Security).
+Coming up with Tables, primary keys, foreign keys, and data types was something that took time to understand and decide on what would work for my app. 
+
+I am getting much more comfortable with React. I do feel there is much room to improve from a styling standpoint. On my next Project i will use figma to have a concrete plan for what I want the app to look like.
+Lastly this will be my last JS project next one will use TypeScript which I recently learned.
+
+## Still left to implement
+Testing
+Dragging Exercises on a mobile device
